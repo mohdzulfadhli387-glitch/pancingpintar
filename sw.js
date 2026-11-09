@@ -1,5 +1,42 @@
-const C="tw-v1",F=["./","./index.html","./manifest.webmanifest","./icon-192.png","./icon-512.png"];
-self.addEventListener("install",e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(F)));self.skipWaiting()});
-self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!=C).map(x=>caches.delete(x)))));self.clients.claim()});
-self.addEventListener("fetch",e=>{const u=new URL(e.request.url);if(u.origin!==location.origin)return;
-e.respondWith(fetch(e.request).then(r=>{const c=r.clone();caches.open(C).then(x=>x.put(e.request,c));return r}).catch(()=>caches.match(e.request).then(r=>r||caches.match("./index.html"))))});
+const CACHE = "pancing-pintar-v3";
+const ASSETS = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png"];
+
+self.addEventListener("install", event => {
+  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS)));
+  self.skipWaiting();
+});
+
+self.addEventListener("activate", event => {
+  event.waitUntil(
+    caches.keys().then(keys => Promise.all(keys.filter(key => key !== CACHE).map(key => caches.delete(key))))
+  );
+  self.clients.claim();
+});
+
+self.addEventListener("fetch", event => {
+  const request = event.request;
+  const url = new URL(request.url);
+  if (url.origin !== self.location.origin) return;
+  if (request.method !== "GET") return;
+
+  if (request.mode === "navigate") {
+    event.respondWith(
+      fetch(request).then(response => {
+        const copy = response.clone();
+        caches.open(CACHE).then(cache => cache.put("./index.html", copy));
+        return response;
+      }).catch(() => caches.match("./index.html"))
+    );
+    return;
+  }
+
+  event.respondWith(
+    caches.match(request).then(cached => cached || fetch(request).then(response => {
+      if (response.ok) {
+        const copy = response.clone();
+        caches.open(CACHE).then(cache => cache.put(request, copy));
+      }
+      return response;
+    }))
+  );
+});
