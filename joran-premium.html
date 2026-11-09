@@ -51,6 +51,14 @@ nav{position:fixed;left:0;right:0;bottom:0;background:var(--deep);display:flex;j
 nav div{display:flex;width:100%;max-width:560px}
 .tab{flex:1;background:none;border:0;color:var(--on-deep);opacity:.7;font:600 15px Figtree,system-ui,sans-serif;padding:16px 4px;cursor:pointer}
 .tab[aria-selected="true"]{opacity:1;box-shadow:inset 0 3px 0 var(--float)}
+.tw{position:relative;max-height:430px;overflow:auto;border:1px solid var(--line);border-radius:12px}
+.tw table{width:100%;border-collapse:collapse;font-size:14px}
+.tw th,.tw td{padding:7px 6px;text-align:center;border-bottom:1px solid var(--line);line-height:1.3}
+.tw thead th{position:sticky;top:0;background:var(--deep);color:var(--on-deep);z-index:1;font-weight:600}
+.tw tbody th{text-align:left;font-weight:600;white-space:nowrap;padding-left:10px}
+.tw tr[data-o]{cursor:pointer}.tw tr.sel{background:#f2b82040}
+.tw td.hi{font-weight:600}.tw td.lo{color:var(--muted)}
+.tw .note{padding:8px 10px;margin:0}
 [hidden]{display:none!important}
 </style>
 </head>
@@ -67,6 +75,7 @@ nav div{display:flex;width:100%;max-width:560px}
   <div class="hero" id="hero"></div>
   <div class="panel"><h3 id="arusT">Arus</h3><p id="arusP" style="margin:0"></p><p class="note" id="arusN"></p></div>
   <div class="panel"><h3>Pasang surut</h3><div id="tideBody"></div></div>
+  <div class="panel"><h3 id="tblT">Jadual air</h3><div id="tblBody" class="tw"></div></div>
   <div class="panel"><h3>Waktu ikan aktif</h3>
     <div class="track" id="track" aria-hidden="true"></div>
     <div class="hrs"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div>
@@ -173,6 +182,19 @@ function drawTide(t0){
   const hs=ev.map(e=>e.h),rg=(Math.max(...hs)-Math.min(...hs)).toFixed(1);
   B.innerHTML=now+`<svg viewBox="0 0 340 124" width="100%" role="img" aria-label="Graf air pasang surut">${s}</svg>`+ev.map(e=>`<div class="kv"><span>${e.hi?"Air pasang":"Air surut"}</span><b>${fm(e.t)}, ${e.h.toFixed(1)} m</b></div>`).join("")+`<div class="kv"><span>Julat hari ini</span><b>${rg} m</b></div><p class="note">Jadual Pelabuhan Klang 2026 (zon masa UTC+8), disalin dengan tangan daripada tangkap layar. Lengkung antara pasang dan surut dikira secara kosinus. Sahkan dengan jadual Pusat Hidrografi Nasional.</p>`;
 }
+function drawTable(t0){
+  const B=$("#tblBody"),T=$("#tblT");
+  if(loc.n!=="Pelabuhan Klang"){T.textContent="Jadual air";B.innerHTML='<p class="note">Jadual ada untuk Pelabuhan Klang sahaja.</p>';return}
+  const m=new Date(t0+MY).getUTCMonth()+1,y=new Date(t0+MY).getUTCFullYear();
+  if(y!==2026||!TIDE[m]){T.textContent="Jadual air";B.innerHTML='<p class="note">Jadual ada untuk November dan Disember 2026.</p>';return}
+  T.textContent="Jadual air, "+["November","Disember"][m-11]+" 2026";
+  let h='<table><thead><tr><th>Tarikh</th><th>Air 1</th><th>Air 2</th><th>Air 3</th><th>Air 4</th></tr></thead><tbody>';
+  TIDE[m].forEach((_,i)=>{const d0=Date.UTC(2026,m-1,i+1)-MY,ev=TEV.filter(e=>e.t>=d0&&e.t<d0+DAY);
+    h+=`<tr data-o="${Math.round((d0-todayT())/DAY)}"${d0===t0?' class="sel"':''}><th scope="row">${wf.format(d0+12*36e5)}</th>`+[0,1,2,3].map(k=>{const e=ev[k];return e?`<td class="${e.hi?"hi":"lo"}">${fm(e.t)}<br>${e.hi?"▲":"▼"} ${e.h.toFixed(1)}</td>`:"<td></td>"}).join("")+"</tr>"});
+  B.innerHTML=h+'</tbody></table><p class="note">▲ air pasang, ▼ air surut (meter). Tekan satu baris untuk lihat hari itu.</p>';
+  B.querySelectorAll("tr[data-o]").forEach(r=>r.onclick=()=>{day=+r.dataset.o;drawDays();drawDay()});
+  const s=B.querySelector("tr.sel");if(s)B.scrollTop=s.offsetTop-44;
+}
 function drawDay(){
   const t0=todayT()+day*DAY,noon=t0+12*36e5;
   const sS=scan(sunAlt,t0),mS=scan(moonAlt,t0);
@@ -198,7 +220,7 @@ function drawDay(){
   $("#track").innerHTML=segs.map(s=>{const l=Math.max(0,(s[0]-t0)/DAY*100),r=Math.min(100,(s[1]-t0)/DAY*100);return`<div class="seg ${s[2]}" style="left:${l}%;width:${Math.max(0,r-l)}%"></div>`}).join("");
   $("#wins").innerHTML=rows.map(r=>`<div class="kv"><span><span class="sw" style="background:${r[0]==="s-major"?"var(--float)":r[0]==="s-minor"?"#f2b82080":"var(--deep)"}"></span>${r[1]}</span><b>${r[2]}</b></div>`).join("");
   $("#solat").innerHTML=[["Subuh",sub],["Syuruk",syu],["Zohor",zoh],["Asar",asr],["Maghrib",mag],["Isyak",isy]].map(x=>`<div class="kv"><span>${x[0]}</span><b>${fm(x[1])}</b></div>`).join("")+`<div class="kv"><span>Bulan terbit / terbenam</span><b>${fm(mr.up)} / ${fm(mr.dn)}</b></div>`;
-  drawStrip(t0,hT);drawTide(t0);
+  drawStrip(t0,hT);drawTide(t0);drawTable(t0);
 }
 function drawStrip(t0,hT){
   const h0=hijri(hT);let s=hT;
