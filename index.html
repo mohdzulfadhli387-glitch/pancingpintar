@@ -4,75 +4,70 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Pancing Pintar</title>
-  <link rel="manifest" href="manifest.webmanifest" />
   <meta name="theme-color" content="#061a2e" />
   <style>
     :root {
-      --bg: #071a2b;
-      --bg2: #0d2339;
-      --card: rgba(16, 32, 48, 0.88);
-      --card2: rgba(15, 48, 60, 0.9);
-      --line: rgba(172, 205, 220, 0.18);
-      --text: #ebf4fb;
-      --muted: #9bb6c7;
-      --blue: #35b7ff;
-      --cyan: #4edec3;
-      --green: #42d492;
-      --amber: #f1c76a;
-      --red: #ff6d7a;
-      --purple: #9e7dff;
+      --bg: #061a2e;
+      --bg2: #0b2338;
+      --panel: rgba(13, 28, 40, 0.92);
+      --panel-strong: rgba(18, 42, 58, 0.96);
+      --line: rgba(164, 192, 208, 0.2);
+      --text: #edf6ff;
+      --muted: #9db0c0;
+      --blue: #42b7ff;
+      --cyan: #5fe3d3;
+      --green: #4cd88e;
+      --amber: #f7c96b;
+      --red: #ff7588;
+      --purple: #9d82ff;
+      --orange: #ff9c46;
       --shadow: rgba(0,0,0,0.28);
-      --danger: #ff5b5b;
-      --warning: #ffbb55;
     }
 
     * { box-sizing: border-box; }
 
     html, body {
       margin: 0;
-      padding: 0;
+      min-height: 100%;
       background:
-        radial-gradient(circle at top, rgba(50,142,200,0.22), transparent 38%),
+        radial-gradient(circle at top, rgba(56, 158, 210, 0.25), transparent 36%),
         linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
       color: var(--text);
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      font-family: "Segoe UI", Tahoma, sans-serif;
     }
 
     body {
       max-width: 560px;
       margin: 0 auto;
-      padding: 18px 14px 40px;
-      min-height: 100vh;
+      padding: 18px 14px 42px;
     }
 
     .app {
-      background: rgba(10,22,34,0.95);
+      background: rgba(7, 19, 29, 0.9);
       border: 1px solid var(--line);
-      border-radius: 24px;
-      box-shadow: 0 18px 40px var(--shadow);
+      border-radius: 22px;
       overflow: hidden;
+      box-shadow: 0 18px 36px var(--shadow);
     }
 
     .topbar {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      padding: 14px 16px 10px;
+      align-items: center;
+      padding: 14px 16px 12px;
       border-bottom: 1px solid var(--line);
-      background: rgba(12, 28, 40, 0.7);
+      background: rgba(13, 28, 39, 0.86);
     }
 
     .brand {
-      font-size: 1.1rem;
-      font-weight: 800;
-      letter-spacing: 0.3px;
+      font-weight: 900;
+      font-size: 1.08rem;
     }
 
     .status {
       display: flex;
-      gap: 8px;
       align-items: center;
+      gap: 8px;
       color: var(--muted);
       font-size: 0.72rem;
     }
@@ -82,24 +77,30 @@
       height: 10px;
       border-radius: 50%;
       background: var(--green);
-      box-shadow: 0 0 12px rgba(66,212,146,.9);
+      box-shadow: 0 0 12px rgba(76,216,142,0.9);
     }
 
     .section {
-      padding: 14px 14px 6px;
+      padding: 12px 14px 14px;
+    }
+
+    .controls {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 12px;
     }
 
     select, input, button {
       font: inherit;
     }
 
-    select {
+    select, input {
       width: 100%;
       border-radius: 12px;
       border: 1px solid var(--line);
-      background: rgba(21, 38, 54, 0.78);
+      background: rgba(21, 38, 54, 0.82);
       color: var(--text);
-      padding: 11px 12px;
+      padding: 10px 12px;
       outline: none;
     }
 
@@ -112,86 +113,88 @@
     }
 
     .tab {
-      padding: 9px 6px;
-      border-radius: 12px;
-      border: 1px solid var(--line);
-      background: rgba(20, 35, 48, 0.8);
+      background: rgba(18, 37, 52, 0.92);
       color: var(--muted);
-      font-size: 0.73rem;
-      font-weight: 700;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 9px 5px;
+      font-size: 0.72rem;
+      font-weight: 800;
       cursor: pointer;
     }
 
     .tab.active {
-      background: linear-gradient(135deg, rgba(53,183,255,0.28), rgba(78,222,195,0.25));
+      background: linear-gradient(135deg, rgba(66,183,255,0.22), rgba(95,227,211,0.22));
       color: var(--text);
-      border-color: rgba(53,183,255,0.45);
-      box-shadow: inset 0 0 0 1px rgba(53,183,255,0.3);
+      border-color: rgba(66,183,255,0.42);
     }
 
-    .tab.red { border-color: rgba(255,109,122,0.5); }
-    .tab.red.active { background: linear-gradient(135deg, rgba(255,109,122,0.22), rgba(255,109,122,0.18)); }
+    .tab.red.active {
+      background: linear-gradient(135deg, rgba(255,117,136,0.22), rgba(255,117,136,0.18));
+      border-color: rgba(255,117,136,0.5);
+    }
 
     .card {
-      background: var(--card);
+      background: var(--panel);
       border: 1px solid var(--line);
       border-radius: 18px;
       padding: 14px;
       margin-bottom: 12px;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
     }
 
     .row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+    }
+
+    .big {
+      font-size: clamp(1.7rem, 5vw, 2.6rem);
+      font-weight: 900;
+      letter-spacing: -0.06em;
+      line-height: 1.04;
+      margin: 6px 0 0;
     }
 
     .muted {
       color: var(--muted);
-      font-size: 0.8rem;
-    }
-
-    .big {
-      font-size: clamp(1.6rem, 5vw, 2.5rem);
-      font-weight: 900;
-      letter-spacing: -0.05em;
-      line-height: 1.05;
-      margin: 6px 0;
+      font-size: 0.78rem;
     }
 
     .score {
+      min-width: 82px;
       display: inline-flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       padding: 8px 12px;
       border-radius: 999px;
-      font-weight: 800;
-      color: #09321b;
-      background: linear-gradient(135deg, var(--green), #8ae6b0);
-      min-width: 84px;
+      font-size: 0.8rem;
+      font-weight: 900;
+      color: #0b2d22;
+      background: linear-gradient(135deg, var(--green), #9cecc5);
     }
 
     .score.warn {
-      background: linear-gradient(135deg, var(--amber), #ffd89b);
-      color: #2a1800;
+      background: linear-gradient(135deg, var(--amber), #f7dc9f);
+      color: #422b00;
     }
 
     .score.bad {
-      background: linear-gradient(135deg, var(--red), #ff9aa5);
-      color: #270810;
+      background: linear-gradient(135deg, var(--red), #ffb7c1);
+      color: #2f0b14;
     }
 
     .mini-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 10px;
-      margin-top: 10px;
+      margin-top: 12px;
     }
 
     .mini {
-      background: rgba(255,255,255,0.02);
+      background: rgba(255,255,255,0.025);
       border: 1px solid var(--line);
       border-radius: 12px;
       padding: 10px 10px 8px;
@@ -199,160 +202,134 @@
 
     .mini strong {
       display: block;
-      font-size: 1.15rem;
-      margin-top: 2px;
+      margin-top: 4px;
+      font-size: 1.06rem;
     }
 
-    .bar {
-      display: grid;
-      grid-template-columns: repeat(10, minmax(0, 1fr));
-      gap: 5px;
-      margin-top: 10px;
-    }
-
-    .bar span {
-      display: block;
-      height: 14px;
-      border-radius: 6px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.04);
-    }
-
-    .bar span.fill {
-      background: linear-gradient(135deg, var(--cyan), var(--blue));
-      border-color: rgba(53,183,255,0.32);
-    }
-
-    .chips {
+    .chip-row {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-top: 10px;
+      margin-top: 12px;
     }
 
     .chip {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--line);
-      color: var(--text);
+      padding: 7px 10px;
       border-radius: 999px;
-      padding: 8px 10px;
-      font-size: 0.78rem;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.02);
+      color: var(--text);
+      font-size: 0.74rem;
     }
 
-    .fish-list {
+    .map-preview {
+      position: relative;
+      height: 220px;
+      border-radius: 18px;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(54,145,187,0.18), rgba(9,23,35,0.7)),
+        linear-gradient(0deg, rgba(255,255,255,0.02), rgba(255,255,255,0.02));
+      border: 1px solid var(--line);
+      margin-top: 10px;
+    }
+
+    .map-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    .map-spot {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--blue);
+      border: 2px solid rgba(255,255,255,0.9);
+      box-shadow: 0 0 0 4px rgba(66,183,255,0.2);
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+    }
+
+    .map-spot.good { background: var(--green); box-shadow: 0 0 0 4px rgba(76,216,142,0.18); }
+    .map-spot.warn { background: var(--amber); box-shadow: 0 0 0 4px rgba(247,201,107,0.16); }
+
+    .spot-list, .setup-list, .fish-list {
       display: grid;
       gap: 10px;
       margin-top: 10px;
     }
 
-    .fish-item {
-      padding: 12px 12px 10px;
-      border-radius: 14px;
+    .spot-item, .setup-item, .fish-item {
       background: rgba(255,255,255,0.025);
       border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
     }
 
-    .fish-name {
+    .spot-top, .fish-head, .setup-head {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 10px;
-      font-weight: 800;
       margin-bottom: 8px;
-    }
-
-    .fish-tag {
-      display: inline-block;
-      padding: 4px 8px;
-      border-radius: 999px;
-      font-size: 0.72rem;
-      font-weight: 800;
-      background: rgba(66,212,146,0.18);
-      color: var(--green);
-      border: 1px solid rgba(66,212,146,0.25);
-    }
-
-    .fish-desc {
-      color: var(--muted);
-      font-size: 0.79rem;
-      line-height: 1.5;
-    }
-
-    .spot-grid {
-      display: grid;
-      gap: 10px;
-    }
-
-    .spot-item {
-      padding: 12px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: rgba(255,255,255,0.025);
-    }
-
-    .spot-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 8px;
-    }
-
-    .spot-head strong {
-      font-size: 1rem;
     }
 
     .badge {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
       padding: 5px 8px;
       border-radius: 999px;
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       font-weight: 800;
-      background: rgba(53,183,255,0.14);
+      border: 1px solid rgba(66,183,255,0.38);
       color: var(--blue);
-      border: 1px solid rgba(53,183,255,0.28);
+      background: rgba(66,183,255,0.12);
     }
 
-    .danger {
-      color: var(--danger);
-      font-weight: 700;
-    }
-
-    .warn {
-      color: var(--warning);
-      font-weight: 700;
-    }
-
-    .good {
-      color: var(--green);
-      font-weight: 700;
-    }
-
-    .grid2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
+    .badge.good { color: var(--green); border-color: rgba(76,216,142,0.32); background: rgba(76,216,142,0.12); }
+    .badge.warn { color: var(--amber); border-color: rgba(247,201,107,0.42); background: rgba(247,201,107,0.12); }
 
     .summary-line {
-      font-size: 0.8rem;
       color: var(--muted);
-      margin-top: 6px;
+      font-size: 0.79rem;
       line-height: 1.5;
     }
 
+    .danger { color: #ff9aa5; font-weight: 700; }
+    .good-text { color: #9aded0; font-weight: 700; }
+    .warn-text { color: #ffd480; font-weight: 700; }
+
+    .setup-card {
+      display: grid;
+      gap: 8px;
+    }
+
+    .list-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .list-row:last-child { border-bottom: none; }
+
     .footer-note {
-      padding: 0 14px 16px;
       color: var(--muted);
-      font-size: 0.74rem;
+      font-size: 0.72rem;
       line-height: 1.5;
+      padding: 0 14px 18px;
     }
 
     @media (max-width: 420px) {
-      .tabs {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
+      .tabs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .mini-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -360,195 +337,313 @@
   <div class="app">
     <div class="topbar">
       <div class="brand">Pancing Pintar</div>
-      <div class="status">
-        <span class="dot"></span>
-        <span>Data anggaran</span>
-      </div>
+      <div class="status"><span class="dot"></span> <span>Aktif</span></div>
     </div>
 
     <div class="section">
-      <select id="stationSelect"></select>
+      <div class="controls">
+        <select id="regionFilter"></select>
+        <select id="categoryFilter"></select>
+      </div>
 
+      <select id="stationSelect"></select>
       <div class="tabs" id="tabs"></div>
     </div>
 
     <div id="content" class="section"></div>
 
     <div class="footer-note">
-      Nota: alat ini membekalkan anggaran berdasarkan pasang surut, angin, cuaca dan trend tempatan. Untuk keselamatan dan navigasi, rujuk sumber rasmi seperti JUPEM, MetMalaysia dan Jabatan Laut Malaysia.
+      Nota: data ini adalah anggaran untuk membantu pilihan masa dan lokasi. Untuk navigasi dan keselamatan, sentiasa rujuk sumber rasmi seperti JUPEM, MetMalaysia dan Jabatan Laut Malaysia.
     </div>
   </div>
 
   <script>
-    const stations = {
-      klang: { name: 'Pelabuhan Klang', region: 'Selangor', lat: 3.05, lon: 101.35, range: 2.4, vibe: 'Batu & jeti' },
-      tanjungKeling: { name: 'Tanjung Keling', region: 'Melaka', lat: 2.20, lon: 102.15, range: 2.2, vibe: 'Pantai & muara' },
-      kualaSelangor: { name: 'Kuala Selangor', region: 'Selangor', lat: 3.34, lon: 101.25, range: 2.1, vibe: 'Muara & estuari' },
-      pulauPinang: { name: 'Pulau Pinang', region: 'Pulau Pinang', lat: 5.42, lon: 100.33, range: 2.8, vibe: 'Batu & jeti' },
-      langkawi: { name: 'Langkawi', region: 'Kedah', lat: 6.35, lon: 99.80, range: 2.6, vibe: 'Batu & laut terbuka' },
-      kuantan: { name: 'Kuantan', region: 'Pahang', lat: 3.82, lon: 103.33, range: 2.7, vibe: 'Pantai & batu' },
-      geting: { name: 'Geting', region: 'Kelantan', lat: 5.88, lon: 102.52, range: 2.3, vibe: 'Pantai & sebelah muara' },
-      johorBahru: { name: 'Johor Bahru', region: 'Johor', lat: 1.46, lon: 103.75, range: 2.5, vibe: 'Jeti & karang' },
-      kotaKinabalu: { name: 'Kota Kinabalu', region: 'Sabah', lat: 5.98, lon: 116.08, range: 2.9, vibe: 'Laut & karang' },
-      sandakan: { name: 'Sandakan', region: 'Sabah', lat: 5.84, lon: 118.12, range: 2.7, vibe: 'Batu & muara' },
-      tawau: { name: 'Tawau', region: 'Sabah', lat: 4.25, lon: 117.89, range: 2.8, vibe: 'Laut terbuka & batu' },
-      miri: { name: 'Miri', region: 'Sarawak', lat: 4.40, lon: 113.99, range: 2.6, vibe: 'Batu & dangkal' }
+    const stationData = {
+      klang: { name: 'Pelabuhan Klang', region: 'Selangor', lat: 3.05, lon: 101.35, range: 2.5, vibe: 'Batu & jeti', category: 'Batu / Jeti' },
+      tanjungKeling: { name: 'Tanjung Keling', region: 'Melaka', lat: 2.19, lon: 102.14, range: 2.3, vibe: 'Pantai & muara', category: 'Pantai / Muara' },
+      kualaSelangor: { name: 'Kuala Selangor', region: 'Selangor', lat: 3.33, lon: 101.25, range: 2.1, vibe: 'Muara', category: 'Muara' },
+      pulauPinang: { name: 'Pulau Pinang', region: 'Pulau Pinang', lat: 5.42, lon: 100.33, range: 2.8, vibe: 'Batu & jeti', category: 'Batu / Jeti' },
+      langkawi: { name: 'Langkawi', region: 'Kedah', lat: 6.35, lon: 99.8, range: 2.6, vibe: 'Laut terbuka', category: 'Laut Terbuka' },
+      kuantan: { name: 'Kuantan', region: 'Pahang', lat: 3.82, lon: 103.33, range: 2.7, vibe: 'Pantai & batu', category: 'Pantai / Batu' },
+      geting: { name: 'Geting', region: 'Kelantan', lat: 5.88, lon: 102.52, range: 2.4, vibe: 'Pantai', category: 'Pantai' },
+      johorBahru: { name: 'Johor Bahru', region: 'Johor', lat: 1.47, lon: 103.75, range: 2.5, vibe: 'Jeti & karang', category: 'Jeti / Karang' },
+      kotaKinabalu: { name: 'Kota Kinabalu', region: 'Sabah', lat: 5.98, lon: 116.08, range: 2.9, vibe: 'Karang', category: 'Karang' },
+      sandakan: { name: 'Sandakan', region: 'Sabah', lat: 5.84, lon: 118.12, range: 2.7, vibe: 'Batu & muara', category: 'Batu / Muara' },
+      tawau: { name: 'Tawau', region: 'Sabah', lat: 4.25, lon: 117.89, range: 2.8, vibe: 'Laut terbuka', category: 'Laut Terbuka' },
+      miri: { name: 'Miri', region: 'Sarawak', lat: 4.40, lon: 113.99, range: 2.6, vibe: 'Batu & dangkal', category: 'Batu / Pantai' }
     };
 
-    const fishProfiles = [
-      { name: 'Kerapu', habitat: 'Batu karang & tukun', best: 'Air bergerak sederhana, pasang masuk', setup: 'Bottom rig, pancing berat, umpan hidup', score: 'Sangat sesuai' },
-      { name: 'Jenahak', habitat: 'Kawasan dasar keras & batu', best: 'Pasang menengah, air bersih', setup: 'Bottom fishing, sinker 2–4 oz', score: 'Sesuai' },
-      { name: 'Siakap', habitat: 'Muara, jeti & tepi lumpur', best: 'Air pasang kecil, subuh/senja', setup: 'Soft plastic / live bait', score: 'Sangat sesuai' },
-      { name: 'Selar', habitat: 'Jeti & around bait ball', best: 'Waktu subuh & senja', setup: 'Sabiki / mini jig', score: 'Sesuai' },
-      { name: 'Senangin', habitat: 'Muara & kawasan arus', best: 'Air naik & arus sederhana', setup: 'Pancing dasar, umpan hidup', score: 'Sederhana' },
-      { name: 'Tenggiri', habitat: 'Laut terbuka & tepi arus', best: 'Air bergerak & ombak sederhana', setup: 'Trolling / spoon / jig', score: 'Sesuai' }
+    const spotCatalog = [
+      {
+        name: 'Batu Ladung Pelabuhan Klang',
+        station: 'klang',
+        category: 'Batu / Jeti',
+        tag: 'Tinggi',
+        summary: 'Kawasan sesuai untuk bottom fishing, jigging dan pancing dasar apabila arus sederhana.',
+        warn: 'Elakkan jika angin melebihi 20 knot atau ombak tinggi.',
+        species: ['Kerapu', 'Jenahak', 'Siakap'],
+        bestTime: 'Subuh & petang'
+      },
+      {
+        name: 'Muara Kuala Selangor',
+        station: 'kualaSelangor',
+        category: 'Muara',
+        tag: 'Sederhana',
+        summary: 'Muara dan tepi lumpur berpotensi untuk siakap, senangin dan ikan kecil berburu di kawasan air pasang.',
+        warn: 'Awas arus dan kawasan berlumpur.',
+        species: ['Siakap', 'Senangin', 'Selar'],
+        bestTime: 'Air pasang kecil'
+      },
+      {
+        name: 'Karang Tanjung Keling',
+        station: 'tanjungKeling',
+        category: 'Pantai / Muara',
+        tag: 'Sesuai',
+        summary: 'Kawasan batu dan tepi pantai yang sesuai untuk pancing dasar dengan umpan hidup.',
+        warn: 'Pantau ombak dan keadaan air sebelum masuk ke karang.',
+        species: ['Jenahak', 'Kerapu', 'Bawal'],
+        bestTime: 'Pagi dan petang'
+      },
+      {
+        name: 'Jeti Pulau Pinang',
+        station: 'pulauPinang',
+        category: 'Batu / Jeti',
+        tag: 'Tinggi',
+        summary: 'Jeti dan kawasan sekitar struktur memberi peluang untuk baitfish, siakap dan selar.',
+        warn: 'Pastikan ciri keselamatan jeti dan arah arus.',
+        species: ['Siakap', 'Selar', 'Kerapu'],
+        bestTime: 'Subuh & senja'
+      },
+      {
+        name: 'Karang Langkawi',
+        station: 'langkawi',
+        category: 'Laut Terbuka',
+        tag: 'Sesuai',
+        summary: 'Kawasan laut terbuka dengan struktur batu yang berpotensi untuk tenggiri dan kerapu.',
+        warn: 'Elakkan waktu angin kuat dan ombak tinggi.',
+        species: ['Tenggiri', 'Kerapu', 'Bawal'],
+        bestTime: 'Pagi & awal petang'
+      },
+      {
+        name: 'Pantai Kuantan',
+        station: 'kuantan',
+        category: 'Pantai / Batu',
+        tag: 'Sederhana',
+        summary: 'Pantai dan rocky area sesuai untuk casting dan jigging ketika gelombang sederhana.',
+        warn: 'Pantau ombak dan pasang surut secara berkala.',
+        species: ['Kembung', 'Jenahak', 'Tenggiri'],
+        bestTime: 'Pagi & senja'
+      }
+    ];
+
+    const setupGuide = [
+      {
+        title: 'Bottom fishing – batu / karang',
+        category: 'Batu / Jeti',
+        gear: ['Joran 6–7 kaki medium-heavy', 'Reel 3000–5000', 'Tali 15–30 lb', 'Sinker 2–4 oz'],
+        bait: ['Umpan hidup', 'Sotong kecil', 'Potongan ikan'],
+        advice: 'Gunakan pancing dasar dengan sinker sederhana untuk menahan arus tanpa mengikat terlalu keras.'
+      },
+      {
+        title: 'Pancing muara',
+        category: 'Muara',
+        gear: ['Joran 6–7 kaki medium', 'Reel 2500–4000', 'Tali 15–20 lb', 'Pemberat ringan'],
+        bait: ['Udang hidup', 'Sotong kecil', 'Soft plastic'],
+        advice: 'Pilih waktu pasang kecil hingga pasang masuk untuk memberi ruang ikan bergerak di kawasan muara.'
+      },
+      {
+        title: 'Jigging / casting',
+        category: 'Laut Terbuka',
+        gear: ['Joran 6–7 kaki medium-heavy', 'Jig 80–200 g', 'Tali PE 1.5–2.5', 'Leader 40–60 lb'],
+        bait: ['Jig', 'Spoon', 'Metal lure'],
+        advice: 'Cuba arus sederhana. Sentakan pendek lebih sesuai berbanding sentakan terlalu laju.'
+      },
+      {
+        title: 'Pancing pesisir',
+        category: 'Pantai / Batu',
+        gear: ['Joran 6–7 kaki medium', 'Reel 3000', 'Tali 20 lb', 'Sinker 1–3 oz'],
+        bait: ['Live bait', 'Pecahan udang', 'Soft bait'],
+        advice: 'Titik terbaik biasanya semasa air naik dan di kawasan yang ada struktur batu atau batu kecil.'
+      }
+    ];
+
+    const tabs = [
+      { key: 'tide', label: 'Pasang' },
+      { key: 'weather', label: 'Cuaca' },
+      { key: 'fish', label: 'Ikan' },
+      { key: 'spots', label: 'Spot' },
+      { key: 'setup', label: 'Setup' },
+      { key: 'sos', label: 'SOS', red: true }
     ];
 
     const state = {
       station: 'klang',
+      region: 'all',
+      category: 'all',
       tab: 'tide',
-      dayOffset: 0,
-      wind: 8,
-      gust: 12,
+      wind: 12,
+      gust: 16,
       pressure: 1014,
       trend: 'stable'
     };
 
-    const tabs = [
-      { key: 'tide', label: 'Pasang' },
-      { key: 'wind', label: 'Cuaca' },
-      { key: 'fish', label: 'Ikan' },
-      { key: 'spot', label: 'Spot' },
-      { key: 'log', label: 'Jurnal' },
-      { key: 'sos', label: 'SOS', red: true }
-    ];
-
-    function toTitleCase(str) {
-      return str.replace(/([A-Z])/g, ' $1').replace(/^./, s => s.toUpperCase()).trim();
+    function getRegions() {
+      const set = new Set(Object.values(stationData).map(st => st.region));
+      return ['all', ...Array.from(set)];
     }
 
-    function stationOptions() {
+    function getCategories() {
+      const set = new Set(Object.values(stationData).map(st => st.category));
+      return ['all', ...Array.from(set)];
+    }
+
+    function renderFilters() {
+      const regionEl = document.getElementById('regionFilter');
+      const categoryEl = document.getElementById('categoryFilter');
+
+      regionEl.innerHTML = '<option value="all">Semua Negeri</option>' + getRegions().filter(r => r !== 'all').map(r => `<option value="${r}">${r}</option>`).join('');
+      categoryEl.innerHTML = '<option value="all">Semua Jenis</option>' + getCategories().filter(c => c !== 'all').map(c => `<option value="${c}">${c}</option>`).join('');
+
+      regionEl.value = state.region;
+      categoryEl.value = state.category;
+
+      regionEl.onchange = (e) => {
+        state.region = e.target.value;
+        const filtered = Object.keys(stationData).filter(key => {
+          const st = stationData[key];
+          const regionOk = state.region === 'all' || st.region === state.region;
+          const categoryOk = state.category === 'all' || st.category === state.category;
+          return regionOk && categoryOk;
+        });
+        if (filtered.length) state.station = filtered[0];
+        render();
+      };
+
+      categoryEl.onchange = (e) => {
+        state.category = e.target.value;
+        const filtered = Object.keys(stationData).filter(key => {
+          const st = stationData[key];
+          const regionOk = state.region === 'all' || st.region === state.region;
+          const categoryOk = state.category === 'all' || st.category === state.category;
+          return regionOk && categoryOk;
+        });
+        if (filtered.length) state.station = filtered[0];
+        render();
+      };
+    }
+
+    function renderStationSelect() {
+      const filterKeys = Object.keys(stationData).filter(key => {
+        const st = stationData[key];
+        const regionOk = state.region === 'all' || st.region === state.region;
+        const categoryOk = state.category === 'all' || st.category === state.category;
+        return regionOk && categoryOk;
+      });
+
       const select = document.getElementById('stationSelect');
-      select.innerHTML = Object.entries(stations)
-        .map(([k, s]) => `<option value="${k}">${s.name} · ${s.region}</option>`)
-        .join('');
+      select.innerHTML = filterKeys.map(key => `<option value="${key}">${stationData[key].name}</option>`).join('');
+      if (!filterKeys.includes(state.station)) state.station = filterKeys[0] || 'klang';
       select.value = state.station;
-      select.addEventListener('change', (e) => {
+
+      select.onchange = (e) => {
         state.station = e.target.value;
         render();
-      });
+      };
     }
 
     function renderTabs() {
       const host = document.getElementById('tabs');
       host.innerHTML = tabs.map(tab => `
-        <button class="tab ${state.tab === tab.key ? 'active' : ''} ${tab.red ? 'red' : ''}" data-tab="${tab.key}">${tab.label}</button>
+        <button class="tab ${tab.key === state.tab ? 'active' : ''} ${tab.red ? 'red' : ''}" data-tab="${tab.key}">${tab.label}</button>
       `).join('');
 
       host.querySelectorAll('.tab').forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.onclick = () => {
           state.tab = btn.dataset.tab;
           render();
-        });
+        };
       });
     }
 
-    function getDayStart(offset = 0) {
-      const d = new Date();
-      d.setHours(0, 0, 0, 0);
-      d.setDate(d.getDate() + offset);
-      return d;
+    function moonGlyph() {
+      const arr = ['🌑', '🌒', '🌓', '🌔', '🌕', '🌖', '🌗', '🌘'];
+      const now = Date.now();
+      const lunar = ((now / 86400000) % 29.53) / 29.53;
+      return arr[Math.floor((lunar * 8) + 0.5) % 8];
     }
 
-    function phaseFromDate(date) {
-      const synodic = 29.530588;
-      const known = Date.UTC(2000, 0, 6, 18, 14);
-      const diff = (date.getTime() - known) / 86400000;
-      const phase = ((diff % synodic) + synodic) % synodic;
-      return (phase / synodic) * 100;
-    }
-
-    function moonGlyph(value) {
-      const phases = ['🌑', '🌒', '🌓', '🌔', '🌕', '🌖', '🌗', '🌘'];
-      return phases[Math.round((value / 100) * 7) % 8];
-    }
-
-    function getTideAt(date, stationKey) {
-      const station = stations[stationKey];
-      const base = 1.8 + station.range * 0.6;
+    function tideValueAt(date, stationKey) {
+      const st = stationData[stationKey];
+      const base = 1.8 + st.range * 0.7;
       const hours = (date.getTime() - Date.UTC(2000, 0, 6, 18, 14)) / 3600000;
-      const waveA = 0.80 * Math.cos((hours * 0.360) * (Math.PI / 180));
-      const waveB = 0.55 * Math.cos((hours * 0.520) * (Math.PI / 180));
-      const waveC = 0.30 * Math.cos((hours * 0.170) * (Math.PI / 180));
+      const waveA = 0.92 * Math.cos(hours * 0.36 * Math.PI / 180);
+      const waveB = 0.58 * Math.cos(hours * 0.52 * Math.PI / 180);
+      const waveC = 0.31 * Math.cos(hours * 0.17 * Math.PI / 180);
       return base + waveA + waveB + waveC;
     }
 
-    function tideStateLabel(value) {
-      if (value > 2.4) return { label: 'Pasang besar', tone: 'bad' };
-      if (value > 1.8) return { label: 'Pasang masuk', tone: 'warn' };
-      if (value > 1.2) return { label: 'Air senang', tone: 'good' };
+    function classifyTide(v) {
+      if (v > 2.4) return { label: 'Pasang besar', tone: 'bad' };
+      if (v > 1.8) return { label: 'Pasang masuk', tone: 'warn' };
+      if (v > 1.2) return { label: 'Air senang', tone: 'good' };
       return { label: 'Surut kecil', tone: 'warn' };
     }
 
     function renderTideView() {
-      const station = stations[state.station];
-      const date = getDayStart(state.dayOffset);
+      const st = stationData[state.station];
       const now = new Date();
-      const currentTide = getTideAt(now, state.station);
-      const phasePct = phaseFromDate(now);
-      const stateLabel = tideStateLabel(currentTide);
+      const current = tideValueAt(now, state.station);
+      const status = classifyTide(current);
 
-      const nextHours = Array.from({ length: 5 }, (_, i) => {
-        const d = new Date(Date.now() + i * 3600000 * 3);
-        const value = getTideAt(d, state.station);
-        const tag = tideStateLabel(value);
-        return `<div class="mini"><div class="muted">${d.toLocaleTimeString('ms-MY', { hour: '2-digit', minute: '2-digit' })}</div><strong>${value.toFixed(1)}m</strong><div class="muted">${tag.label}</div></div>`;
+      const future = Array.from({ length: 4 }, (_, i) => {
+        const d = new Date(Date.now() + i * 3 * 3600000);
+        const val = tideValueAt(d, state.station);
+        const tag = classifyTide(val);
+        return `
+          <div class="mini">
+            <div class="muted">${d.toLocaleTimeString('ms-MY', { hour: '2-digit', minute: '2-digit' })}</div>
+            <strong>${val.toFixed(1)}m</strong>
+            <div class="muted">${tag.label}</div>
+          </div>
+        `;
       }).join('');
 
-      const bars = Array.from({ length: 10 }, (_, i) => {
-        const fill = i < 6 ? 'fill' : '';
-        return `<span class="${fill}"></span>`;
-      }).join('');
+      const bars = Array.from({ length: 10 }, (_, i) => `<span class="${i < 6 ? 'fill' : ''}"></span>`).join('');
 
-      const summary = `
+      document.getElementById('content').innerHTML = `
         <div class="card">
           <div class="row">
             <div>
-              <div class="muted">Stesen ${station.name}</div>
-              <div class="big">${currentTide.toFixed(1)}m</div>
+              <div class="muted">Stesen ${st.name}</div>
+              <div class="big">${current.toFixed(1)}m</div>
             </div>
-            <div class="score ${stateLabel.tone === 'bad' ? 'bad' : stateLabel.tone === 'warn' ? 'warn' : ''}">${stateLabel.label}</div>
+            <div class="score ${status.tone === 'bad' ? 'bad' : status.tone === 'warn' ? 'warn' : ''}">${status.label}</div>
           </div>
-          <div class="summary-line">${moonGlyph(phasePct)} Fasa bulan: ${Math.round(phasePct)}% · Lokasi: ${station.region}</div>
-          <div class="bar">${bars}</div>
-          <div class="chips">
+          <div class="summary-line">${moonGlyph()} Fasa bulan · ${st.region}</div>
+          <div class="bar" style="display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:6px;margin-top:10px;">${bars}</div>
+          <div class="chip-row">
             <span class="chip">Masa: ${now.toLocaleTimeString('ms-MY', { hour: '2-digit', minute: '2-digit' })}</span>
-            <span class="chip">Arus: ${station.vibe}</span>
+            <span class="chip">Jenis: ${st.category}</span>
           </div>
         </div>
 
         <div class="card">
-          <div class="row">
-            <strong>Jangka 12 jam</strong>
-            <span class="muted">${station.name}</span>
-          </div>
-          <div class="mini-grid">${nextHours}</div>
+          <div class="row"><strong>Jangka 12 jam</strong><span class="muted">${st.name}</span></div>
+          <div class="mini-grid">${future}</div>
         </div>
       `;
-
-      document.getElementById('content').innerHTML = summary;
     }
 
-    function getWindStatus() {
+    function windStatus() {
       const w = Number(state.wind);
       const g = Number(state.gust);
-      if (g >= 25 || w >= 20) return { label: 'Bahaya', tone: 'bad', msg: 'Angin kuat dan ombak berpotensi tinggi. Elakkan laut terbuka.' };
-      if (w >= 15 || g >= 18) return { label: 'Berhati-hati', tone: 'warn', msg: 'Bot kecil perlu pantau cuaca dan elakkan kawasan terbuka.' };
-      return { label: 'Sederhana', tone: 'good', msg: 'Cuaca masih boleh diterima untuk aktiviti laut dengan pemantauan.' };
+      if (g >= 25 || w >= 20) return { label: 'Bahaya', tone: 'bad', msg: 'Angin kencang dan ombak meningkat. Elakkan laut terbuka dan kawasan karang yang tinggi.' };
+      if (w >= 15 || g >= 18) return { label: 'Berhati-hati', tone: 'warn', msg: 'Bot kecil perlu lebih berhati-hati. Pantau cuaca secara berkala.' };
+      return { label: 'Boleh diterima', tone: 'good', msg: 'Cuaca masih sesuai untuk aktiviti laut dengan pemantauan tetap.' };
     }
 
-    function renderWindView() {
-      const status = getWindStatus();
+    function renderWeatherView() {
+      const status = windStatus();
       document.getElementById('content').innerHTML = `
         <div class="card">
           <div class="row">
@@ -558,10 +653,10 @@
             </div>
             <div class="score ${status.tone === 'bad' ? 'bad' : status.tone === 'warn' ? 'warn' : ''}">${status.label}</div>
           </div>
-          <div class="summary-line">Pecutan angin: ${state.gust} kn · Tekanan: ${state.pressure} hPa</div>
+          <div class="summary-line">Pusuan: ${state.gust} kn · Tekanan: ${state.pressure} hPa · Trend: ${state.trend === 'up' ? 'Naik' : state.trend === 'down' ? 'Turun' : 'Stabil'}</div>
           <div class="mini-grid">
-            <div class="mini"><div class="muted">Angin</div><strong>${state.wind} knot</strong></div>
-            <div class="mini"><div class="muted">Pusuan</div><strong>${state.gust} knot</strong></div>
+            <div class="mini"><div class="muted">Angin</div><strong>${state.wind} kn</strong></div>
+            <div class="mini"><div class="muted">Pusuan</div><strong>${state.gust} kn</strong></div>
             <div class="mini"><div class="muted">Tekanan</div><strong>${state.pressure} hPa</strong></div>
             <div class="mini"><div class="muted">Trend</div><strong>${state.trend === 'up' ? 'Naik' : state.trend === 'down' ? 'Turun' : 'Stabil'}</strong></div>
           </div>
@@ -569,14 +664,13 @@
         </div>
 
         <div class="card">
-          <div class="row">
-            <strong>Input cepat</strong>
-          </div>
+          <div class="row"><strong>Input cepat</strong></div>
           <div class="mini-grid">
-            <div class="mini"><label class="muted">Angin (kn)</label><input id="windInput" type="number" value="${state.wind}" /></div>
-            <div class="mini"><label class="muted">Pusuan (kn)</label><input id="gustInput" type="number" value="${state.gust}" /></div>
-            <div class="mini"><label class="muted">Tekanan</label><input id="pressureInput" type="number" value="${state.pressure}" /></div>
-            <div class="mini"><label class="muted">Trend</label>
+            <div class="mini"><div class="muted">Angin</div><input id="windInput" type="number" value="${state.wind}" /></div>
+            <div class="mini"><div class="muted">Pusuan</div><input id="gustInput" type="number" value="${state.gust}" /></div>
+            <div class="mini"><div class="muted">Tekanan</div><input id="pressureInput" type="number" value="${state.pressure}" /></div>
+            <div class="mini">
+              <div class="muted">Trend</div>
               <select id="trendInput">
                 <option value="stable" ${state.trend === 'stable' ? 'selected' : ''}>Stabil</option>
                 <option value="up" ${state.trend === 'up' ? 'selected' : ''}>Naik</option>
@@ -587,109 +681,137 @@
         </div>
       `;
 
-      const windInput = document.getElementById('windInput');
-      const gustInput = document.getElementById('gustInput');
-      const pressureInput = document.getElementById('pressureInput');
-      const trendInput = document.getElementById('trendInput');
-
-      windInput.addEventListener('input', e => { state.wind = Number(e.target.value) || 0; render(); });
-      gustInput.addEventListener('input', e => { state.gust = Number(e.target.value) || 0; render(); });
-      pressureInput.addEventListener('input', e => { state.pressure = Number(e.target.value) || 1014; render(); });
-      trendInput.addEventListener('change', e => { state.trend = e.target.value; render(); });
+      document.getElementById('windInput').oninput = (e) => { state.wind = Number(e.target.value) || 0; render(); };
+      document.getElementById('gustInput').oninput = (e) => { state.gust = Number(e.target.value) || 0; render(); };
+      document.getElementById('pressureInput').oninput = (e) => { state.pressure = Number(e.target.value) || 1014; render(); };
+      document.getElementById('trendInput').onchange = (e) => { state.trend = e.target.value; render(); };
     }
 
     function fishActivityScore() {
-      const base = 50 + ((state.wind < 12 ? 10 : 0) + (state.gust < 18 ? 8 : 0) + ((state.pressure > 1008 && state.pressure < 1018) ? 12 : 0));
-      const stationFactor = stations[state.station].range;
-      const score = Math.max(20, Math.min(95, Math.round(base + stationFactor * 8 - (state.wind * 1.8) - (state.gust * 1.2))));
+      const score = Math.max(20, Math.min(96, Math.round(50 + (state.wind < 12 ? 12 : 0) + (state.gust < 18 ? 10 : 0) + (state.pressure > 1008 && state.pressure < 1018 ? 14 : 0) + (state.station ? 15 : 0) - state.wind * 1.1)));
       if (score >= 75) return { label: 'Tinggi', tone: 'good', score };
-      if (score >= 50) return { label: 'Sederhana', tone: 'warn', score };
+      if (score >= 52) return { label: 'Sederhana', tone: 'warn', score };
       return { label: 'Rendah', tone: 'bad', score };
     }
 
     function renderFishView() {
-      const activity = fishActivityScore();
-      const top = fishProfiles.slice(0, 4).map(fish => {
-        const hit = fish.name === 'Kerapu' || fish.name === 'Jenahak' ? 'Sesuai' : 'Boleh cuba';
-        return `
-          <div class="fish-item">
-            <div class="fish-name">
-              <span>${fish.name}</span>
-              <span class="fish-tag">${hit}</span>
-            </div>
-            <div class="fish-desc">Habitat: ${fish.habitat}</div>
-            <div class="fish-desc">Kondisi terbaik: ${fish.best}</div>
-            <div class="fish-desc">Setup: ${fish.setup}</div>
+      const score = fishActivityScore();
+      const list = fishProfilesForStation().map(fish => `
+        <div class="fish-item">
+          <div class="fish-head">
+            <strong>${fish.name}</strong>
+            <span class="badge ${score.tone === 'good' ? 'good' : score.tone === 'warn' ? 'warn' : ''}">${fish.bestTag}</span>
           </div>
-        `;
-      }).join('');
+          <div class="summary-line">Habitat: ${fish.habitat}</div>
+          <div class="summary-line">Kondisi: ${fish.best}</div>
+          <div class="summary-line">Setup: ${fish.setup}</div>
+        </div>
+      `).join('');
 
       document.getElementById('content').innerHTML = `
         <div class="card">
           <div class="row">
             <div>
               <div class="muted">Aktiviti ikan</div>
-              <div class="big">${activity.label}</div>
+              <div class="big">${score.label}</div>
             </div>
-            <div class="score ${activity.tone === 'bad' ? 'bad' : activity.tone === 'warn' ? 'warn' : ''}">${activity.score}/100</div>
+            <div class="score ${score.tone === 'bad' ? 'bad' : score.tone === 'warn' ? 'warn' : ''}">${score.score}/100</div>
           </div>
-          <div class="summary-line">Anggaran berasaskan pasang surut, arus, ombak, angin dan jenis habitat di ${stations[state.station].name}.</div>
+          <div class="summary-line">Anggaran berdasarkan arah angin, pasang surut, suhu amaran, habitat dan trend kawasan ${stationData[state.station].name}.</div>
         </div>
 
         <div class="card">
           <div class="row"><strong>Spesies berpotensi</strong></div>
-          <div class="fish-list">${top}</div>
+          <div class="fish-list">${list}</div>
         </div>
       `;
     }
 
-    function renderSpotView() {
-      const spots = [
-        { name: 'Batu Ladung Pelabuhan Klang', type: 'Batu & jeti', tag: 'Tinggi', summary: 'Cocok untuk bottom fishing dan jig, terutama ketika air bergerak secara sederhana.', danger: 'Elakkan ketika angin melebihi 20 knot.' },
-        { name: 'Muara Kuala Selangor', type: 'Muara', tag: 'Sederhana', summary: 'Kawasan baik untuk siakap, senangin dan baitfish, lebih aktif bila air pasang kecil.', danger: 'Awas arus dan lumpur.' },
-        { name: 'Karang Tanjung Keling', type: 'Karang & pantai', tag: 'Sesuai', summary: 'Kerapu dan jenahak kerap muncul ketika pasang masuk dengan arus lembut.', danger: 'Pantau ombak sebelum masuk ke karang.' },
-        { name: 'Jeti Pulau Pinang', type: 'Jeti', tag: 'Tinggi', summary: 'Lokasi ideal untuk selar, siakap dan pancing sekitar struktur jeti.', danger: 'Pastikan cuaca dan arus selamat.' }
+    function fishProfilesForStation() {
+      const st = stationData[state.station];
+      const profileList = [
+        { name: 'Kerapu', habitat: 'Batu karang & struktur bawah', best: 'Air naik dan pasang masuk', setup: 'Bottom rig + umpan hidup', bestTag: st.category.includes('Batu') ? 'Sangat sesuai' : 'Sesuai' },
+        { name: 'Jenahak', habitat: 'Kawasan dasar keras & batu', best: 'Air pasang sederhana', setup: 'Bottom fishing + sinker 2–4 oz', bestTag: 'Sesuai' },
+        { name: 'Siakap', habitat: 'Muara & tepi jeti', best: 'Subuh & senja', setup: 'Soft plastic / live bait', bestTag: 'Sangat sesuai' },
+        { name: 'Selar', habitat: 'Jeti & kawasan baitfish', best: 'Pagi & petang', setup: 'Sabiki / mini jig', bestTag: 'Sesuai' },
+        { name: 'Tenggiri', habitat: 'Laut terbuka & tepi arus', best: 'Pagi dan awal petang', setup: 'Trolling / spoon / jig', bestTag: st.category.includes('Laut') ? 'Sangat sesuai' : 'Sederhana' }
       ];
+      return profileList;
+    }
+
+    function renderSpotsView() {
+      const list = spotCatalog.filter(item => {
+        const regionOk = state.region === 'all' || stationData[item.station].region === state.region;
+        const categoryOk = state.category === 'all' || stationData[item.station].category === state.category;
+        return regionOk && categoryOk;
+      }).map(item => `
+        <div class="spot-item">
+          <div class="spot-top">
+            <strong>${item.name}</strong>
+            <span class="badge ${item.tag === 'Tinggi' ? 'good' : item.tag === 'Sederhana' ? 'warn' : 'good'}">${item.tag}</span>
+          </div>
+          <div class="summary-line">Stesen: ${stationData[item.station].name} · ${stationData[item.station].category}</div>
+          <div class="summary-line">Spesies utama: ${item.species.join(', ')}</div>
+          <div class="summary-line">Waktu terbaik: ${item.bestTime}</div>
+          <div class="summary-line">${item.summary}</div>
+          <div class="summary-line ${item.warn.includes('Elakkan') ? 'danger' : 'warn-text'}">${item.warn}</div>
+        </div>
+      `).join('');
 
       document.getElementById('content').innerHTML = `
         <div class="card">
-          <div class="row">
-            <strong>Spot memancing</strong>
-            <span class="badge">${stations[state.station].name}</span>
+          <div class="row"><strong>Spot memancing</strong><span class="badge">${stationData[state.station].name}</span></div>
+          <div class="summary-line">Senarai spot ini adalah panduan berdasarkan jenis struktur, lokasi dan kecenderungan ikan di kawasan tersebut.</div>
+          <div class="map-preview">
+            <div class="map-grid"></div>
+            ${getMapMarkers()}
           </div>
-          <div class="summary-line">Senarai ini adalah panduan lokasi dan jenis struktur yang sering dikaitkan dengan hasil ikan.</div>
         </div>
 
-        <div class="spot-grid">
-          ${spots.map(spot => `
-            <div class="spot-item">
-              <div class="spot-head">
-                <strong>${spot.name}</strong>
-                <span class="badge">${spot.tag}</span>
-              </div>
-              <div class="muted">Jenis: ${spot.type}</div>
-              <div class="summary-line">${spot.summary}</div>
-              <div class="summary-line ${spot.danger.includes('Elakkan') ? 'danger' : spot.danger.includes('Awas') ? 'warn' : 'good'}">${spot.danger}</div>
-            </div>
-          `).join('')}
+        <div class="card">
+          <div class="row"><strong>Senarai spot</strong></div>
+          <div class="spot-list">${list || '<div class="summary-line">Tiada spot yang sesuai dengan penapis semasa.</div>'}</div>
         </div>
       `;
     }
 
-    function renderLogView() {
+    function getMapMarkers() {
+      const filtered = Object.keys(stationData).filter(key => {
+        const st = stationData[key];
+        const regionOk = state.region === 'all' || st.region === state.region;
+        const categoryOk = state.category === 'all' || st.category === state.category;
+        return regionOk && categoryOk;
+      });
+
+      return filtered.map((key, idx) => {
+        const st = stationData[key];
+        const x = 18 + ((Number(st.lon) - 95) / 25) * 300;
+        const y = 180 - ((Number(st.lat) - 1) / 6) * 150;
+        const tone = idx % 3 === 0 ? 'good' : idx % 3 === 1 ? 'warn' : '';
+        return `<div class="map-spot ${tone}" style="left:${x}px; top:${y}px;" title="${st.name}"></div>`;
+      }).join('');
+    }
+
+    function renderSetupView() {
+      const list = setupGuide.filter(item => state.category === 'all' || item.category === state.category || (state.category === 'all' ? true : item.category.includes(state.category.split('/')[0].trim()))).map(item => `
+        <div class="setup-item">
+          <div class="setup-head"><strong>${item.title}</strong><span class="badge good">${item.category}</span></div>
+          <div class="setup-card">
+            <div class="list-row"><span class="muted">Peralatan</span><span>${item.gear.join(' · ')}</span></div>
+            <div class="list-row"><span class="muted">Umpan</span><span>${item.bait.join(' · ')}</span></div>
+            <div class="summary-line">${item.advice}</div>
+          </div>
+        </div>
+      `).join('');
+
       document.getElementById('content').innerHTML = `
         <div class="card">
-          <div class="row">
-            <strong>Jurnal memancing</strong>
-            <span class="badge">Rekod peribadi</span>
-          </div>
-          <div class="summary-line">Fungsi ini sesuai untuk mengingat lokasi, jenis umpan, weather, masa dan keadaan air. Rekod ini berfungsi sebagai rujukan sendiri.</div>
-          <div class="mini-grid">
-            <div class="mini"><label class="muted">Tarikh</label><input type="date" /></div>
-            <div class="mini"><label class="muted">Lokasi</label><input type="text" placeholder="Contoh: Batu Ladung Klang" /></div>
-            <div class="mini"><label class="muted">Jenis ikan</label><input type="text" placeholder="Contoh: Kerapu" /></div>
-            <div class="mini"><label class="muted">Umpan</label><input type="text" placeholder="Contoh: Sotong hidup" /></div>
-          </div>
+          <div class="row"><strong>Setup memancing</strong><span class="badge">${state.category === 'all' ? 'Semua' : state.category}</span></div>
+          <div class="summary-line">Panduan ini membantu pengguna memilih gear dan umpan berdasarkan jenis struktur, arus dan jenis kawasan.</div>
+        </div>
+
+        <div class="card">
+          <div class="setup-list">${list || '<div class="summary-line">Tiada setup yang sesuai dengan penapis semasa.</div>'}</div>
         </div>
       `;
     }
@@ -698,35 +820,34 @@
       document.getElementById('content').innerHTML = `
         <div class="card">
           <div class="row">
-            <strong>Keselamatan laut</strong>
+            <strong>Keselamatan</strong>
             <span class="badge">SOS</span>
           </div>
-          <div class="summary-line">Jika kecemasan, hubungi 999 dahulu. Jika anda mempunyai radio VHF, gunakan saluran 16. Pastikan anda mendapat bantuan yang sesuai dan maklumkan lokasi dengan jelas.</div>
+          <div class="summary-line">Jika kecemasan dan berlaku keadaan berbahaya, hubungi 999 dahulu. Jika anda mempunyai radio VHF, gunakan saluran 16. Pastikan semua rakan tahu lokasi anda.</div>
           <div class="mini-grid">
             <div class="mini"><div class="muted">Kecemasan</div><strong class="danger">999</strong></div>
-            <div class="mini"><div class="muted">Awas angin</div><strong>${state.wind} kn</strong></div>
-            <div class="mini"><div class="muted">Cuaca</div><strong>${state.gust >= 20 ? 'Berbahaya' : 'Sederhana'}</strong></div>
-            <div class="mini"><div class="muted">Status</div><strong>${getWindStatus().label}</strong></div>
+            <div class="mini"><div class="muted">Angin</div><strong>${state.wind} kn</strong></div>
+            <div class="mini"><div class="muted">Status</div><strong>${windStatus().label}</strong></div>
+            <div class="mini"><div class="muted">Tindakan</div><strong>${windStatus().tone === 'bad' ? 'Jangan turun' : windStatus().tone === 'warn' ? 'Pantau' : 'Boleh'}</strong></div>
           </div>
         </div>
       `;
     }
 
     function render() {
-      stationOptions();
+      renderFilters();
       renderTabs();
+      renderStationSelect();
 
       if (state.tab === 'tide') renderTideView();
-      else if (state.tab === 'wind') renderWindView();
+      else if (state.tab === 'weather') renderWeatherView();
       else if (state.tab === 'fish') renderFishView();
-      else if (state.tab === 'spot') renderSpotView();
-      else if (state.tab === 'log') renderLogView();
+      else if (state.tab === 'spots') renderSpotsView();
+      else if (state.tab === 'setup') renderSetupView();
       else renderSosView();
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      stationOptions();
-      renderTabs();
       render();
     });
   </script>
