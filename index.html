@@ -36,6 +36,7 @@ ul{margin:6px 0 0;padding-left:18px}
 label{font-size:13px;color:var(--mut);display:block;margin-bottom:3px}
 .btn{display:block;text-align:center;text-decoration:none;font:inherit;font-weight:700;padding:13px;border-radius:12px;border:0;color:#fff;background:var(--bd);width:100%;margin-top:8px;box-sizing:border-box}
 .btn.g{background:var(--ok)}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}.cal button{font:inherit;color:var(--tx);background:var(--card);border:2px solid var(--ln);border-radius:8px;padding:4px 0;font-size:11px;line-height:1.25}.cal b{display:block;font-size:14px}.cal .on{background:var(--ac);color:#fff}.hd{text-align:center;color:var(--mut);font-size:11px}
 details{border-top:1px solid var(--ln);padding:8px 0}summary{cursor:pointer;font-weight:700}
 .warn{font-size:12px;color:var(--mut);border-top:1px solid var(--ln);padding-top:10px;margin-top:6px}
 </style></head><body>
@@ -46,12 +47,12 @@ details{border-top:1px solid var(--ln);padding:8px 0}summary{cursor:pointer;font
 <div id="v"></div>
 <p class="warn">Pasang surut dikira dengan model harmonik ringkas (anggaran), bukan jadual rasmi. Untuk navigasi dan keselamatan, rujuk Jabatan Laut Malaysia dan MetMalaysia.</p>
 <script>
-const P={klang:{n:"Pelabuhan Klang, Selangor",m:3.0,a:1.2,s:.5,h:12.5,la:3.0,lo:101.39},ks:{n:"Kuala Selangor, Selangor",m:2.9,a:1.15,s:.48,h:12.8,la:3.34,lo:101.25},pd:{n:"Port Dickson, N. Sembilan",m:1.8,a:.8,s:.3,h:12,la:2.5,lo:101.8},pg:{n:"Pulau Pinang",m:1.5,a:.7,s:.3,h:11.5,la:5.4,lo:100.34},kt:{n:"Kuantan, Pahang",m:1.2,a:.4,s:.1,h:10,la:3.97,lo:103.43}};
+const P={klang:{n:"Pelabuhan Klang, Selangor",m:3.0,a:1.2,s:.5,h:12.5,la:3.0,lo:101.39,ml:2.95,mo:101.2},ks:{n:"Kuala Selangor, Selangor",m:2.9,a:1.15,s:.48,h:12.8,la:3.34,lo:101.25,ml:3.3,mo:101.1},pd:{n:"Port Dickson, N. Sembilan",m:1.8,a:.8,s:.3,h:12,la:2.5,lo:101.8,ml:2.45,mo:101.65},pg:{n:"Pulau Pinang",m:1.5,a:.7,s:.3,h:11.5,la:5.4,lo:100.34,ml:5.45,mo:100.25},kt:{n:"Kuantan, Pahang",m:1.2,a:.4,s:.1,h:10,la:3.97,lo:103.43,ml:3.95,mo:103.55}};
 const EP=Date.UTC(2000,0,6,18,14),SYN=29.530588,R=Math.PI/180;
 const $=id=>document.getElementById(id);
-let st={port:"klang",day:0,tab:"t",wind:5,gust:8,pr:1011,tr:"s",ts:false};
+let st={loc:"stn",port:"klang",day:0,tab:"t",wind:5,gust:8,pr:1011,tr:"s",ts:false};
 try{Object.assign(st,JSON.parse(localStorage.getItem("tw")||"{}"))}catch(e){}
-const save=()=>{try{localStorage.setItem("tw",JSON.stringify({port:st.port,wind:st.wind,gust:st.gust,pr:st.pr,tr:st.tr}))}catch(e){}};
+const save=()=>{try{localStorage.setItem("tw",JSON.stringify({loc:st.loc,port:st.port,wind:st.wind,gust:st.gust,pr:st.pr,tr:st.tr}))}catch(e){}};
 const HM=ms=>{const p=P[st.port],x=(ms-EP)/36e5-(((p.h-2.2333)%12)+12)%12;return p.m+p.a*Math.cos(28.9841*R*x)+p.s*Math.cos(30*R*x)};
 let OF={};
 function parseOF(t){const o=[];t.split("\n").forEach(l=>{let m=l.match(/(\d{4})-(\d{1,2})-(\d{1,2})\s+(\d{1,2})[:.](\d{2})\s+(-?\d+(?:\.\d+)?)/),y,mo,d;
@@ -90,8 +91,10 @@ g+=ex.map(e=>`<circle cx="${X(e.t)}" cy="${Y(e.h)}" r="3.5" fill="var(--ac)"/><t
 const nowM=(Date.now()-d0)/6e4;if(st.day==0)g+=`<line x1="${X(nowM)}" x2="${X(nowM)}" y1="10" y2="140" stroke="var(--bd)" stroke-dasharray="3 3"/><text x="${X(nowM)}" y="8" text-anchor="middle" style="fill:var(--bd)">SEKARANG</text>`;
 g+=[0,6,12,18,24].map(h=>`<text x="${X(h*60)}" y="156" text-anchor="middle">${f2(h)}:00</text>`).join("");
 const ms=st.day==0?Date.now():d0+252e5,S=score(ms,d0),L=S.sc<=3?["Rendah","var(--bd)"]:S.sc<=5?["Sederhana","var(--wn)"]:S.sc<=7?["Aktif","var(--ok)"]:["Sangat aktif","var(--ok)"];
-let strip="";for(let i=0;i<14;i++){const s=dayStart(st.day+i),k=kind(age(s+432e5));let l=9,h=-9;for(let m=0;m<1440;m+=30){const v=H(s+m*6e4);l=Math.min(l,v);h=Math.max(h,v)}
-strip+=`<div style="border-color:${k[1]}"><span class="mut">${new Date(s).getDate()}</span><b>${moon(age(s+432e5))}</b>${(h-l).toFixed(1)}m</div>`}
+const ct=dt.toLocaleDateString("ms-MY",{month:"long",year:"numeric"});let cal=["Ahd","Isn","Sel","Rab","Kha","Jum","Sab"].map(x=>`<div class="hd">${x}</div>`).join("");
+const fd=new Date(dt.getFullYear(),dt.getMonth(),1),nd=new Date(dt.getFullYear(),dt.getMonth()+1,0).getDate();cal+="<div></div>".repeat(fd.getDay());
+for(let d=1;d<=nd;d++){const s=new Date(dt.getFullYear(),dt.getMonth(),d).getTime(),k=kind(age(s+432e5));let l=9,h=-9;for(let m=0;m<1440;m+=30){const v=H(s+m*6e4);l=Math.min(l,v);h=Math.max(h,v)}
+cal+=`<button data-go="${Math.round((s-dayStart(0))/864e5)}" class="${s==d0?"on":""}" style="border-color:${k[1]}">${d}<b>${moon(age(s+432e5))}</b>${(h-l).toFixed(1)}m</button>`}
 return`<div class="c"><div class="row"><div class="nav"><button data-d="-1">◀</button><button data-d="1">▶</button></div><div style="text-align:right"><b>${dt.toLocaleDateString("ms-MY",{weekday:"long",day:"numeric",month:"long"})}</b><div class="mut">${hj}</div><div class="mut">Sumber: ${cov(d0+432e5)?"jadual rasmi (anda)":"anggaran model"}</div></div></div>
 <div class="row" style="margin-top:10px"><span class="big">${moon(a)} ${kn}</span><span class="pill" style="background:${kc}">${a.toFixed(0)} hari bulan</span></div></div>
 <div class="c"><b>Graf pasang surut</b> <span class="mut">(kawasan kuning = golden hour)</span><svg viewBox="0 0 340 162">${g}</svg>
@@ -100,20 +103,20 @@ return`<div class="c"><div class="row"><div class="nav"><button data-d="-1">◀<
 <div class="big" style="color:${L[1]}">${L[0]} · ${S.sc}/10</div>
 <div class="bar">${Array.from({length:10},(_,i)=>`<i style="${i<S.sc?"background:"+L[1]:""}"></i>`).join("")}</div>
 <ul class="mut">${S.f.map(x=>`<li>${x[0]}: ${x[1]>0?"+":""}${x[1].toFixed(1)}</li>`).join("")}</ul></div>
-<div class="c"><b>14 hari akan datang</b> <span class="mut">(julat pasang surut)</span><div class="strip" style="margin-top:8px">${strip}</div>
+<div class="c"><div class="row"><div class="nav"><button data-m="-1">◀</button></div><b>${ct}</b><div class="nav"><button data-m="1">▶</button></div></div><div class="mut" style="margin:6px 0">Julat pasang surut setiap hari. Tekan tarikh untuk lihat harinya.</div><div class="cal">${cal}</div>
 <div class="mut">Merah: pasang besar · Hijau: air mati · Kuning/ungu: menyorong</div></div>${offCard()}`}
 const LV={};
 const WX=c=>c==0?"Cerah":c<3?"Sebahagian berawan":c==3?"Mendung":c<50?"Kabus":c<70?"Hujan":c<85?"Hujan lebat":c>=95?"Ribut petir":"Hujan";
-function pos(){return new Promise(r=>{const p=P[st.port],d=()=>r({la:p.la,lo:p.lo,gps:0});navigator.geolocation?navigator.geolocation.getCurrentPosition(x=>r({la:x.coords.latitude,lo:x.coords.longitude,gps:1}),d,{timeout:6000}):d()})}
+function pos(){return new Promise(r=>{const p=P[st.port],d=()=>r({la:p.la,lo:p.lo,gps:0});st.loc=="gps"&&navigator.geolocation?navigator.geolocation.getCurrentPosition(x=>r({la:x.coords.latitude,lo:x.coords.longitude,gps:1}),d,{timeout:6000}):d()})}
 async function live(){LV.busy=1;LV.err="";if(st.tab=="w")render();try{const q=await pos(),b="latitude="+q.la+"&longitude="+q.lo;
 const f=await(await fetch("https://api.open-meteo.com/v1/forecast?"+b+"&current=temperature_2m,wind_speed_10m,wind_gusts_10m,pressure_msl,weather_code&hourly=pressure_msl&wind_speed_unit=kn&past_hours=3&forecast_hours=1&timezone=auto")).json();
 const c=f.current,hp=f.hourly.pressure_msl.filter(x=>x!=null),d=hp[hp.length-1]-hp[0];
 st.wind=Math.round(c.wind_speed_10m*10)/10;st.gust=Math.round(c.wind_gusts_10m*10)/10;st.pr=Math.round(c.pressure_msl);st.tr=d<-3?"dd":d<-1?"d":d>1?"u":"s";st.ts=c.weather_code>=95;
 Object.assign(LV,{t:c.temperature_2m,wx:WX(c.weather_code),gps:q.gps,at:new Date()});
-try{const m=await(await fetch("https://marine-api.open-meteo.com/v1/marine?"+b+"&current=wave_height,ocean_current_velocity")).json();LV.wave=m.current.wave_height;LV.cur=m.current.ocean_current_velocity==null?null:m.current.ocean_current_velocity/1.852}catch(e){LV.wave=LV.cur=null}
+try{const m=await(await fetch("https://marine-api.open-meteo.com/v1/marine?"+(q.gps?b:"latitude="+P[st.port].ml+"&longitude="+P[st.port].mo)+"&current=wave_height,ocean_current_velocity")).json();LV.wave=m.current.wave_height;LV.cur=m.current.ocean_current_velocity==null?null:m.current.ocean_current_velocity/1.852}catch(e){LV.wave=LV.cur=null}
 }catch(e){LV.err="Tidak dapat ambil data langsung. Semak sambungan internet."}LV.busy=0;render()}
 function liveCard(){const t=LV.at?LV.at.toLocaleTimeString("ms-MY",{hour:"2-digit",minute:"2-digit"}):"";
-return`<div class="c"><div class="row"><b>Data langsung</b><button class="btn g" id="rf" style="width:auto;margin:0;padding:8px 14px">${LV.busy?"Memuat...":"Muat semula"}</button></div>`+(LV.err?`<p style="color:var(--bd)">${LV.err}</p>`:LV.at?`<div class="grid" style="margin-top:8px"><div><b>${LV.wx}</b><div class="mut">${LV.t}°C</div></div><div><b>Ombak ${LV.wave==null?"-":LV.wave.toFixed(1)+" m"}</b><div class="mut">Arus ${LV.cur==null?"-":LV.cur.toFixed(1)+" knot"}</div></div></div><div class="mut" style="margin-top:6px">${LV.gps?"Lokasi GPS":"Lokasi pelabuhan"} · dikemas kini ${t} · Open-Meteo (model, bukan stesen setempat)</div>`:`<p class="mut">Belum dimuatkan.</p>`)+`</div>`}
+return`<div class="c"><div class="row"><b>Data langsung</b><button class="btn g" id="rf" style="width:auto;margin:0;padding:8px 14px">${LV.busy?"Memuat...":"Muat semula"}</button></div><select id="lc" style="margin-top:8px"><option value="stn" ${st.loc!="gps"?"selected":""}>Guna lokasi stesen terpilih</option><option value="gps" ${st.loc=="gps"?"selected":""}>Guna GPS fon saya</option></select>`+(LV.err?`<p style="color:var(--bd)">${LV.err}</p>`:LV.at?`<div class="grid" style="margin-top:8px"><div><b>${LV.wx}</b><div class="mut">${LV.t}°C</div></div><div><b>Ombak ${LV.wave==null?"-":LV.wave.toFixed(1)+" m"}</b><div class="mut">Arus ${LV.cur==null?"-":LV.cur.toFixed(1)+" knot"}</div></div></div><div class="mut" style="margin-top:6px">${LV.gps?"Lokasi GPS fon":"Lokasi stesen: "+P[st.port].n.split(",")[0]} · dikemas kini ${t} · Open-Meteo (model, bukan stesen setempat)</div>`:`<p class="mut">Belum dimuatkan.</p>`)+`</div>`}
 function windView(){const w=+st.wind,g=+st.gust;let v;
 if(st.ts||g>=25||w>=20)v=["Jangan turun ke laut","var(--bd)","Angin kencang atau ribut petir. Kekal di darat."];
 else if(w>=15||g>=20)v=["Bahaya untuk bot kecil","var(--bd)","Ombak boleh naik cepat. Elakkan pantai terbuka."];
@@ -160,13 +163,14 @@ $("tabs").innerHTML=T.map(t=>`<button data-t="${t[0]}" class="${st.tab==t[0]?"on
 $("v").innerHTML=st.tab=="t"?tideView():st.tab=="w"?windView():st.tab=="f"?fishView():st.tab=="j"?jurView():sosView();
 if(st.tab=="w"){$("tr").value=st.tr;["wind","gust","pr","tr","ts"].forEach(id=>$(id).onchange=e=>{st[id]=id=="ts"?e.target.checked:id=="tr"?e.target.value:+e.target.value;save();render()})}
 if($("rf"))$("rf").onclick=live;
+if($("lc"))$("lc").onchange=e=>{st.loc=e.target.value;save();live()};
 if($("dp"))$("dp").onchange=e=>{st.dp=+e.target.value||5;render()};
 if($("os"))$("os").onclick=()=>{try{localStorage.setItem("twt_"+st.port,$("ot").value)}catch(e){}loadOF();render()};
 if($("js"))$("js").onclick=()=>{const m=Date.now();J.push({m,t:$("jt").value,i:$("ji").value,b:$("jb").value,u:$("ju").value,s:tst(m),k:kind(age(m))[0]});sj();render()};
 if(st.tab=="s")$("loc").onclick=()=>{const s=$("ls");s.textContent="Mencari lokasi...";navigator.geolocation?navigator.geolocation.getCurrentPosition(p=>{window.open("https://wa.me/?text="+encodeURIComponent("Saya perlukan bantuan. Lokasi saya: https://maps.google.com/?q="+p.coords.latitude+","+p.coords.longitude),"_blank");s.textContent="Lokasi sedia dihantar."},()=>{s.textContent="Lokasi tidak dapat diakses. Benarkan akses lokasi dalam tetapan."}):s.textContent="Peranti tidak menyokong lokasi."}}
 $("port").innerHTML=Object.keys(P).map(k=>`<option value="${k}">${P[k].n}</option>`).join("");$("port").value=st.port;
 $("port").onchange=e=>{st.port=e.target.value;save();render();live()};
-document.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;if(b.dataset.t){st.tab=b.dataset.t;render()}if(b.dataset.d){st.day+=+b.dataset.d;render()}if(b.dataset.jd){J=J.filter(x=>x.m!=b.dataset.jd);sj();render()}});
+document.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;if(b.dataset.t){st.tab=b.dataset.t;render()}if(b.dataset.d){st.day+=+b.dataset.d;render()}if(b.dataset.go!==undefined){st.day=+b.dataset.go;render();window.scrollTo(0,0)}if(b.dataset.m){const t=new Date(dayStart(st.day));st.day=Math.round((new Date(t.getFullYear(),t.getMonth()+ +b.dataset.m,1)-dayStart(0))/864e5);render()}if(b.dataset.jd){J=J.filter(x=>x.m!=b.dataset.jd);sj();render()}});
 render();live();setInterval(live,6e5);
 if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
 </script></body></html>
