@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Joran Premium – App Mancing</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Figtree:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#e3eeec;--surface:#f6fbfa;--ink:#0c2b36;--muted:#4b6b74;--line:#bdd3d0;--float:#f2b820;--deep:#0f4c5c;--on-deep:#f6fbfa;--moon:#f6efc9;--night:#0c2b36;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a1d24;--surface:#10303a;--ink:#e4f1ef;--muted:#92b2b8;--line:#1f4651;--deep:#16596b;--night:#06141a}}
+:root[data-theme="dark"]{--bg:#0a1d24;--surface:#10303a;--ink:#e4f1ef;--muted:#92b2b8;--line:#1f4651;--deep:#16596b;--night:#06141a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 Figtree,system-ui,sans-serif;min-height:100vh}
+main{max-width:560px;margin:0 auto;padding:18px 16px 96px}
+h1,h2,h3{font-family:"Bricolage Grotesque",Figtree,system-ui,sans-serif;margin:0;line-height:1.15}
+h1{font-size:28px;font-weight:800}h3{font-size:18px;font-weight:700;margin-bottom:8px}
+.sub{color:var(--muted);margin:4px 0 14px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
+.chip{border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 13px;font:500 14px Figtree,system-ui,sans-serif;cursor:pointer;min-height:38px}
+.chip[aria-pressed="true"]{background:var(--deep);border-color:var(--deep);color:var(--on-deep)}
+select{border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:9px 10px;font:500 15px Figtree,system-ui,sans-serif;min-height:40px;max-width:100%}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
+.hero{background:var(--night);color:#eaf4f2;border-radius:18px;padding:18px;margin-bottom:14px;display:flex;gap:16px;align-items:center}
+.hero svg{flex:none}
+.hero .h{font:800 30px/1.1 "Bricolage Grotesque",sans-serif}
+.hero p{margin:4px 0 0;color:#b9d2d0;font-size:14px}
+.hero .tagy{display:inline-block;margin-top:8px;background:var(--float);color:#2a2000;font-weight:600;font-size:13px;border-radius:6px;padding:2px 8px}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--line)}
+.kv:first-of-type{border-top:0}.kv span:first-child{color:var(--muted)}.kv b{font-weight:600}
+.track{position:relative;height:26px;background:var(--line);border-radius:8px;overflow:hidden;margin:6px 0 4px}
+.seg{position:absolute;top:0;bottom:0}.s-major{background:var(--float)}.s-minor{background:#f2b82080}.s-twi{background:var(--deep);opacity:.6}
+.hrs{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+.sw{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.strip{display:flex;gap:6px;overflow-x:auto;padding:4px 2px 8px}
+.dayc{flex:none;width:44px;border:1.5px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);padding:6px 0;text-align:center;cursor:pointer;font:600 14px Figtree,sans-serif}
+.dayc[aria-current="true"]{border-color:var(--float);box-shadow:0 0 0 2px var(--float)}
+.dayc svg{display:block;margin:3px auto}
+.dayc i{display:block;height:4px;margin:3px 8px 0;border-radius:2px}
+.dayc .ab{font-size:10px;color:var(--muted);font-weight:500}
+.note{font-size:13px;color:var(--muted);margin-top:10px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.card p{margin:6px 0 0}
+.tag{display:inline-block;font-size:13px;font-weight:600;border:1px solid var(--line);border-radius:6px;padding:1px 8px;margin-right:6px;color:var(--muted)}
+.btn{display:inline-block;margin-top:10px;background:var(--float);color:#2a2000;font-weight:600;text-decoration:none;border-radius:10px;padding:9px 14px}
+.btn:focus-visible,.chip:focus-visible,.tab:focus-visible,.dayc:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--float);outline-offset:2px}
+input[type=search]{width:100%;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:12px 14px;font:16px Figtree,system-ui,sans-serif;margin-bottom:14px}
+dl{margin:8px 0 0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}dt{color:var(--muted)}dd{margin:0}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--deep);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
+nav div{display:flex;width:100%;max-width:560px}
+.tab{flex:1;background:none;border:0;color:var(--on-deep);opacity:.7;font:600 15px Figtree,system-ui,sans-serif;padding:16px 4px;cursor:pointer}
+.tab[aria-selected="true"]{opacity:1;box-shadow:inset 0 3px 0 var(--float)}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main>
+<section id="v-hari" aria-label="Hari ini">
+  <h1>Joran</h1>
+  <p class="sub">Semua waktu dikira dari kedudukan matahari dan bulan di lokasi pilihan kau.</p>
+  <div class="row">
+    <select id="loc" aria-label="Lokasi"></select>
+    <button class="chip" id="gps" type="button">Guna lokasi saya</button>
+  </div>
+  <div class="row" id="days" role="group" aria-label="Pilih hari"></div>
+  <div class="hero" id="hero"></div>
+  <div class="panel"><h3 id="arusT">Arus</h3><p id="arusP" style="margin:0"></p><p class="note" id="arusN"></p></div>
+  <div class="panel"><h3>Pasang surut</h3><div id="tideBody"></div></div>
+  <div class="panel"><h3>Waktu ikan aktif</h3>
+    <div class="track" id="track" aria-hidden="true"></div>
+    <div class="hrs"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div>
+    <div id="wins" style="margin-top:10px"></div>
+    <p class="note">Waktu utama dan kecil ikut kedudukan bulan (teori solunar yang biasa dipakai pemancing). Pasang surut tempatan juga penting.</p>
+  </div>
+  <div class="panel"><h3>Solat dan matahari</h3><div id="solat"></div>
+    <p class="note">Subuh pada sudut 20°, Isyak 18°. Boleh beza 1–3 minit dengan jadual JAKIM.</p></div>
+  <div class="panel"><h3 id="monthT">Bulan Hijri</h3>
+    <div class="strip" id="strip"></div>
+    <p class="note"><span class="sw" style="background:var(--float)"></span>Ayyamul Bidh (13–15). Garis bawah penuh = air besar, garis kosong = air anak.</p>
+    <div class="row" style="margin:8px 0 0"><span class="note" style="margin:0">Laras tarikh Hijri:</span><span id="adj" class="row" style="margin:0"></span></div>
+    <p class="note">Tarikh Hijri dikira dengan kalendar Umm al-Qura. Malaysia tetapkan tarikh ikut rukyah dan hisab, jadi laras −1 jika tarikh kau beza.</p>
+  </div>
+</section>
+
+<section id="v-port" aria-label="Port mancing" hidden>
+  <h1>Port mancing</h1>
+  <p class="sub">Cadangan port untuk mula. Tekan Buka peta untuk arah sebenar.</p>
+  <div class="row" id="ptype" role="group" aria-label="Jenis port"></div>
+  <div id="spots"></div>
+</section>
+
+<section id="v-ikan" aria-label="Panduan ikan" hidden>
+  <h1>Panduan ikan</h1>
+  <p class="sub">Umpan, teknik, waktu dan arus yang sesuai.</p>
+  <input type="search" id="q" placeholder="Cari ikan, contoh: siakap" aria-label="Cari ikan">
+  <div id="fish"></div>
+</section>
+
+<section id="v-arus" aria-label="Jenis arus" hidden>
+  <h1>Jenis arus</h1>
+  <p class="sub">Kenal arus, baru tahu di mana ikan menunggu.</p>
+  <div id="aruslist"></div>
+  <p class="note">Pantai barat Semenanjung biasanya dua kali pasang sehari. Pantai timur, Sabah dan Sarawak berbeza. Untuk jam pasang surut tepat, rujuk Jadual Pasang Surut Malaysia terbitan Pusat Hidrografi Nasional untuk stesen terdekat.</p>
+</section>
+</main>
+
+<nav><div role="tablist" aria-label="Menu utama">
+  <button class="tab" role="tab" data-v="hari" aria-selected="true">Hari</button>
+  <button class="tab" role="tab" data-v="port" aria-selected="false">Port</button>
+  <button class="tab" role="tab" data-v="ikan" aria-selected="false">Ikan</button>
+  <button class="tab" role="tab" data-v="arus" aria-selected="false">Arus</button>
+</div></nav>
+
+<script>
+const $=s=>document.querySelector(s);
+const R=Math.PI/180,E=R*23.4397,DAY=864e5,MY=8*36e5;
+const LOCS=[["Kuala Lumpur",3.139,101.687],["Pelabuhan Klang",3.0,101.39],["Kuala Selangor",3.34,101.25],["Lumut",4.23,100.63],["George Town",5.414,100.329],["Alor Setar",6.12,100.37],["Langkawi",6.32,99.85],["Kuantan",3.808,103.326],["Kuala Terengganu",5.33,103.14],["Kota Bharu",6.125,102.238],["Mersing",2.43,103.84],["Johor Bahru",1.493,103.74],["Melaka",2.19,102.25],["Kuching",1.55,110.34],["Miri",4.4,114.0],["Kota Kinabalu",5.98,116.07]];
+let loc={n:LOCS[0][0],lat:LOCS[0][1],lng:LOCS[0][2]},day=0,adj=0,curT="Semua";
+try{adj=parseInt(localStorage.getItem("joran-adj")||"0")||0}catch(e){}
+
+/* astronomi */
+const days=t=>t/DAY-0.5+2440588-2451545;
+const rA=(l,b)=>Math.atan2(Math.sin(l)*Math.cos(E)-Math.tan(b)*Math.sin(E),Math.cos(l));
+const dC=(l,b)=>Math.asin(Math.sin(b)*Math.cos(E)+Math.cos(b)*Math.sin(E)*Math.sin(l));
+const sunC=d=>{const M=R*(357.5291+0.98560028*d),C=R*(1.9148*Math.sin(M)+0.02*Math.sin(2*M)+0.0003*Math.sin(3*M)),L=M+C+R*102.9372+Math.PI;return{ra:rA(L,0),dec:dC(L,0)}};
+const moonC=d=>{const L=R*(218.316+13.176396*d),M=R*(134.963+13.064993*d),F=R*(93.272+13.22935*d),l=L+R*6.289*Math.sin(M),b=R*5.128*Math.sin(F);return{ra:rA(l,b),dec:dC(l,b),dist:385001-20905*Math.cos(M)}};
+const altOf=(cf,t)=>{const d=days(t),c=cf(d),H=R*(280.16+360.9856235*d)+R*loc.lng-c.ra,p=loc.lat*R;return Math.asin(Math.sin(p)*Math.sin(c.dec)+Math.cos(p)*Math.cos(c.dec)*Math.cos(H))};
+const sunAlt=t=>altOf(sunC,t),moonAlt=t=>altOf(moonC,t);
+function moonPhase(t){const d=days(t),s=sunC(d),m=moonC(d),sd=149598000,phi=Math.acos(Math.sin(s.dec)*Math.sin(m.dec)+Math.cos(s.dec)*Math.cos(m.dec)*Math.cos(s.ra-m.ra)),inc=Math.atan2(sd*Math.sin(phi),m.dist-sd*Math.cos(phi)),ang=Math.atan2(Math.cos(s.dec)*Math.sin(s.ra-m.ra),Math.sin(s.dec)*Math.cos(m.dec)-Math.cos(s.dec)*Math.sin(m.dec)*Math.cos(s.ra-m.ra));return{f:(1+Math.cos(inc))/2,p:0.5+0.5*inc*(ang<0?-1:1)/Math.PI}}
+function scan(f,t0){const v=[];for(let i=0;i<=360;i++)v.push(f(t0+i*24e4));return{v,t0}}
+function cross(S,thr){const up=[],dn=[];for(let i=1;i<S.v.length;i++){const a=S.v[i-1]-thr,b=S.v[i]-thr;if(a<0&&b>=0)up.push(S.t0+(i-1+(-a)/(b-a))*24e4);if(a>=0&&b<0)dn.push(S.t0+(i-1+a/(a-b))*24e4)}return{up:up[0]??null,dn:dn[0]??null}}
+function extr(S,max){const v=S.v;for(let i=1;i<v.length-1;i++){const a=v[i-1],b=v[i],c=v[i+1];if(max?(b>a&&b>=c):(b<a&&b<=c)){return S.t0+(i+0.5*(a-c)/(a-2*b+c))*24e4}}return null}
+
+/* tarikh */
+const todayT=()=>{const n=new Date(Date.now()+MY);return Date.UTC(n.getUTCFullYear(),n.getUTCMonth(),n.getUTCDate())-MY};
+const tf=new Intl.DateTimeFormat("en-GB",{hour:"2-digit",minute:"2-digit",hour12:false,timeZone:"Asia/Kuala_Lumpur"});
+const fm=t=>t==null?"–":tf.format(t);
+const gf=new Intl.DateTimeFormat("ms-MY",{weekday:"long",day:"numeric",month:"long",year:"numeric",timeZone:"Asia/Kuala_Lumpur"});
+const wf=new Intl.DateTimeFormat("ms-MY",{weekday:"short",day:"numeric",timeZone:"Asia/Kuala_Lumpur"});
+const hf=new Intl.DateTimeFormat("en-u-ca-islamic-umalqura-nu-latn",{day:"numeric",month:"numeric",year:"numeric",timeZone:"Asia/Kuala_Lumpur"});
+const HM=["Muharram","Safar","Rabiulawal","Rabiulakhir","Jamadilawal","Jamadilakhir","Rejab","Syaaban","Ramadan","Syawal","Zulkaedah","Zulhijjah"];
+function hijri(t){const o={};hf.formatToParts(t+adj*DAY).forEach(p=>{if(["day","month","year"].includes(p.type))o[p.type]=parseInt(p.value)});return o}
+const PH=["Bulan baru","Sabit awal","Suku pertama","Cembung awal","Purnama","Cembung akhir","Suku akhir","Sabit akhir"];
+const phName=p=>PH[Math.round(p*8)%8];
+
+/* arus ikut umur bulan */
+function arus(p){const age=p*29.530588,r=(((age-1.5)%14.765)+14.765)%14.765;
+ if(r<=2.5||r>=12.3)return{k:"Air besar",big:1,d:"Arus pasang surut paling kuat. Air lebih keruh dan umpan mudah hanyut.",t:"Guna pemberat lebih berat dan cari tempat berlindung arus: belakang batu, tiang jeti, mulut parit."};
+ if(r>=5&&r<=9.7)return{k:"Air anak",big:0,d:"Arus paling lemah. Air lebih jernih dan ikan lebih cerewet.",t:"Guna pemberat ringan, umpan semula jadi dan tali halus."};
+ return{k:"Air sederhana",big:2,d:"Arus beransur kuat atau lemah.",t:"Pantau arus sendiri. Bila air mula bergerak, ikan biasanya mula makan."}}
+
+/* bulan svg */
+function moonSvg(p,r,id){const w=2*r+2,c=r+1,k=Math.abs(Math.cos(2*Math.PI*p))*r,wax=p<.5;let sw,m;
+ if(wax){sw=p<.25?0:1;m=`M${c} ${c-r}A${r} ${r} 0 0 1 ${c} ${c+r}A${k.toFixed(2)} ${r} 0 0 ${sw} ${c} ${c-r}Z`}
+ else{sw=p<.75?0:1;m=`M${c} ${c-r}A${r} ${r} 0 0 0 ${c} ${c+r}A${k.toFixed(2)} ${r} 0 0 ${sw} ${c} ${c-r}Z`}
+ return`<svg width="${w}" height="${w}" viewBox="0 0 ${w} ${w}" aria-hidden="true"><circle cx="${c}" cy="${c}" r="${r}" fill="#1d4452" stroke="#3a6573" stroke-width="1"/><path d="${m}" fill="#f6efc9"/></svg>`}
+
+const TIDE={11:["0331 2.0 0937 4.1 1613 1.8 2230 4.1","0448 2.4 1051 3.7 1725 2.1","0006 4.1 0640 2.4 1245 3.6 1854 2.2","0133 4.3 0816 2.1 1414 3.8 2016 2.0","0243 4.6 0923 1.7 1521 4.1 2120 1.7","0338 4.9 1014 1.4 1611 4.3 2210 1.5","0423 5.1 1058 1.1 1653 4.5 2253 1.4","0502 5.2 1136 1.0 1730 4.7 2331 1.3","0537 5.1 1210 0.9 1804 4.8","0004 1.3 0608 5.1 1241 0.8 1834 4.8","0033 1.4 0637 5.0 1309 0.9 1902 4.7","0101 1.5 0705 4.8 1336 1.0 1928 4.6","0128 1.6 0733 4.7 1402 1.2 1955 4.5","0156 1.7 0802 4.5 1429 1.4 2024 4.4","0227 1.9 0833 4.2 1457 1.7 2058 4.2","0304 2.2 0908 3.9 1531 2.0 2142 4.0","0353 2.4 0956 3.6 1618 2.2 2247 3.9","0513 2.6 1108 3.4 1729 2.3","0017 4.0 0709 2.5 1257 3.5 1905 2.3","0148 4.2 0832 2.2 1425 3.7 2023 2.0","0253 4.5 0929 1.8 1523 4.0 2122 1.7","0346 4.8 1020 1.4 1613 4.3 2215 1.4","0434 5.1 1108 1.1 1700 4.6 2304 1.2","0519 5.2 1153 0.8 1745 4.8 2350 1.1","0602 5.3 1237 0.6 1829 5.0","0035 1.1 0644 5.2 1319 0.6 1913 5.0","0119 1.2 0725 5.1 1400 0.6 1958 4.9","0204 1.4 0808 4.9 1442 0.8 2044 4.8","0253 1.6 0852 4.6 1525 1.1 2135 4.6","0347 1.9 0940 4.3 1612 1.4 2232 4.5"],12:["0450 2.1 1039 3.9 1704 1.7 2335 4.4","0602 2.2 1154 3.7 1805 2.0","0042 4.4 0720 2.1 1317 3.6 1913 2.1","0149 4.4 0837 1.9 1433 3.7 2023 2.0","0250 4.5 0938 1.7 1536 3.9 2125 1.9","0344 4.6 1028 1.4 1626 4.2 2217 1.8","0430 4.7 1110 1.2 1708 4.3 2301 1.7","0510 4.7 1148 1.1 1745 4.5 2339 1.6","0546 4.7 1223 1.0 1818 4.6","0014 1.5 0619 4.7 1254 1.0 1848 4.6","0046 1.5 0650 4.7 1324 1.0 1918 4.6","0117 1.6 0721 4.6 1353 1.1 1948 4.5","0150 1.7 0752 4.5 1423 1.2 2021 4.5","0223 1.8 0823 4.4 1452 1.3 2055 4.4","0301 1.9 0856 4.2 1522 1.5 2134 4.4","0345 2.0 0934 4.0 1556 1.7 2218 4.3","0438 2.2 1020 3.7 1638 1.8 2308 4.3","0543 2.2 1118 3.6 1738 2.0","0009 4.2 0708 2.2 1241 3.5 1908 2.0","0142 4.3 0835 2.0 1432 3.7 2034 1.9","0305 4.4 0946 1.6 1540 4.0 2142 1.6","0406 4.6 1044 1.2 1638 4.3 2242 1.4","0500 4.8 1138 0.9 1733 4.6 2338 1.3","0550 5.0 1228 0.6 1824 4.9","0032 1.2 0638 5.1 1314 0.4 1913 5.0","0123 1.2 0723 5.0 1358 0.4 2000 5.1","0212 1.2 0807 4.9 1438 0.4 2045 5.0","0258 1.3 0849 4.7 1517 0.7 2127 4.9","0342 1.5 0929 4.5 1553 1.0 2208 4.8","0426 1.7 1009 4.1 1628 1.4 2248 4.6","0514 1.9 1053 3.8 1706 1.7 2332 4.3"]};
+const TEV=(()=>{const a=[];for(const m of [11,12])TIDE[m].forEach((s,i)=>{const k=s.split(" ");for(let j=0;j<k.length;j+=2)a.push({t:Date.UTC(2026,m-1,i+1,+k[j].slice(0,2),+k[j].slice(2))-MY,h:+k[j+1]})});a.sort((x,y)=>x.t-y.t);a.forEach((e,i)=>{const p=a[i-1],n=a[i+1];e.hi=(!p||e.h>p.h)&&(!n||e.h>n.h)});return a})();
+function lvl(t){for(let i=0;i<TEV.length-1;i++){const a=TEV[i],b=TEV[i+1];if(t>=a.t&&t<b.t){const f=(t-a.t)/(b.t-a.t);return{h:a.h+(b.h-a.h)*(1-Math.cos(Math.PI*f))/2,up:b.h>a.h,near:Math.min(t-a.t,b.t-t)<18e5}}}return null}
+function drawTide(t0){
+  const B=$("#tideBody"),ev=TEV.filter(e=>e.t>=t0&&e.t<t0+DAY);
+  if(loc.n!=="Pelabuhan Klang"){B.innerHTML='<p class="note" style="margin:0">Jadual pasang surut ada untuk Pelabuhan Klang sahaja. Pilih Pelabuhan Klang di atas.</p>';return}
+  if(!ev.length){B.innerHTML='<p class="note" style="margin:0">Jadual dimasukkan untuk 1 November hingga 31 Disember 2026.</p>';return}
+  const X=t=>8+(t-t0)/DAY*324,Y=h=>104-h/5.5*92;let d="";
+  for(let t=t0;t<=t0+DAY;t+=18e5){const v=lvl(t);if(v)d+=(d?"L":"M")+X(t).toFixed(1)+" "+Y(v.h).toFixed(1)}
+  let s=`<path d="${d}L${X(t0+DAY)} 108L8 108Z" fill="var(--deep)" opacity=".18"/><path d="${d}" fill="none" stroke="var(--deep)" stroke-width="2.5"/>`;
+  [0,6,12,18,24].forEach(h=>s+=`<text x="${8+h/24*324}" y="120" text-anchor="${h===0?"start":h===24?"end":"middle"}">${String(h%24).padStart(2,"0")}:00</text>`);
+  ev.forEach(e=>s+=`<circle cx="${X(e.t)}" cy="${Y(e.h)}" r="5" fill="var(--float)" stroke="var(--ink)" stroke-width="1.5"/><text x="${X(e.t)}" y="${e.hi?Y(e.h)-9:Y(e.h)+17}" text-anchor="middle">${e.h.toFixed(1)}</text>`);
+  let now="";
+  if(day===0){const v=lvl(Date.now());if(v){const x=X(Date.now());s+=`<line x1="${x}" x2="${x}" y1="6" y2="108" stroke="var(--ink)" stroke-dasharray="3 3"/>`;now=`<p style="margin:0 0 8px"><b>Sekarang ${v.h.toFixed(1)} m</b>, ${v.near?"hampir air mati":v.up?"air sedang naik (arus pasang)":"air sedang turun (arus surut)"}.</p>`}}
+  const hs=ev.map(e=>e.h),rg=(Math.max(...hs)-Math.min(...hs)).toFixed(1);
+  B.innerHTML=now+`<svg viewBox="0 0 340 124" width="100%" role="img" aria-label="Graf air pasang surut">${s}</svg>`+ev.map(e=>`<div class="kv"><span>${e.hi?"Air pasang":"Air surut"}</span><b>${fm(e.t)}, ${e.h.toFixed(1)} m</b></div>`).join("")+`<div class="kv"><span>Julat hari ini</span><b>${rg} m</b></div><p class="note">Jadual Pelabuhan Klang 2026 (zon masa UTC+8), disalin dengan tangan daripada tangkap layar. Lengkung antara pasang dan surut dikira secara kosinus. Sahkan dengan jadual Pusat Hidrografi Nasional.</p>`;
+}
+function drawDay(){
+  const t0=todayT()+day*DAY,noon=t0+12*36e5;
+  const sS=scan(sunAlt,t0),mS=scan(moonAlt,t0);
+  const tr=extr(sS,true),dec=sunC(days(tr||noon)).dec;
+  const asarA=Math.atan(1/(1+Math.tan(Math.abs(loc.lat*R-dec))));
+  const sub=cross(sS,-20*R).up,syu=cross(sS,-.833*R).up,mag=cross(sS,-.833*R).dn,isy=cross(sS,-18*R).dn,asr=cross(sS,asarA).dn,zoh=tr?tr+2*6e4:null;
+  const mr=cross(mS,.133*R),mt=extr(mS,true),mu=extr(mS,false);
+  const mp=moonPhase(t0+20*36e5),pe=mp.p;
+  let hT=noon,after=false;
+  if(day===0&&mag&&Date.now()>mag){hT=noon+DAY;after=true}
+  const h=hijri(hT),a=arus(pe);
+  $("#hero").innerHTML=moonSvg(pe,34)+`<div><div class="h">${h.day} ${HM[h.month-1]||""} ${h.year} H</div><p>${gf.format(t0+12*36e5)}</p><p>${phName(pe)}, cahaya ${Math.round(mp.f*100)}%</p>${h.day>=13&&h.day<=15?'<span class="tagy">Ayyamul Bidh</span>':h.month===9?'<span class="tagy">Bulan Ramadan</span>':''}${after?'<p>Selepas Maghrib, hari Hijri sudah bertukar.</p>':''}</div>`;
+  $("#arusT").textContent=a.k;$("#arusP").textContent=a.d;$("#arusN").textContent=a.t;
+  const segs=[],rows=[];
+  const add=(x,y,c,l)=>{if(x==null||y==null)return;segs.push([x,y,c]);rows.push([c,l,fm(x)+" – "+fm(y)])};
+  add(sub,syu,"s-twi","Subuh hingga Syuruk");
+  add(mt!=null?mt-36e5:null,mt!=null?mt+36e5:null,"s-major","Utama, bulan di atas");
+  add(mu!=null?mu-36e5:null,mu!=null?mu+36e5:null,"s-major","Utama, bulan di bawah");
+  add(mr.up!=null?mr.up-18e5:null,mr.up!=null?mr.up+18e5:null,"s-minor","Kecil, bulan terbit");
+  add(mr.dn!=null?mr.dn-18e5:null,mr.dn!=null?mr.dn+18e5:null,"s-minor","Kecil, bulan terbenam");
+  add(asr,mag,"s-twi","Asar hingga Maghrib");
+  rows.sort((x,y)=>x[2]<y[2]?-1:1);
+  $("#track").innerHTML=segs.map(s=>{const l=Math.max(0,(s[0]-t0)/DAY*100),r=Math.min(100,(s[1]-t0)/DAY*100);return`<div class="seg ${s[2]}" style="left:${l}%;width:${Math.max(0,r-l)}%"></div>`}).join("");
+  $("#wins").innerHTML=rows.map(r=>`<div class="kv"><span><span class="sw" style="background:${r[0]==="s-major"?"var(--float)":r[0]==="s-minor"?"#f2b82080":"var(--deep)"}"></span>${r[1]}</span><b>${r[2]}</b></div>`).join("");
+  $("#solat").innerHTML=[["Subuh",sub],["Syuruk",syu],["Zohor",zoh],["Asar",asr],["Maghrib",mag],["Isyak",isy]].map(x=>`<div class="kv"><span>${x[0]}</span><b>${fm(x[1])}</b></div>`).join("")+`<div class="kv"><span>Bulan terbit / terbenam</span><b>${fm(mr.up)} / ${fm(mr.dn)}</b></div>`;
+  drawStrip(t0,hT);drawTide(t0);
+}
+function drawStrip(t0,hT){
+  const h0=hijri(hT);let s=hT;
+  for(let i=0;i<31&&hijri(s).day>1;i++)s-=DAY;
+  const items=[];
+  for(let i=0;i<31;i++){const t=s+i*DAY,h=hijri(t);if(h.month!==h0.month)break;items.push([t,h])}
+  $("#monthT").textContent=(HM[h0.month-1]||"Bulan Hijri")+" "+h0.year+" H";
+  $("#strip").innerHTML=items.map(([t,h])=>{const tm=t-12*36e5+0; const mid=Math.floor((t-12*36e5+MY)/DAY)*DAY-MY;const p=moonPhase(mid+20*36e5).p,a=arus(p),cur=Math.abs(t-hT)<DAY/2,off=Math.round((mid-todayT())/DAY);
+   return`<button class="dayc" data-o="${off}" ${cur?'aria-current="true"':''} aria-label="${h.day} ${HM[h.month-1]}">${h.day}${moonSvg(p,11)}<i style="${a.big===1?'background:var(--deep)':a.big===0?'border:1.5px solid var(--deep);height:4px':'background:var(--line)'}"></i>${h.day>=13&&h.day<=15?'<span class="ab">bidh</span>':''}</button>`}).join("");
+  $("#strip").querySelectorAll("button").forEach(b=>b.onclick=()=>{day=+b.dataset.o;drawDays();drawDay()});
+  const cur=$("#strip [aria-current]");if(cur)cur.scrollIntoView({inline:"center",block:"nearest"});
+}
+function drawDays(){
+  $("#days").innerHTML=[0,1,2,3,4,5,6].map(o=>`<button class="chip" data-o="${o}" aria-pressed="${o===day}">${o===0?"Hari ini":o===1?"Esok":wf.format(todayT()+o*DAY+12*36e5)}</button>`).join("");
+  $("#days").querySelectorAll("button").forEach(b=>b.onclick=()=>{day=+b.dataset.o;drawDays();drawDay()});
+}
+function drawAdj(){
+  $("#adj").innerHTML=[-1,0,1].map(v=>`<button class="chip" data-v="${v}" aria-pressed="${v===adj}">${v>0?"+"+v:v}</button>`).join("");
+  $("#adj").querySelectorAll("button").forEach(b=>b.onclick=()=>{adj=+b.dataset.v;try{localStorage.setItem("joran-adj",adj)}catch(e){}drawAdj();drawDay()});
+}
+$("#loc").innerHTML=LOCS.map((l,i)=>`<option value="${i}">${l[0]}</option>`).join("");
+$("#loc").onchange=e=>{const l=LOCS[+e.target.value];loc={n:l[0],lat:l[1],lng:l[2]};drawDay()};
+$("#gps").onclick=()=>{
+  const b=$("#gps");
+  if(!navigator.geolocation){b.textContent="Lokasi tidak disokong";return}
+  b.textContent="Mencari lokasi…";
+  navigator.geolocation.getCurrentPosition(p=>{loc={n:"Lokasi saya",lat:p.coords.latitude,lng:p.coords.longitude};
+    let o=$("#loc option[value=gps]");if(!o){o=document.createElement("option");o.value="gps";o.textContent="Lokasi saya";$("#loc").prepend(o)}
+    $("#loc").value="gps";b.textContent="Guna lokasi saya";drawDay()},
+    ()=>{b.textContent="Lokasi ditolak. Pilih dari senarai"},{timeout:10000});
+};
+
+/* port, ikan, arus */
+const SPOTS=[
+{n:"Tasik Temenggor, Perak",t:"Empangan",d:"Air tawar luas. Terkenal dengan kelah dan toman.",f:"Toman, kelah, baung",q:"Tasik Temenggor Perak"},
+{n:"Sungai Langat, Selangor",t:"Sungai",d:"Mudah sampai dari Lembah Klang. Cuba waktu air mula naik.",f:"Baung, patin, haruan",q:"Sungai Langat Selangor"},
+{n:"Jeti Pantai Remis, Perak",t:"Pantai",d:"Mancing dari jeti. Datang waktu air bergerak.",f:"Jenahak, belanak, bawal",q:"Jeti Pantai Remis Perak"},
+{n:"Tanjung Piai, Johor",t:"Pantai",d:"Kawasan paya bakau. Siakap suka bersembunyi dekat akar bakau.",f:"Siakap, ketam, belanak",q:"Tanjung Piai Johor"},
+{n:"Tasik Timah Tasoh, Perlis",t:"Empangan",d:"Tasik tenang dan sesuai untuk pemula.",f:"Haruan, toman, tilapia",q:"Tasik Timah Tasoh Perlis"},
+{n:"Kolam pancing berhampiran",t:"Kolam",d:"Sesuai bawa anak dan cuba teknik baru.",f:"Patin, tilapia, baung",q:"kolam pancing berhampiran"}];
+const FISH=[
+{n:"Siakap",h:"Air payau dan muara",u:"Udang hidup, ikan bilis hidup, gewang kecil",k:"Baling dekat akar bakau, tarik perlahan",w:"Subuh dan senja",a:"Arus pasang naik hingga air penuh"},
+{n:"Haruan",h:"Paya, parit, tasik",u:"Katak getah, anak ikan, cacing",k:"Casting permukaan, tarik putus-putus",w:"Pagi awal dan petang",a:"Air tenang, tidak bergantung pasang surut"},
+{n:"Toman",h:"Tasik dan sungai",u:"Gewang permukaan, anak ikan hidup",k:"Baling tepi tunggul, tarik laju-perlahan",w:"Subuh dan senja",a:"Air tenang atau arus lemah"},
+{n:"Jenahak",h:"Laut, karang dan jeti",u:"Sotong, udang, ikan kecil",k:"Dasar, joran kuat sedikit",w:"Pagi hingga tengah hari",a:"Air bergerak, elak air mati"},
+{n:"Kerapu",h:"Terumbu dan batu karang",u:"Ikan hidup, sotong, udang",k:"Turunkan dekat dasar, tarik cepat bila makan",w:"Pagi dan petang",a:"Arus sederhana, air anak lebih mudah"},
+{n:"Patin",h:"Sungai dan kolam",u:"Perut ayam, pelet, cacing",k:"Dasar dengan pemberat, tunggu sabar",w:"Petang hingga malam",a:"Arus perlahan di lubuk"},
+{n:"Baung",h:"Sungai berarus",u:"Cacing, usus ayam, ikan kecil",k:"Dasar di lubuk, tepi arus",w:"Senja dan malam",a:"Arus sederhana, tepi arus deras"},
+{n:"Tenggiri",h:"Laut dalam",u:"Ikan kecil hidup, gewang trolling",k:"Trolling atau jigging, tali besi kecil",w:"Pagi",a:"Air bergerak laju, air besar baik"}];
+const ARUS=[
+["Air besar","Sekitar bulan baru dan purnama, berlarutan 1–2 hari selepas. Arus kuat, julat pasang surut besar, air keruh.","Ikan makan galak tetapi umpan mudah hanyut. Mancing di belakang halangan arus dengan pemberat berat."],
+["Air anak","Sekitar suku pertama dan suku akhir bulan. Arus lemah, air jernih.","Ikan lebih berhati-hati. Guna umpan semula jadi, tali halus dan pemberat ringan."],
+["Arus pasang (air naik)","Air dari laut masuk ke muara, sungai dan paya.","Ikan ikut air masuk mencari makan. Siakap dan jenahak aktif di muara dan tepi bakau."],
+["Arus surut (air turun)","Air keluar dari muara dan parit, membawa udang dan ikan kecil.","Ikan menunggu di mulut parit dan lekuk dasar. Baling umpan ikut arah arus."],
+["Air mati","Seketika di puncak pasang atau surut, arus hampir berhenti.","Gigitan perlahan. Masa terbaik tukar umpan, berehat dan pindah port."],
+["Arus sungai deras","Air hujan atau pelepasan empangan menambah arus.","Cari lubuk, belakang batu dan tepi arus. Hati-hati, jangan mancing bila air naik mendadak."],
+["Arus sungai perlahan","Air tenang di lekuk dan tengah sungai.","Ikan berenang bebas. Cuba umpan permukaan atau tengah air."]];
+function drawSpots(){
+  const types=["Semua",...new Set(SPOTS.map(s=>s.t))];
+  $("#ptype").innerHTML=types.map(t=>`<button class="chip" data-t="${t}" aria-pressed="${t===curT}">${t}</button>`).join("");
+  $("#ptype").querySelectorAll("button").forEach(b=>b.onclick=()=>{curT=b.dataset.t;drawSpots()});
+  $("#spots").innerHTML=SPOTS.filter(s=>curT==="Semua"||s.t===curT).map(s=>`<article class="card"><h3>${s.n}</h3><p><span class="tag">${s.t}</span>${s.f}</p><p>${s.d}</p><a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(s.q)}">Buka peta</a></article>`).join("");
+}
+function drawFish(){
+  const q=$("#q").value.trim().toLowerCase(),r=FISH.filter(f=>f.n.toLowerCase().includes(q));
+  $("#fish").innerHTML=r.length?r.map(f=>`<article class="card"><h3>${f.n}</h3><dl><dt>Habitat</dt><dd>${f.h}</dd><dt>Umpan</dt><dd>${f.u}</dd><dt>Teknik</dt><dd>${f.k}</dd><dt>Waktu</dt><dd>${f.w}</dd><dt>Arus</dt><dd>${f.a}</dd></dl></article>`).join(""):`<p class="note">Tiada ikan dijumpai. Cuba nama lain, contoh haruan.</p>`;
+}
+$("#aruslist").innerHTML=ARUS.map(a=>`<article class="card"><h3>${a[0]}</h3><p>${a[1]}</p><p><b>Tip:</b> ${a[2]}</p></article>`).join("");
+$("#q").oninput=drawFish;
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));
+  ["hari","port","ikan","arus"].forEach(v=>$("#v-"+v).hidden=v!==t.dataset.v);
+  window.scrollTo(0,0);
+});
+drawAdj();drawDays();drawDay();drawSpots();drawFish();
+</script>
+</body>
+</html>
