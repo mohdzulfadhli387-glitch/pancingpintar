@@ -1,178 +1,610 @@
-<!DOCTYPE html>
-<html lang="ms"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Pancing Pintar</title>
-<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#061019"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#082c35" />
+<title>Pancing Pintar 2.2</title>
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" href="icon-192.png" />
 <style>
-:root{--bg:#eef3f7;--card:#fff;--tx:#0c1c2c;--mut:#5b6c7d;--ac:#0b7fc7;--ln:#d3dee8;--ok:#0f9a64;--wn:#c48a00;--bd:#d33f38;--gd:#f1c232;
-box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#061019;--card:#0d1c2b;--tx:#e6f0f8;--mut:#8fa4b8;--ac:#3db4ff;--ln:#1c3246;--ok:#27d38f;--wn:#f0b429;--bd:#ff6b61;--gd:#f1c232;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#061019;--card:#0d1c2b;--tx:#e6f0f8;--mut:#8fa4b8;--ac:#3db4ff;--ln:#1c3246;--ok:#27d38f;--wn:#f0b429;--bd:#ff6b61;--gd:#f1c232;color-scheme:dark}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 "Trebuchet MS","Segoe UI",system-ui,sans-serif;max-width:560px;margin-inline:auto;padding:14px 14px 40px}
-h1{font:700 26px/1.1 Georgia,serif;margin:4px 0 2px;letter-spacing:-.3px}
-.sub{color:var(--mut);font-size:13px;margin:0 0 12px}
-select,input,textarea{font:inherit;color:var(--tx);background:var(--card);border:1px solid var(--ln);border-radius:10px;padding:9px 10px;width:100%;box-sizing:border-box}
-.tabs{display:flex;gap:6px;margin:12px 0}
-.tabs button{flex:1;font:inherit;font-weight:600;padding:10px 2px;font-size:13px;border-radius:10px;border:1px solid var(--ln);background:var(--card);color:var(--mut)}
-.tabs button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
-.tabs button.sos.on{background:var(--bd);border-color:var(--bd)}
-.c{background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:14px;margin-bottom:12px}
-.row{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.big{font:700 28px/1.1 Georgia,serif}
-.mut{color:var(--mut);font-size:13px}
-.bar{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;margin:10px 0}
-.bar i{height:14px;border-radius:3px;background:var(--ln)}
-.pill{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:700;color:#fff}
-.strip{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px}
-.strip div{flex:0 0 52px;text-align:center;border:1px solid var(--ln);border-radius:10px;padding:6px 2px;font-size:12px}
-.strip b{display:block;font-size:15px}
-.nav{display:flex;gap:6px;align-items:center}
-.nav button{font:inherit;border:1px solid var(--ln);background:var(--card);color:var(--tx);border-radius:8px;padding:6px 12px}
-svg{width:100%;height:auto;display:block}
-svg text{fill:var(--mut);font-size:10px}
-ul{margin:6px 0 0;padding-left:18px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-label{font-size:13px;color:var(--mut);display:block;margin-bottom:3px}
-.btn{display:block;text-align:center;text-decoration:none;font:inherit;font-weight:700;padding:13px;border-radius:12px;border:0;color:#fff;background:var(--bd);width:100%;margin-top:8px;box-sizing:border-box}
-.btn.g{background:var(--ok)}
-.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}.cal button{font:inherit;color:var(--tx);background:var(--card);border:2px solid var(--ln);border-radius:8px;padding:4px 0;font-size:11px;line-height:1.25}.cal b{display:block;font-size:14px}.cal .on{background:var(--ac);color:#fff}.hd{text-align:center;color:var(--mut);font-size:11px}
-details{border-top:1px solid var(--ln);padding:8px 0}summary{cursor:pointer;font-weight:700}
-.warn{font-size:12px;color:var(--mut);border-top:1px solid var(--ln);padding-top:10px;margin-top:6px}
-</style></head><body>
-<h1>Pancing Pintar</h1>
-<p class="sub">Kalkulator memancing pintar</p>
-<select id="port" aria-label="Lokasi"></select>
-<div class="tabs" id="tabs"></div>
-<div id="v"></div>
-<p class="warn">Pasang surut dikira dengan model harmonik ringkas (anggaran), bukan jadual rasmi. Untuk navigasi dan keselamatan, rujuk Jabatan Laut Malaysia dan MetMalaysia.</p>
+:root{
+  --bg:#eaf4f1;--card:#fff;--ink:#12313a;--muted:#5d7278;--line:#dbe7e2;--sea:#0f5d6a;--sea-2:#0a454d;--gold:#f0be52;--ok:#1a855c;--warn:#c48215;--danger:#b6453a;--shadow:0 18px 40px rgba(15,93,106,.08)
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;background:linear-gradient(180deg,#edf6f4 0%,#eaf3f7 100%);color:var(--ink);padding:calc(env(safe-area-inset-top,0px) + 18px) 14px calc(90px + env(safe-area-inset-bottom,0px));max-width:760px;margin:0 auto}
+a{color:var(--sea);text-decoration:none}button,input,select,textarea{font:inherit}
+header{margin-bottom:12px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0 12px}
+.brand{margin:0;font-size:28px;letter-spacing:-0.6px}.sub{margin:2px 0 0;color:var(--muted);font-size:13px}.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 12px;background:#dfece7;border:1px solid var(--line);font-weight:700;color:var(--sea);font-size:12px}
+.hero{background:linear-gradient(135deg,#062e37,#0b4451 55%,#0f6470);color:#f7fcfb;border-radius:22px;padding:18px;box-shadow:var(--shadow)}
+.hero-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.hero h2{margin:0;font-size:14px;color:#cfe7e6;font-weight:600;letter-spacing:.04em;text-transform:uppercase}.hero .big{font-size:32px;font-weight:800;letter-spacing:-.7px;margin-top:8px}
+.hero .small{font-size:13px;color:#d4ece9}.hero .status{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:7px 10px;background:rgba(255,255,255,.08);font-size:12px;border:1px solid rgba(255,255,255,.1)}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:var(--shadow)}
+.kicker{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}.value{font-size:28px;font-weight:800;letter-spacing:-.7px}.mini{font-size:12px;color:var(--muted)}
+.metric-row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+button, input, textarea, select{font:inherit}
+button{border:0;border-radius:12px;padding:10px 12px;cursor:pointer;background:var(--sea);color:#fff;font-weight:700}
+button.secondary{background:#e8f2ef;color:var(--sea);border:1px solid var(--line)}
+button.ghost{background:transparent;color:var(--sea);border:1px solid var(--line)}
+button.warn{background:#fff3d4;color:#82560d;border:1px solid #f0d69b}
+button.danger{background:#fbe5e3;color:#9f3a32;border:1px solid #f1c5bf}
+button.full{width:100%}
+label{display:block;color:var(--muted);font-size:12px;margin:8px 0 5px}.input, select, textarea{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);outline:none}
+textarea{min-height:72px;resize:vertical}.list{display:grid;gap:10px}.item{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
+.item h3{margin:0 0 6px;font-size:17px}.tag{display:inline-block;border-radius:999px;padding:3px 8px;background:#edf5f3;border:1px solid var(--line);color:var(--muted);font-size:11px;margin-bottom:4px}.muted{color:var(--muted)}.note{font-size:12px;color:var(--muted)}.empty{color:var(--muted);padding:16px 6px;text-align:center}.stats{display:grid;gap:10px}.stat-bar{height:10px;background:#edf5f3;border-radius:999px;overflow:hidden;border:1px solid var(--line)}.stat-bar > span{display:block;height:100%;background:linear-gradient(90deg,#1f889f,#f0be52);border-radius:inherit}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:9;background:rgba(9,36,43,0.96);backdrop-filter:blur(10px);padding:8px 10px calc(8px + env(safe-area-inset-bottom));display:flex;gap:8px;justify-content:center}
+.tabs button{flex:1;max-width:170px;border-radius:10px;padding:10px 4px;background:none;color:#eaf6f5;border:1px solid transparent;font-size:13px;font-weight:700}
+.tabs button.active{background:#123c46;border-color:rgba(255,255,255,.09)}
+.hidden{display:none !important}
+.float-cta{background:linear-gradient(135deg,#0f6170,#0a2a34);color:#fff;border:0;border-radius:14px;padding:12px 16px;font-weight:800;box-shadow:var(--shadow)}
+img.catch{width:100%;max-height:220px;object-fit:cover;border-radius:12px;margin-top:8px;border:1px solid var(--line)}
+.badge-ok{color:var(--ok);font-weight:700}.badge-warn{color:var(--warn);font-weight:700}.badge-danger{color:var(--danger);font-weight:700}.mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}@media(max-width:560px){.cards,.grid,.mini-grid{grid-template-columns:1fr}.hero .big{font-size:28px}.brand{font-size:24px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="topbar">
+    <div>
+      <h1 class="brand">🎣 Pancing Pintar</h1>
+      <p class="sub">Versi 2.2 · App peribadi untuk spot, cuaca, dan rekod tangkapan.</p>
+    </div>
+    <span class="chip">RM 0–200 / bulan</span>
+  </div>
+</header>
+
+<main>
+  <section id="view-home">
+    <div class="hero">
+      <div class="hero-top">
+        <div>
+          <h2>Hari ini</h2>
+          <div class="big" id="todayLabel">Memuat…</div>
+          <div class="small" id="locationLabel">Lokasi belum dipilih</div>
+        </div>
+        <button id="gpsBtn" class="ghost" style="color:white;border-color:rgba(255,255,255,.15);background:rgba(255,255,255,.06)">📍 GPS</button>
+      </div>
+      <div class="row" style="margin-top:14px;align-items:end">
+        <div>
+          <div class="small">Keadaan semasa</div>
+          <div class="big" id="wxMain" style="font-size:26px;margin-top:4px">Belum dimuatkan</div>
+        </div>
+        <div class="status" id="safetyPill">⚠️ Semak suhu</div>
+      </div>
+      <div class="small" id="wxAt" style="margin-top:8px">Muat data apabila diperlukan.</div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="kicker">Angin</div>
+        <div class="value" id="wind">—</div>
+        <div class="mini" id="gust">Tiupan —</div>
+      </div>
+      <div class="card">
+        <div class="kicker">Suhu / Tekanan</div>
+        <div class="value" id="temp">—</div>
+        <div class="mini" id="pressure">Tekanan —</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row"><h3 style="margin:0">Keadaan laut</h3><button id="refresh" class="secondary">Muat semula</button></div>
+      <p id="marine" class="muted" style="margin:10px 0 0">Tekan muat semula untuk baca data laut.</p>
+      <p class="note" style="margin-top:10px">Data Open-Meteo digunakan sebagai panduan; pastikan anda semak amaran rasmi sebelum keluar.</p>
+    </div>
+
+    <div class="card">
+      <div class="row"><h3 style="margin:0">Ringkasan penggunaan</h3><button id="openStats" class="secondary">Lihat statistik</button></div>
+      <div class="mini-grid" style="margin-top:12px">
+        <div><div class="kicker">Tangkapan</div><div class="value" id="totalCatch" style="font-size:20px">0</div></div>
+        <div><div class="kicker">Berat</div><div class="value" id="totalWeight" style="font-size:20px">0 kg</div></div>
+        <div><div class="kicker">Spesies</div><div class="value" id="favFish" style="font-size:20px">—</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row"><h3 style="margin:0">Spot cepat</h3><button data-goto="spots" class="secondary">Kelola spot</button></div>
+      <div id="homeSpots" class="muted" style="margin-top:10px">Belum ada spot.</div>
+    </div>
+  </section>
+
+  <section id="view-spots" class="hidden">
+    <div class="row" style="margin-bottom:12px"><h2 style="margin:0">Spot peribadi</h2><button class="secondary" data-goto="home">Kembali</button></div>
+    <div class="card">
+      <h3 style="margin-top:0">Tambah spot</h3>
+      <label>Nama spot</label>
+      <input id="spotName" maxlength="60" placeholder="Contoh: Jeti Kegemaran" />
+      <label>Jenis / kawasan</label>
+      <input id="spotType" maxlength="40" placeholder="Muara, sungai, laut, tasik..." />
+      <label>Nota</label>
+      <textarea id="spotNote" maxlength="500" placeholder="Akses, umpan biasa, keadaan air..."></textarea>
+      <div class="row" style="margin-top:12px">
+        <span id="coordText" class="note">Koordinat belum dipilih</span>
+        <button id="spotGPS" class="secondary">Ambil GPS</button>
+      </div>
+      <button id="saveSpot" class="full" style="margin-top:12px">Simpan spot</button>
+    </div>
+    <div id="spotList" class="list"></div>
+  </section>
+
+  <section id="view-log" class="hidden">
+    <div class="row" style="margin-bottom:12px"><h2 style="margin:0">Log tangkapan</h2><button class="secondary" data-goto="home">Kembali</button></div>
+    <div class="card">
+      <h3 style="margin-top:0">Catat tangkapan</h3>
+      <label>Jenis ikan</label>
+      <input id="fishName" maxlength="50" placeholder="Contoh: Siakap" />
+      <div class="grid">
+        <div>
+          <label>Berat (kg)</label>
+          <input id="fishWeight" type="number" min="0" step="0.01" />
+        </div>
+        <div>
+          <label>Panjang (cm)</label>
+          <input id="fishLength" type="number" min="0" step="1" />
+        </div>
+      </div>
+      <label>Spot</label>
+      <select id="catchSpot"><option value="">Pilih spot / tidak dinyatakan</option></select>
+      <label>Umpan / gewang</label>
+      <input id="bait" maxlength="80" placeholder="Contoh: udang hidup, minnow, soft plastic" />
+      <label>Nota</label>
+      <textarea id="catchNote" maxlength="500" placeholder="Cuaca, kedalaman, teknik..."></textarea>
+      <label>Gambar (pilihan)</label>
+      <input id="photo" type="file" accept="image/*" capture="environment" />
+      <button id="saveCatch" class="full" style="margin-top:12px">Simpan tangkapan</button>
+    </div>
+    <div class="row" style="padding:0 4px 8px"><h3 style="margin:0">Rekod tersimpan</h3><span class="chip" id="catchCount">0</span></div>
+    <div id="catchList" class="list"></div>
+  </section>
+
+  <section id="view-stats" class="hidden">
+    <div class="row" style="margin-bottom:12px"><h2 style="margin:0">Statistik peribadi</h2><button class="secondary" data-goto="home">Kembali</button></div>
+    <div class="cards">
+      <div class="card"><div class="kicker">Jumlah tangkapan</div><div class="value" id="statTotal">0</div><div class="mini" id="statMonth">Bulan ini: 0</div></div>
+      <div class="card"><div class="kicker">Berat tertinggi</div><div class="value" id="statBest">0 kg</div><div class="mini" id="statBestFish">—</div></div>
+      <div class="card"><div class="kicker">Spesies utama</div><div class="value" id="statTopFish">—</div><div class="mini" id="statTopCount">0 rekod</div></div>
+      <div class="card"><div class="kicker">Purata berat</div><div class="value" id="statAvg">0 kg</div><div class="mini" id="statAvgInfo">Keseluruhan rekod</div></div>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Trend spesies</h3>
+      <div id="speciesTrend" class="stats"></div>
+    </div>
+  </section>
+
+  <section id="view-backup" class="hidden">
+    <div class="row" style="margin-bottom:12px"><h2 style="margin:0">Data & sandaran</h2><button class="secondary" data-goto="home">Kembali</button></div>
+    <div class="card">
+      <h3 style="margin-top:0">Eksport data</h3>
+      <p class="muted">Muat turun fail JSON untuk spot dan rekod tangkapan anda.</p>
+      <button id="export" class="full">Muat turun backup</button>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Import backup</h3>
+      <input id="importFile" type="file" accept="application/json" />
+      <button id="import" class="full" style="margin-top:12px">Import data</button>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Storan peranti</h3>
+      <p id="storageInfo" class="muted">Menyemak storan…</p>
+      <button id="clearData" class="danger full">Padam semua data</button>
+    </div>
+  </section>
+</main>
+
+<nav class="tabs" aria-label="Menu utama">
+  <button type="button" class="active" data-tab="home">Hari ini</button>
+  <button type="button" data-tab="spots">Spot</button>
+  <button type="button" data-tab="log">Tangkapan</button>
+  <button type="button" data-tab="stats">Statistik</button>
+  <button type="button" data-tab="backup">Data</button>
+</nav>
+
 <script>
-const P={klang:{n:"Pelabuhan Klang, Selangor",m:3.05,a:1.55,s:.55,h:6.5,la:3.0,lo:101.39,ml:2.95,mo:101.2},ks:{n:"Kuala Selangor, Selangor",m:2.95,a:1.5,s:.5,h:6.8,la:3.34,lo:101.25,ml:3.3,mo:101.1},pd:{n:"Port Dickson, N. Sembilan",m:1.8,a:.8,s:.3,h:12,la:2.5,lo:101.8,ml:2.45,mo:101.65},pg:{n:"Pulau Pinang",m:1.5,a:.7,s:.3,h:11.5,la:5.4,lo:100.34,ml:5.45,mo:100.25},kt:{n:"Kuantan, Pahang",m:1.2,a:.4,s:.1,h:10,la:3.97,lo:103.43,ml:3.95,mo:103.55}};
-const EP=Date.UTC(2000,0,6,18,14),SYN=29.530588,R=Math.PI/180;
-const $=id=>document.getElementById(id);
-let st={loc:"stn",port:"klang",day:0,tab:"t",wind:5,gust:8,pr:1011,tr:"s",ts:false};
-try{Object.assign(st,JSON.parse(localStorage.getItem("tw")||"{}"))}catch(e){}
-const save=()=>{try{localStorage.setItem("tw",JSON.stringify({loc:st.loc,port:st.port,wind:st.wind,gust:st.gust,pr:st.pr,tr:st.tr}))}catch(e){}};
-const HM=ms=>{const p=P[st.port],x=(ms-EP)/36e5-(((p.h-2.2333)%12)+12)%12;return p.m+p.a*Math.cos(28.9841*R*x)+p.s*Math.cos(30*R*x)};
-let OF={};
-function parseOF(t){const o=[];t.split("\n").forEach(l=>{let m=l.match(/(\d{4})-(\d{1,2})-(\d{1,2})\s+(\d{1,2})[:.](\d{2})\s+(-?\d+(?:\.\d+)?)/),y,mo,d;
-if(m){y=+m[1];mo=+m[2];d=+m[3]}else{m=l.match(/(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})\s+(\d{1,2})[:.](\d{2})\s+(-?\d+(?:\.\d+)?)/);if(!m)return;d=+m[1];mo=+m[2];y=+m[3]}
-o.push({t:new Date(y,mo-1,d,+m[4],+m[5]).getTime(),h:+m[6]})});return o.sort((a,b)=>a.t-b.t)}
-function loadOF(){OF={};for(const k in P){let t="";try{t=localStorage.getItem("twt_"+k)||""}catch(e){}OF[k]=parseOF(t)}}
-const cov=ms=>{const o=OF[st.port]||[];return o.length>1&&ms>=o[0].t&&ms<=o[o.length-1].t};
-function H(ms){const o=OF[st.port]||[];if(cov(ms)){let lo=0,hi=o.length-1;while(hi-lo>1){const mid=(lo+hi)>>1;if(o[mid].t<=ms)lo=mid;else hi=mid}const a=o[lo],b=o[hi];if(b.t>a.t&&b.t-a.t<=9*36e5)return a.h+(b.h-a.h)*(1-Math.cos(Math.PI*(ms-a.t)/(b.t-a.t)))/2}return HM(ms)}
-loadOF();
-const age=ms=>(((ms-EP)/864e5)%SYN+SYN)%SYN;
-function kind(a){const q=SYN/4;if(Math.min(a,SYN-a,Math.abs(a-2*q))<2.2)return["Pasang Besar","var(--bd)"];if(Math.min(Math.abs(a-q),Math.abs(a-3*q))<2.2)return["Air Mati","var(--ok)"];
-return(a>q&&a<2*q)||(a>3*q)?["Menyorong Besar","#8b5cf6"]:["Menyorong Kecil","var(--wn)"]}
-const moon=a=>["🌑","🌒","🌓","🌔","🌕","🌖","🌗","🌘"][Math.round(a/SYN*8)%8];
-const f2=n=>String(n).padStart(2,"0"),hm=m=>f2(Math.floor(m/60))+":"+f2(Math.round(m%60)).replace("60","59");
-function dayStart(o){const d=new Date();d.setHours(0,0,0,0);return d.getTime()+(o||0)*864e5}
-function ext(d0){const o=[];let pv=H(d0-36e5*.1),cu=H(d0);for(let m=6;m<=1440;m+=6){const nx=H(d0+m*6e4),t=m-6;
-if(cu>pv&&cu>nx)o.push({t,h:cu,hi:1});if(cu<pv&&cu<nx)o.push({t,h:cu,hi:0});pv=cu;cu=nx}return o}
-function score(ms,d0){const p=P[st.port],rate=Math.abs(H(ms+9e5)-H(ms-9e5))/.5/(2*Math.PI/12.42*(p.a+p.s));
-const k=kind(age(ms))[0],f=[];
-const mv=Math.min(1,rate)*4;f.push(["Pergerakan air",mv]);
-f.push(["Fasa bulan ("+k+")",k=="Pasang Besar"?1.5:k=="Air Mati"?0:.75]);
-const pr={s:1,u:0,d:1.5,dd:-1}[st.tr];f.push(["Tekanan udara",pr]);
-const hr=new Date(ms).getHours()+new Date(ms).getMinutes()/60;f.push(["Waktu (subuh/senja)",(hr>5.5&&hr<8.5)||(hr>17.5&&hr<20)?1.5:0]);
-const m0=(ms-d0)/6e4,gh=ext(d0).some(e=>e.hi&&Math.abs(e.t-m0)<=60);f.push(["Golden hour (sekitar air pasang)",gh?1:0]);
-if(st.ts)f.push(["Ribut petir",-4]);
-const tot=f.reduce((a,b)=>a+b[1],0),sc=Math.max(1,Math.min(10,Math.round(tot/9.5*10)));return{sc,f}}
-const PRE="2026-11-09 05:40 5.17\n2026-11-09 12:10 0.92\n2026-11-09 18:10 4.77\n2026-11-10 00:01 1.04\n2026-11-10 05:47 4.93\n2026-11-10 12:26 0.81\n2026-11-10 18:08 4.55\n2026-11-11 00:32 1.08\n2026-11-11 06:13 4.89\n2026-11-11 12:55 0.84\n2026-11-11 18:36 4.53\n2026-11-12 01:02 1.19\n2026-11-12 06:39 4.79\n2026-11-12 13:24 0.93\n2026-11-12 19:06 4.46\n2026-11-13 01:33 1.36\n2026-11-13 07:07 4.63\n2026-11-13 13:54 1.08\n2026-11-13 19:38 4.33\n2026-11-14 02:05 1.58\n2026-11-14 07:37 4.40\n2026-11-14 14:25 1.28\n2026-11-14 20:14 4.15\n2026-11-15 02:39 1.84\n2026-11-15 08:09 4.13\n2026-11-15 14:58 1.52\n2026-11-15 20:58 3.96\n2026-11-16 03:18 2.10\n2026-11-16 08:49 3.82\n2026-11-16 15:35 1.76\n2026-11-16 22:01 3.78\n2026-11-17 04:07 2.35\n2026-11-17 09:51 3.52\n2026-11-17 16:22 1.99\n2026-11-17 23:30 3.70\n2026-11-18 05:24 2.52\n2026-11-18 11:37 3.34\n2026-11-18 17:33 2.16\n2026-11-19 00:52 3.81\n2026-11-19 07:41 2.44\n2026-11-19 13:08 3.39\n2026-11-19 19:27 2.14\n2026-11-20 01:54 4.04\n2026-11-20 09:00 2.10\n2026-11-20 14:13 3.61\n2026-11-20 20:49 1.90\n2026-11-21 02:44 4.33\n2026-11-21 09:46 1.71\n2026-11-21 15:06 3.89\n2026-11-21 21:42 1.59\n2026-11-22 03:29 4.63\n2026-11-22 10:25 1.33\n2026-11-22 15:52 4.20\n2026-11-22 22:26 1.29\n2026-11-23 04:10 4.90\n2026-11-23 11:02 0.99\n2026-11-23 16:35 4.48\n2026-11-23 23:08 1.04\n2026-11-24 04:51 5.09\n2026-11-24 11:39 0.72\n2026-11-24 17:18 4.70\n2026-11-24 23:48 0.88\n2026-11-25 05:32 5.19\n2026-11-25 12:17 0.54\n2026-11-25 18:00 4.83\n2026-11-26 00:30 0.83\n2026-11-26 06:12 5.17\n2026-11-26 12:56 0.49\n2026-11-26 18:45 4.86\n2026-11-27 01:12 0.89\n2026-11-27 06:55 5.02\n2026-11-27 13:36 0.56\n2026-11-27 19:32 4.78\n2026-11-28 01:55 1.07\n2026-11-28 07:40 4.76\n2026-11-28 14:18 0.74\n2026-11-28 20:24 4.61\n2026-11-29 02:41 1.34\n2026-11-29 08:29 4.43\n2026-11-29 15:02 1.02\n2026-11-29 21:23 4.39\n2026-11-30 03:32 1.65\n2026-11-30 09:28 4.06\n2026-11-30 15:51 1.34\n2026-11-30 22:34 4.19\n2026-12-01 04:32 1.97\n2026-12-01 10:43 3.74\n2026-12-01 16:48 1.67\n2026-12-01 23:50 4.08\n2026-12-02 05:55 2.18\n2026-12-02 12:07 3.56\n2026-12-02 18:06 1.91\n2026-12-03 01:02 4.07\n2026-12-03 07:45 2.16\n2026-12-03 13:24 3.52\n2026-12-03 19:45 1.97\n2026-12-04 02:06 4.13\n2026-12-04 09:02 1.94\n2026-12-04 14:31 3.60\n2026-12-04 20:59 1.86\n2026-12-05 02:59 4.23\n2026-12-05 09:53 1.69\n2026-12-05 15:26 3.73\n2026-12-05 21:52 1.71\n2026-12-06 03:44 4.34\n2026-12-06 10:32 1.46\n2026-12-06 16:11 3.88\n2026-12-06 22:33 1.57\n2026-12-07 04:21 4.44\n2026-12-07 11:07 1.26\n2026-12-07 16:49 4.03\n2026-12-07 23:11 1.46";
-function offCard(){let t="";try{t=localStorage.getItem("twt_"+st.port)||""}catch(e){}const n=(OF[st.port]||[]).length;
-return`<div class="c"><b>Jadual pasang surut (${P[st.port].n.split(",")[0]})</b><p class="mut">Masukkan sendiri dari PHN (hydro.gov.my) atau sumber lain. Satu baris setiap pasang atau surut: <b>2026-11-08 05:12 1.4</b> (tarikh, masa, ketinggian meter). Format 08/11/2026 05:12 1.4 juga boleh. Bila ada, graf dan semua cadangan guna angka ini.</p><button class="btn" id="op" style="background:var(--ac);margin:0 0 8px">Isi jadual Klang 9 Nov–7 Dis</button><p class="mut">Isian ini: 9 Nov daripada PHN, 10 Nov–7 Dis daripada tide-forecast.com (pihak ketiga, boleh beza kira-kira 20–30 minit dan 0.2 m daripada PHN).</p><textarea id="ot" rows="6" style="font-family:monospace">${t.replace(/</g,"&lt;")}</textarea><button class="btn g" id="os">Simpan jadual (${n} entri aktif)</button><a class="btn" style="background:var(--ac)" target="_blank" rel="noopener" href="https://hydro.gov.my/ramalanpasangsurut/">Buka laman PHN</a></div>`}
-function tideView(){const d0=dayStart(st.day),dt=new Date(d0),a=age(d0+432e5),[kn,kc]=kind(a),ex=ext(d0);
-let hj="";try{const pp=new Intl.DateTimeFormat("en-u-ca-islamic-umalqura",{day:"numeric",month:"numeric",year:"numeric"}).formatToParts(dt),g=t=>+pp.find(x=>x.type==t).value;hj=g("day")+" "+["Muharram","Safar","Rabiulawal","Rabiulakhir","Jamadilawal","Jamadilakhir","Rejab","Syaaban","Ramadan","Syawal","Zulkaedah","Zulhijjah"][g("month")-1]+" "+g("year")+" H (anggaran)"}catch(e){}
-const pts=[];let lo=9,hi=-9;for(let m=0;m<=1440;m+=15){const h=H(d0+m*6e4);pts.push([m,h]);lo=Math.min(lo,h);hi=Math.max(hi,h)}
-const X=m=>20+m/1440*300,Y=h=>140-(h-lo+.3)/(hi-lo+.6)*120;
-let g=ex.filter(e=>e.hi).map(e=>`<rect x="${X(e.t-60)}" y="10" width="${X(60)-20}" height="130" fill="var(--gd)" opacity=".22"/>`).join("");
-g+=`<path d="M${pts.map(p=>X(p[0]).toFixed(1)+","+Y(p[1]).toFixed(1)).join("L")}" fill="none" stroke="var(--ac)" stroke-width="2.5"/>`;
-g+=ex.map(e=>`<circle cx="${X(e.t)}" cy="${Y(e.h)}" r="3.5" fill="var(--ac)"/><text x="${X(e.t)}" y="${Y(e.h)+(e.hi?-7:14)}" text-anchor="middle">${e.h.toFixed(1)}m</text>`).join("");
-const nowM=(Date.now()-d0)/6e4;if(st.day==0)g+=`<line x1="${X(nowM)}" x2="${X(nowM)}" y1="10" y2="140" stroke="var(--bd)" stroke-dasharray="3 3"/><text x="${X(nowM)}" y="8" text-anchor="middle" style="fill:var(--bd)">SEKARANG</text>`;
-g+=[0,6,12,18,24].map(h=>`<text x="${X(h*60)}" y="156" text-anchor="middle">${f2(h)}:00</text>`).join("");
-const ms=st.day==0?Date.now():d0+252e5,S=score(ms,d0),L=S.sc<=3?["Rendah","var(--bd)"]:S.sc<=5?["Sederhana","var(--wn)"]:S.sc<=7?["Aktif","var(--ok)"]:["Sangat aktif","var(--ok)"];
-const ct=dt.toLocaleDateString("ms-MY",{month:"long",year:"numeric"});let cal=["Ahd","Isn","Sel","Rab","Kha","Jum","Sab"].map(x=>`<div class="hd">${x}</div>`).join("");
-const fd=new Date(dt.getFullYear(),dt.getMonth(),1),nd=new Date(dt.getFullYear(),dt.getMonth()+1,0).getDate();cal+="<div></div>".repeat(fd.getDay());
-for(let d=1;d<=nd;d++){const s=new Date(dt.getFullYear(),dt.getMonth(),d).getTime(),k=kind(age(s+432e5));let l=9,h=-9;for(let m=0;m<1440;m+=30){const v=H(s+m*6e4);l=Math.min(l,v);h=Math.max(h,v)}
-cal+=`<button data-go="${Math.round((s-dayStart(0))/864e5)}" class="${s==d0?"on":""}" style="border-color:${k[1]}">${d}<b>${moon(age(s+432e5))}</b>${(h-l).toFixed(1)}m</button>`}
-return`<div class="c"><div class="row"><div class="nav"><button data-d="-1">◀</button><button data-d="1">▶</button></div><div style="text-align:right"><b>${dt.toLocaleDateString("ms-MY",{weekday:"long",day:"numeric",month:"long"})}</b><div class="mut">${hj}</div><div class="mut">Sumber: ${cov(d0+432e5)?"jadual yang anda masukkan":"anggaran model"}</div></div></div>
-<div class="row" style="margin-top:10px"><span class="big">${moon(a)} ${kn}</span><span class="pill" style="background:${kc}">${a.toFixed(0)} hari bulan</span></div></div>
-<div class="c"><b>Graf pasang surut</b> <span class="mut">(kawasan kuning = golden hour)</span><svg viewBox="0 0 340 162">${g}</svg>
-<div class="grid">${ex.map(e=>`<div><b>${hm(e.t)}</b> ${e.hi?"Pasang":"Surut"} <span class="mut">${e.h.toFixed(1)}m</span></div>`).join("")}</div></div>
-<div class="c"><div class="row"><b>Indikator aktiviti ikan</b><span class="mut">${st.day==0?"sekarang":"07:00"}</span></div>
-<div class="big" style="color:${L[1]}">${L[0]} · ${S.sc}/10</div>
-<div class="bar">${Array.from({length:10},(_,i)=>`<i style="${i<S.sc?"background:"+L[1]:""}"></i>`).join("")}</div>
-<ul class="mut">${S.f.map(x=>`<li>${x[0]}: ${x[1]>0?"+":""}${x[1].toFixed(1)}</li>`).join("")}</ul></div>
-<div class="c"><div class="row"><div class="nav"><button data-m="-1">◀</button></div><b>${ct}</b><div class="nav"><button data-m="1">▶</button></div></div><div class="mut" style="margin:6px 0">Julat pasang surut setiap hari. Tekan tarikh untuk lihat harinya.</div><div class="cal">${cal}</div>
-<div class="mut">Merah: pasang besar · Hijau: air mati · Kuning/ungu: menyorong</div></div>${offCard()}`}
-const LV={};
-const WX=c=>c==0?"Cerah":c<3?"Sebahagian berawan":c==3?"Mendung":c<50?"Kabus":c<70?"Hujan":c<85?"Hujan lebat":c>=95?"Ribut petir":"Hujan";
-function pos(){return new Promise(r=>{const p=P[st.port],d=()=>r({la:p.la,lo:p.lo,gps:0});st.loc=="gps"&&navigator.geolocation?navigator.geolocation.getCurrentPosition(x=>r({la:x.coords.latitude,lo:x.coords.longitude,gps:1}),d,{timeout:6000}):d()})}
-async function live(){LV.busy=1;LV.err="";if(st.tab=="w")render();try{const q=await pos(),b="latitude="+q.la+"&longitude="+q.lo;
-const f=await(await fetch("https://api.open-meteo.com/v1/forecast?"+b+"&current=temperature_2m,wind_speed_10m,wind_gusts_10m,pressure_msl,weather_code&hourly=pressure_msl&wind_speed_unit=kn&past_hours=3&forecast_hours=1&timezone=auto")).json();
-const c=f.current,hp=f.hourly.pressure_msl.filter(x=>x!=null),d=hp[hp.length-1]-hp[0];
-st.wind=Math.round(c.wind_speed_10m*10)/10;st.gust=Math.round(c.wind_gusts_10m*10)/10;st.pr=Math.round(c.pressure_msl);st.tr=d<-3?"dd":d<-1?"d":d>1?"u":"s";st.ts=c.weather_code>=95;
-Object.assign(LV,{t:c.temperature_2m,wx:WX(c.weather_code),gps:q.gps,at:new Date()});
-try{const m=await(await fetch("https://marine-api.open-meteo.com/v1/marine?"+(q.gps?b:"latitude="+P[st.port].ml+"&longitude="+P[st.port].mo)+"&current=wave_height,ocean_current_velocity")).json();LV.wave=m.current.wave_height;LV.cur=m.current.ocean_current_velocity==null?null:m.current.ocean_current_velocity/1.852}catch(e){LV.wave=LV.cur=null}
-}catch(e){LV.err="Tidak dapat ambil data langsung. Semak sambungan internet."}LV.busy=0;render()}
-function liveCard(){const t=LV.at?LV.at.toLocaleTimeString("ms-MY",{hour:"2-digit",minute:"2-digit"}):"";
-return`<div class="c"><div class="row"><b>Data langsung</b><button class="btn g" id="rf" style="width:auto;margin:0;padding:8px 14px">${LV.busy?"Memuat...":"Muat semula"}</button></div><select id="lc" style="margin-top:8px"><option value="stn" ${st.loc!="gps"?"selected":""}>Guna lokasi stesen terpilih</option><option value="gps" ${st.loc=="gps"?"selected":""}>Guna GPS fon saya</option></select>`+(LV.err?`<p style="color:var(--bd)">${LV.err}</p>`:LV.at?`<div class="grid" style="margin-top:8px"><div><b>${LV.wx}</b><div class="mut">${LV.t}°C</div></div><div><b>Ombak ${LV.wave==null?"-":LV.wave.toFixed(1)+" m"}</b><div class="mut">Arus ${LV.cur==null?"-":LV.cur.toFixed(1)+" knot"}</div></div></div><div class="mut" style="margin-top:6px">${LV.gps?"Lokasi GPS fon":"Lokasi stesen: "+P[st.port].n.split(",")[0]} · dikemas kini ${t} · Open-Meteo (model, bukan stesen setempat)</div>`:`<p class="mut">Belum dimuatkan.</p>`)+`</div>`}
-function windView(){const w=+st.wind,g=+st.gust;let v;
-if(st.ts||g>=25||w>=20)v=["Jangan turun ke laut","var(--bd)","Angin kencang atau ribut petir. Kekal di darat."];
-else if(w>=15||g>=20)v=["Bahaya untuk bot kecil","var(--bd)","Ombak boleh naik cepat. Elakkan pantai terbuka."];
-else if(w>=10||g>=15)v=["Berhati-hati","var(--wn)","Pakai jaket keselamatan dan pantau cuaca."];
-else v=["Angin tenang","var(--ok)","Tetap semak ramalan MetMalaysia sebelum bertolak."];
-return liveCard()+`<div class="c"><b>Bacaan (boleh diubah)</b><p class="mut">Diisi automatik daripada data langsung. Ubah jika anda ada bacaan lebih tepat.</p>
-<div class="grid"><div><label>Angin (knot)</label><input type="number" id="wind" value="${w}" min="0"></div><div><label>Tiupan kencang (knot)</label><input type="number" id="gust" value="${g}" min="0"></div>
-<div><label>Tekanan (hPa)</label><input type="number" id="pr" value="${st.pr}"></div><div><label>Trend tekanan</label><select id="tr"><option value="u">Naik</option><option value="s">Stabil</option><option value="d">Turun perlahan</option><option value="dd">Turun mendadak</option></select></div></div>
-<label style="margin-top:10px"><input type="checkbox" id="ts" style="width:auto" ${st.ts?"checked":""}> Ada amaran ribut petir</label></div>
-<div class="c" style="border-color:${v[1]}"><div class="big" style="color:${v[1]}">${v[0]}</div><p>${v[2]}</p><div class="mut">Musim Monsun Timur Laut (Nov–Mac): cuaca pantai boleh berubah mendadak.</div></div>`}
-const FS=[
-{n:"Siakap",h:"Muara, jeti, tiang jambatan, tebing berlumpur",s:[3,3,1,1],sp:1,dd:1,um:"Udang hidup, ikan kecil hidup, atau lure (minnow, soft plastic)",tk:["Joran 7 kaki, medium-heavy","Reel spinning 3000–4000","Tali PE 2–3 atau mono 15–20 lb","Leader fluorocarbon 20–30 lb","Kail 2/0–4/0"],tp:"Suka masuk bawah tiang. Tahan drag lebih rapat."},
-{n:"Jenahak",h:"Tunggul, batu, rumpai, dasar keras",s:[3,1,3,0],sp:1,dd:0,um:"Udang, sotong, ikan dipotong",tk:["Joran 6–7 kaki, medium","Reel spinning 3000–4000","Tali mono 15–20 lb","Leader 25–30 lb","Kail circle 2/0–3/0, sinker gelongsor"],tp:"Naikkan umpan sedikit dari dasar supaya tak tersangkut."},
-{n:"Ikan duri (keli laut)",h:"Dasar berlumpur, muara keruh",s:[2,2,3,1],sp:1,dd:0,um:"Udang, ikan kecil, sotong",tk:["Joran 6–7 kaki, medium-heavy","Reel 4000","Tali 20–30 lb","Leader 30 lb","Kail 2/0–4/0, sinker 1–3 oz"],tp:"Duri sirip menyengat dan sakit. Guna pemegang ikan dan berhati-hati."},
-{n:"Kerapu",h:"Tukun, batu karang, bangkai kapal, kawasan dalam",s:[1,2,1,3],sp:0,dd:0,um:"Ikan hidup, sotong, ikan dipotong",tk:["Joran 7 kaki, heavy","Reel 5000–6000","Tali 30–50 lb","Leader 50–80 lb","Kail 5/0–7/0, sinker 3–6 oz"],tp:"Tarik cepat sebaik kena supaya tak masuk lubang."},
-{n:"Tenggiri",h:"Laut terbuka, tepi arus, sekitar tukun",s:[3,3,1,1],sp:0,dd:1,um:"Ikan hidup (tamban), spoon atau metal jig",tk:["Joran 7–8 kaki, medium-heavy","Reel 4000–5000","Tali PE 3–4","Leader wayar atau fluorocarbon 40 lb","Kail 3/0–5/0"],tp:"Gigi tajam: guna leader wayar."},
-{n:"Selar / kembung",h:"Sekitar jeti, rumpon, air bersih",s:[3,2,2,1],sp:0,dd:1,um:"Sabiki, udang kecil",tk:["Joran 6 kaki, light","Reel 2000–2500","Tali 6–10 lb","Sabiki atau kail saiz 6–10","Sinker kecil"],tp:"Sesuai untuk permulaan, boleh jadi umpan hidup."}];
-function fishView(){const p=P[st.port],d0=dayStart(st.day),ms=st.day==0?Date.now():d0+252e5,sl=H(ms+9e5)-H(ms-9e5),rate=Math.abs(sl)/.5/(2*Math.PI/12.42*(p.a+p.s)),k=kind(age(ms))[0];
-let i,nm;if(rate<.2){i=H(ms)>p.m?2:3;nm=i==2?"Air mati (sekitar pasang penuh)":"Air mati (sekitar surut penuh)"}else if(sl>0){i=0;nm="Air naik"}else{i=1;nm="Air turun"}
-const dt=new Date(ms),hr=dt.getHours()+dt.getMinutes()/60,dw=(hr>5.5&&hr<8.5)||(hr>17.5&&hr<20);
-const lv=LV.cur!=null?(LV.cur>1.5?2:LV.cur>.5?1:0):(rate>.7?2:rate>.35?1:0),sk=["Sinker ringan (½–1 oz)","Sinker sederhana (1–2 oz)","Sinker berat (2–4 oz), arus kuat"][lv];
-const L=FS.map(f=>({f,v:f.s[i]+(f.sp&&(k=="Pasang Besar"||k=="Menyorong Besar")?1:0)+(f.dd&&dw?1:0)})).sort((a,b)=>b.v-a.v);
-const lb=v=>v>=4?["Sangat sesuai","var(--ok)"]:v>=3?["Sesuai","var(--ok)"]:v>=2?["Sederhana","var(--wn)"]:["Kurang sesuai","var(--bd)"];
-const est=rate*1.8,cu=Math.max(LV.cur||0,est),src=LV.cur!=null&&LV.cur>=est?"data langsung":"anggaran daripada pasang surut";
-const dp=+st.dp||5,mul=Math.min(1.6,1+dp/20),bs=cu<.5?[15,30]:cu<1?[30,60]:cu<1.5?[60,90]:cu<2.5?[90,150]:[150,250];
-const lg=k=>{const x=Math.round(bs[0]*mul*k/5)*5,y=Math.round(bs[1]*mul*k/5)*5;return`<b>${x}–${y} g</b> (${(x/28.35).toFixed(1)}–${(y/28.35).toFixed(1)} oz)`};
-const jn=cu<.5?"ladung bulat atau gelongsor":cu<1.5?"ladung bulat atau pyramid":"ladung pyramid atau berkuku (grapnel)";
-const ladung=`<div class="c"><b>Panduan ladung</b><div class="mut">Arus ${cu.toFixed(1)} knot (${src})</div><div class="row" style="margin:8px 0"><label style="margin:0">Kedalaman (m)</label><input id="dp" type="number" value="${dp}" style="width:90px"></div><ul><li>Siakap, jenahak, ikan duri: ${lg(1)}</li><li>Kerapu: ${lg(1.3)}</li></ul><p>Jenis: ${jn}.</p><p class="mut">Panduan kasar. Kalau ladung tak duduk di dasar dan tali hanyut, naikkan sehingga ia duduk. Selar/kembung dan tenggiri tak perlu ladung berat: guna 10–30 g atau tanpa ladung. Arus dalam muara biasanya lebih kuat daripada data model.</p></div>`;
-const bad=st.ts||+st.gust>=25||+st.wind>=20;
-return`<div class="c"><div class="row"><b>${nm}</b><span class="mut">${st.day==0?"sekarang":"07:00"}</span></div><div class="mut">${k}${dw?" · waktu subuh/senja":""}</div>${bad?`<p style="color:var(--bd);font-weight:700">Cuaca berbahaya: jangan turun ke laut.</p>`:""}</div>
-${ladung}<div class="c"><b>Ikan yang sesuai sekarang</b>`+L.map((x,j)=>{const g=lb(x.v),f=x.f;return`<details ${j==0?"open":""}><summary>${f.n} <span class="pill" style="background:${g[1]}">${g[0]}</span></summary><div class="mut">${f.h}</div><p><b>Umpan:</b> ${f.um}</p><b>Tackle</b><ul>${f.tk.map(t=>`<li>${t}</li>`).join("")}</ul><p class="mut">${f.tp}</p></details>`}).join("")+`</div><div class="c mut">Panduan umum, bukan jaminan. Spesies dan lokasi sebenar bergantung pada tempat anda. Semak peraturan Jabatan Perikanan untuk saiz dan kawasan larangan.</div>`}
-let J=[];try{J=JSON.parse(localStorage.getItem("twj")||"[]")}catch(e){}
-const sj=()=>{try{localStorage.setItem("twj",JSON.stringify(J))}catch(e){}};
-const SPOT=["Jeti Batu Hampar (Jugra)","Sungai Selangor (Kuala Selangor)","Sabak Bernam","Jeti Teluk Nipah (Pulau Indah)"];
-function tst(ms){const p=P[st.port],sl=H(ms+9e5)-H(ms-9e5),rate=Math.abs(sl)/.5/(2*Math.PI/12.42*(p.a+p.s));return rate<.2?(H(ms)>p.m?"Air mati (pasang penuh)":"Air mati (surut penuh)"):sl>0?"Air naik":"Air turun"}
-function jurView(){const c={};J.forEach(x=>c[x.s]=(c[x.s]||0)+1);const top=Object.entries(c).sort((a,b)=>b[1]-a[1])[0];
-return`<div class="c"><b>Cari spot sedia ada</b><p class="mut">Guna data sedia ada, bukan data yang awak kumpul sendiri.</p><a class="btn g" target="_blank" rel="noopener" href="https://www.google.com/maps/search/spot+memancing+jeti">Spot memancing berhampiran (Google Maps)</a><a class="btn g" target="_blank" rel="noopener" href="https://fishbox.com/spot/malaysia">Senarai 1000+ spot (Fishbox)</a></div><div class="c"><b>Catat tangkapan</b><div class="grid" style="margin-top:8px"><div><label>Tempat</label><input id="jt" list="sp"><datalist id="sp">${SPOT.map(x=>`<option value="${x}">`).join("")}</datalist></div><div><label>Ikan</label><select id="ji">${FS.map(f=>`<option>${f.n}</option>`).join("")}<option>Lain-lain</option></select></div><div><label>Berat (kg)</label><input id="jb" type="number" step="0.1"></div><div><label>Umpan</label><input id="ju"></div></div><button class="btn g" id="js">Simpan</button><div class="mut" style="margin-top:6px">Masa, keadaan air dan fasa bulan direkod automatik.</div></div>
-<div class="c"><b>Rekod anda (${J.length})</b>`+(top?`<p class="mut">Paling banyak dapat ikan semasa: ${top[0]} (${top[1]} kali)</p>`:`<p class="mut">Belum ada rekod. Catat tangkapan pertama anda di atas.</p>`)+J.slice().reverse().map(x=>`<details><summary>${x.i} · ${x.t||"-"}</summary><div class="mut">${new Date(x.m).toLocaleString("ms-MY")} · ${x.s} · ${x.k}</div><div>${x.b?x.b+" kg · ":""}${x.u||""}</div><button data-jd="${x.m}" style="margin-top:6px;font:inherit;border:1px solid var(--ln);background:var(--card);color:var(--bd);border-radius:8px;padding:5px 10px">Padam</button></details>`).join("")+`</div><div class="c mut">Rekod disimpan dalam fon ini sahaja. Jika anda padam data pelayar atau buang app, rekod hilang.</div>`}
-function sosView(){return`<div class="c"><b>Kecemasan di laut</b><p class="mut">Bot terbalik, enjin rosak atau kecemasan kesihatan: hubungi 999 (MERS) dahulu atau gunakan radio VHF Channel 16 jika ada.</p>
-<a class="btn" href="tel:999">Telefon 999</a><button class="btn g" id="loc">Hantar lokasi ke WhatsApp</button><div class="mut" id="ls" style="margin-top:8px"></div></div>
-<div class="c mut">Butang ini bantu berkongsi lokasi dengan waris atau rakan. Ia bukan pengganti perkhidmatan menyelamat rasmi dan bergantung pada liputan isyarat telefon.</div>`}
-function render(){const T=[["t","Pasang"],["w","Angin"],["f","Ikan"],["j","Jurnal"],["s","SOS"]];
-$("tabs").innerHTML=T.map(t=>`<button data-t="${t[0]}" class="${st.tab==t[0]?"on":""} ${t[0]=="s"?"sos":""}">${t[1]}</button>`).join("");
-$("v").innerHTML=st.tab=="t"?tideView():st.tab=="w"?windView():st.tab=="f"?fishView():st.tab=="j"?jurView():sosView();
-if(st.tab=="w"){$("tr").value=st.tr;["wind","gust","pr","tr","ts"].forEach(id=>$(id).onchange=e=>{st[id]=id=="ts"?e.target.checked:id=="tr"?e.target.value:+e.target.value;save();render()})}
-if($("rf"))$("rf").onclick=live;
-if($("lc"))$("lc").onchange=e=>{st.loc=e.target.value;save();live()};
-if($("dp"))$("dp").onchange=e=>{st.dp=+e.target.value||5;render()};
-if($("op"))$("op").onclick=()=>{if(st.port!="klang"){alert("Jadual ini hanya untuk Pelabuhan Klang.");return}$("ot").value=PRE};
-if($("os"))$("os").onclick=()=>{try{localStorage.setItem("twt_"+st.port,$("ot").value)}catch(e){}loadOF();render()};
-if($("js"))$("js").onclick=()=>{const m=Date.now();J.push({m,t:$("jt").value,i:$("ji").value,b:$("jb").value,u:$("ju").value,s:tst(m),k:kind(age(m))[0]});sj();render()};
-if(st.tab=="s")$("loc").onclick=()=>{const s=$("ls");s.textContent="Mencari lokasi...";navigator.geolocation?navigator.geolocation.getCurrentPosition(p=>{window.open("https://wa.me/?text="+encodeURIComponent("Saya perlukan bantuan. Lokasi saya: https://maps.google.com/?q="+p.coords.latitude+","+p.coords.longitude),"_blank");s.textContent="Lokasi sedia dihantar."},()=>{s.textContent="Lokasi tidak dapat diakses. Benarkan akses lokasi dalam tetapan."}):s.textContent="Peranti tidak menyokong lokasi."}}
-$("port").innerHTML=Object.keys(P).map(k=>`<option value="${k}">${P[k].n}</option>`).join("");$("port").value=st.port;
-$("port").onchange=e=>{st.port=e.target.value;save();render();live()};
-document.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;if(b.dataset.t){st.tab=b.dataset.t;render()}if(b.dataset.d){st.day+=+b.dataset.d;render()}if(b.dataset.go!==undefined){st.day=+b.dataset.go;render();window.scrollTo(0,0)}if(b.dataset.m){const t=new Date(dayStart(st.day));st.day=Math.round((new Date(t.getFullYear(),t.getMonth()+ +b.dataset.m,1)-dayStart(0))/864e5);render()}if(b.dataset.jd){J=J.filter(x=>x.m!=b.dataset.jd);sj();render()}});
-render();live();setInterval(live,6e5);
-if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
-</script></body></html>
+'use strict';
+const DB_NAME='pancing-pintar-v2';
+let db, coords=null, photoData=null;
+const $ = (id) => document.getElementById(id);
+
+const openDB = () => new Promise((resolve, reject) => {
+  const req = indexedDB.open(DB_NAME, 1);
+  req.onupgradeneeded = () => {
+    const d = req.result;
+    if(!d.objectStoreNames.contains('spots')) d.createObjectStore('spots', { keyPath: 'id' });
+    if(!d.objectStoreNames.contains('catches')) d.createObjectStore('catches', { keyPath: 'id' });
+    if(!d.objectStoreNames.contains('settings')) d.createObjectStore('settings', { keyPath: 'key' });
+  };
+  req.onsuccess = () => resolve(req.result);
+  req.onerror = () => reject(req.error);
+});
+
+const all = (storeName) => new Promise((resolve, reject) => {
+  const tx = db.transaction(storeName, 'readonly');
+  const request = tx.objectStore(storeName).getAll();
+  request.onsuccess = () => resolve(request.result);
+  request.onerror = () => reject(request.error);
+});
+
+const put = (storeName, value) => new Promise((resolve, reject) => {
+  const tx = db.transaction(storeName, 'readwrite');
+  tx.objectStore(storeName).put(value);
+  tx.oncomplete = () => resolve();
+  tx.onerror = () => reject(tx.error);
+});
+
+const del = (storeName, key) => new Promise((resolve, reject) => {
+  const tx = db.transaction(storeName, 'readwrite');
+  tx.objectStore(storeName).delete(key);
+  tx.oncomplete = () => resolve();
+  tx.onerror = () => reject(tx.error);
+});
+
+const clearStore = (storeName) => new Promise((resolve, reject) => {
+  const tx = db.transaction(storeName, 'readwrite');
+  tx.objectStore(storeName).clear();
+  tx.oncomplete = () => resolve();
+  tx.onerror = () => reject(tx.error);
+});
+
+const esc = (v) => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmtDate = (ts) => new Date(ts).toLocaleString('ms-MY', {dateStyle:'medium', timeStyle:'short'});
+const oneMonthAgo = () => Date.now() - 30*24*60*60*1000;
+
+function setTab(tab) {
+  document.querySelectorAll('main section').forEach(s => s.classList.toggle('hidden', s.id !== 'view-' + tab));
+  document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  if (tab === 'spots') renderSpots();
+  if (tab === 'log') renderCatches();
+  if (tab === 'stats') renderStats();
+  if (tab === 'backup') storageInfo();
+}
+
+function setCoordText() {
+  $('coordText').textContent = coords ? `${coords.lat.toFixed(5)}, ${coords.lon.toFixed(5)} (±${Math.round(coords.accuracy || 0)} m)` : 'Koordinat belum dipilih';
+}
+
+function getStatusText(code, wind, gust) {
+  if (code >= 95 || gust >= 25 || wind >= 20) return {text:'⚠️ Berisiko — jangan turun',cls:'badge-danger'};
+  if (gust >= 18 || wind >= 12 || code >= 61) return {text:'⚠️ Berhati-hati',cls:'badge-warn'};
+  return {text:'✓ Kondisi lebih tenang',cls:'badge-ok'};
+}
+
+function showWeather(data, at) {
+  const c = data.current || {};
+  const codeMap = {0:'Cerah',1:'Cebisan awan',2:'Sebahagian berawan',3:'Mendung',45:'Berkabus',48:'Berkabus',51:'Renyai',53:'Hujan renyai',55:'Hujan lebat',61:'Hujan',63:'Hujan sederhana',65:'Hujan lebat',71:'Salji',80:'Hujan setempat',81:'Hujan selingan',82:'Hujan lebat',95:'Ribut petir',96:'Ribut petir',99:'Ribut petir'};
+  $('wxMain').textContent = codeMap[c.weather_code] || 'Keadaan semasa';
+  $('wxAt').textContent = 'Dikemas kini ' + fmtDate(at);
+  $('wind').textContent = `${c.wind_speed_10m ?? '—'} knot`;
+  $('gust').textContent = `Tiupan ${c.wind_gusts_10m ?? '—'} knot · arah ${c.wind_direction_10m ?? '—'}°`;
+  $('temp').textContent = `${c.temperature_2m ?? '—'}°C`;
+  $('pressure').textContent = `Tekanan ${c.pressure_msl ?? '—'} hPa · hujan ${c.precipitation ?? 0} mm`;
+  const status = getStatusText(c.weather_code ?? 0, Number(c.wind_speed_10m ?? 0), Number(c.wind_gusts_10m ?? 0));
+  $('safetyPill').textContent = status.text;
+  $('safetyPill').className = 'status ' + status.cls; 
+  if (c.wind_gusts_10m >= 25 || c.wind_speed_10m >= 20 || c.weather_code >= 95) {
+    $('safetyPill').style.background = '#fde7e5';
+    $('safetyPill').style.color = '#912f2d';
+  } else if (c.wind_gusts_10m >= 18 || c.wind_speed_10m >= 12) {
+    $('safetyPill').style.background = '#fff2d1';
+    $('safetyPill').style.color = '#8b5e0d';
+  } else {
+    $('safetyPill').style.background = '#eaf7ee';
+    $('safetyPill').style.color = '#0b7247';
+  }
+}
+
+async function fetchWeather(point) {
+  const lat = point.lat, lon = point.lon;
+  $('locationLabel').textContent = `${lat.toFixed(3)}, ${lon.toFixed(3)}`;
+  try {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,wind_speed_10m,wind_gusts_10m,wind_direction_10m,pressure_msl&wind_speed_unit=kn&timezone=Asia%2FKuala_Lumpur&forecast_days=2`;
+    const res = await fetch(url, {cache:'no-store'});
+    if(!res.ok) throw new Error('weather failed');
+    const data = await res.json();
+    localStorage.setItem('pp-weather', JSON.stringify({at: Date.now(), data}));
+    showWeather(data, Date.now());
+    try {
+      const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}&current=wave_height,wave_period,ocean_current_velocity,ocean_current_direction&timezone=Asia%2FKuala_Lumpur`;
+      const marineRes = await fetch(marineUrl, {cache:'no-store'});
+      if (marineRes.ok) {
+        const marine = await marineRes.json();
+        const current = marine.current || {};
+        $('marine').innerHTML = `Ombak <b>${current.wave_height ?? '—'} m</b> · Tempoh ${current.wave_period ?? '—'} s<br>Arus laut <b>${current.ocean_current_velocity ?? '—'} km/j</b> · Arah ${current.ocean_current_direction ?? '—'}°`;
+        localStorage.setItem('pp-marine', JSON.stringify({at: Date.now(), data: marine}));
+      } else {
+        throw new Error('marine failed');
+      }
+    } catch {
+      const oldMarine = JSON.parse(localStorage.getItem('pp-marine') || 'null');
+      $('marine').textContent = oldMarine ? `Data laut terakhir: ${oldMarine.data.current?.wave_height ?? '—'} m · ${oldMarine.data.current?.ocean_current_velocity ?? '—'} km/j.` : 'Data laut tidak tersedia; semak MetMalaysia dan Jabatan Laut.';
+    }
+  } catch {
+    const old = JSON.parse(localStorage.getItem('pp-weather') || 'null');
+    if (old) {
+      showWeather(old.data, old.at);
+      $('wxAt').textContent = 'Data tersimpan · ' + fmtDate(old.at);
+    } else {
+      $('wxMain').textContent = 'Cuaca tidak tersedia';
+      $('marine').textContent = 'Sambungan internet tidak aktif. Semak semula nanti.';
+    }
+  }
+}
+
+function gps(success) {
+  if (!navigator.geolocation) {
+    alert('GPS tidak disokong oleh browser ini.');
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(
+    (p) => success({ lat: p.coords.latitude, lon: p.coords.longitude, accuracy: p.coords.accuracy }),
+    () => alert('Kebenaran lokasi ditolak. Benarkan lokasi dalam tetapan browser.'),
+    { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 }
+  );
+}
+
+async function renderSpots() {
+  const spots = (await all('spots')).sort((a,b) => b.created - a.created);
+  const list = $('spotList');
+  if (!spots.length) {
+    list.innerHTML = '<div class="empty">Belum ada spot. Simpan spot pertama anda.</div>';
+    $('homeSpots').textContent = 'Belum ada spot peribadi.';
+    return;
+  }
+  list.innerHTML = spots.map(s => `
+    <article class="item">
+      <div class="row"><h3>${esc(s.name)}</h3><button class="danger" data-delete-spot="${esc(s.id)}">Padam</button></div>
+      <div class="tag">${esc(s.type || 'Spot')}</div>
+      <p>${esc(s.note || 'Tiada nota')}</p>
+      <p class="note">${s.lat != null ? `${Number(s.lat).toFixed(5)}, ${Number(s.lon).toFixed(5)}` : 'Koordinat belum ditetapkan'} · ${fmtDate(s.created)}</p>
+      ${s.lat != null ? `<a href="https://www.google.com/maps/search/?api=1&query=${s.lat},${s.lon}" target="_blank" rel="noopener">Buka peta ↗</a>` : ''}
+    </article>
+  `).join('');
+  $('homeSpots').innerHTML = spots.slice(0,3).map(s => `<div style="margin:6px 0">📍 <b>${esc(s.name)}</b> <span class="note">${esc(s.type || 'spot')}</span></div>`).join('');
+}
+
+async function renderCatches() {
+  const items = (await all('catches')).sort((a,b) => b.time - a.time);
+  const spots = await all('spots');
+  const names = Object.fromEntries(spots.map(s => [s.id, s.name]));
+  $('catchCount').textContent = String(items.length);
+  const sel = $('catchSpot');
+  const old = sel.value;
+  sel.innerHTML = '<option value="">Pilih spot / tidak dinyatakan</option>' + spots.map(s => `<option value="${esc(s.id)}">${esc(s.name)}</option>`).join('');
+  if (old) sel.value = old;
+  const list = $('catchList');
+  if (!items.length) {
+    list.innerHTML = '<div class="empty">Belum ada rekod. Kita boleh mulakan hari ini.</div>';
+    return;
+  }
+  list.innerHTML = items.map(c => `
+    <article class="item">
+      <div class="row"><h3>${esc(c.fish || 'Tangkapan')}</h3><button class="danger" data-delete-catch="${esc(c.id)}">Padam</button></div>
+      <div class="tag">${fmtDate(c.time)}</div>
+      <p>${c.weight ? `${Number(c.weight).toFixed(2)} kg` : ''}${c.length ? ` · ${Number(c.length).toFixed(0)} cm` : ''}</p>
+      <p class="muted">${esc(names[c.spot] || 'Spot tidak dinyatakan')}</p>
+      ${c.bait ? `<p><b>Umpan:</b> ${esc(c.bait)}</p>` : ''}
+      ${c.note ? `<p>${esc(c.note)}</p>` : ''}
+      ${c.photo ? `<img class="catch" src="${c.photo}" alt="Gambar tangkapan">` : ''}
+    </article>
+  `).join('');
+}
+
+function renderStats() {
+  const catches = (await all('catches')); // can't use await in non-async function. fix below.
+}
+
+async function renderStats() {
+  const catches = (await all('catches')).sort((a,b) => b.time - a.time);
+  const total = catches.length;
+  const totalWeight = catches.reduce((sum, c) => sum + (Number(c.weight) || 0), 0);
+  const best = catches.reduce((max, c) => (Number(c.weight) > (Number(max?.weight) || 0) ? c : max), null);
+  const counts = {};
+  for (const c of catches) {
+    const name = (c.fish || 'Lain').trim();
+    counts[name] = (counts[name] || 0) + 1;
+  }
+  const top = Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];
+  const monthCount = catches.filter(c => Date.now() - c.time < 30*24*60*60*1000).length;
+  $('statTotal').textContent = String(total);
+  $('statMonth').textContent = `Bulan ini: ${monthCount}`;
+  $('statBest').textContent = `${best ? Number(best.weight || 0).toFixed(2) : '0.00'} kg`;
+  $('statBestFish').textContent = best ? best.fish : '—';
+  $('statTopFish').textContent = top ? top[0] : '—';
+  $('statTopCount').textContent = top ? `${top[1]} rekod` : '0 rekod';
+  $('statAvg').textContent = `${total ? (totalWeight / total).toFixed(2) : '0.00'} kg`;
+  $('statAvgInfo').textContent = `${total} rekod keseluruhan`;
+
+  const trend = Object.entries(counts).slice(0, 5).map(([name,count]) => ({name,count}));
+  if (!trend.length) {
+    $('speciesTrend').innerHTML = '<div class="empty">Belum ada rekod tangkapan untuk statistik.</div>';
+    return;
+  }
+  const maxCount = Math.max(...trend.map(t => t.count));
+  $('speciesTrend').innerHTML = trend.map(({name,count}) => `
+    <div>
+      <div class="row" style="margin-bottom:6px"><span>${esc(name)}</span><strong>${count}</strong></div>
+      <div class="stat-bar"><span style="width:${(count/maxCount)*100}%"></span></div>
+    </div>
+  `).join('');
+}
+
+async function storageInfo() {
+  const spots = await all('spots');
+  const catches = await all('catches');
+  const usage = await navigator.storage?.estimate?.() || null;
+  $('storageInfo').textContent = `${spots.length} spot dan ${catches.length} rekod tangkapan. ${usage ? `Storan: ${(usage.usage / 1024 / 1024).toFixed(1)} MB digunakan.` : 'Storan setempat aktif.'}`;
+}
+
+async function exportData() {
+  const payload = {
+    app: 'Pancing Pintar 2.2',
+    version: 2.2,
+    exportedAt: new Date().toISOString(),
+    spots: await all('spots'),
+    catches: await all('catches')
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type: 'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `pancing-pintar-backup-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+async function importData() {
+  const file = $('importFile').files[0];
+  if (!file) { alert('Pilih fail backup terlebih dahulu.'); return; }
+  try {
+    const json = JSON.parse(await file.text());
+    if (!json || !Array.isArray(json.spots) || !Array.isArray(json.catches)) throw new Error();
+    if (!confirm(`Import ${json.spots.length} spot dan ${json.catches.length} rekod tangkapan?`)) return;
+    await clearStore('spots');
+    await clearStore('catches');
+    for (const s of json.spots) await put('spots', s);
+    for (const c of json.catches) await put('catches', c);
+    renderSpots();
+    renderCatches();
+    renderStats();
+    alert('Data import selesai.');
+  } catch {
+    alert('Fail import tidak sah atau tidak serasi dengan format app ini.');
+  }
+}
+
+async function saveSpot() {
+  const name = $('spotName').value.trim();
+  if (!name) { alert('Masukkan nama spot dulu.'); return; }
+  const item = {
+    id: crypto.randomUUID(),
+    name,
+    type: $('spotType').value.trim(),
+    note: $('spotNote').value.trim(),
+    lat: coords ? coords.lat : null,
+    lon: coords ? coords.lon : null,
+    created: Date.now()
+  };
+  await put('spots', item);
+  $('spotName').value = '';
+  $('spotType').value = '';
+  $('spotNote').value = '';
+  coords = null;
+  setCoordText();
+  renderSpots();
+  alert('Spot disimpan.');
+}
+
+async function saveCatch() {
+  const fish = $('fishName').value.trim();
+  if (!fish) { alert('Masukkan jenis ikan.'); return; }
+  const item = {
+    id: crypto.randomUUID(),
+    fish,
+    weight: $('fishWeight').value || null,
+    length: $('fishLength').value || null,
+    spot: $('catchSpot').value || '',
+    bait: $('bait').value.trim(),
+    note: $('catchNote').value.trim(),
+    photo: photoData || null,
+    time: Date.now()
+  };
+  await put('catches', item);
+  ['fishName','fishWeight','fishLength','bait','catchNote','photo'].forEach(id => { const el = $(id); if(el) el.value=''; });
+  photoData = null;
+  renderCatches();
+  renderStats();
+  alert('Rekod tangkapan disimpan.');
+}
+
+window.addEventListener('load', async () => {
+  try {
+    db = await openDB();
+    renderSpots();
+    renderCatches();
+    renderStats();
+    const cachedWeather = JSON.parse(localStorage.getItem('pp-weather') || 'null');
+    if (cachedWeather) showWeather(cachedWeather.data, cachedWeather.at);
+    const cachedMarine = JSON.parse(localStorage.getItem('pp-marine') || 'null');
+    if (cachedMarine) $('marine').textContent = `Data laut terakhir: ${cachedMarine.data.current?.wave_height ?? '—'} m · ${cachedMarine.data.current?.ocean_current_velocity ?? '—'} km/j.`;
+    if (!cachedWeather) {
+      $('wxMain').textContent = 'Sila muat semula';
+      $('wxAt').textContent = 'Kosong · belum ada data';
+    }
+    $('todayLabel').textContent = new Date().toLocaleDateString('ms-MY', {weekday:'long', day:'numeric', month:'long'});
+  } catch {
+    alert('Storan browser tidak dapat dibuka. Gunakan Chrome atau Safari terkini.');
+  }
+});
+
+document.querySelectorAll('.tabs button').forEach(btn => btn.addEventListener('click', () => setTab(btn.dataset.tab)));
+document.querySelectorAll('[data-goto]').forEach(btn => btn.addEventListener('click', () => setTab(btn.dataset.goto)));
+$('gpsBtn').addEventListener('click', () => gps((point) => { coords = point; setCoordText(); fetchWeather(point); }));
+$('refresh').addEventListener('click', () => coords ? fetchWeather(coords) : gps((point) => { coords = point; setCoordText(); fetchWeather(point); }));
+$('spotGPS').addEventListener('click', () => gps((point) => { coords = point; setCoordText(); }));
+$('saveSpot').addEventListener('click', saveSpot);
+$('saveCatch').addEventListener('click', saveCatch);
+$('export').addEventListener('click', exportData);
+$('import').addEventListener('click', importData);
+$('clearData').addEventListener('click', async () => {
+  if (!confirm('Padam semua data? Tindakan ini tidak boleh dibatalkan.')) return;
+  await clearStore('spots');
+  await clearStore('catches');
+  localStorage.removeItem('pp-weather');
+  localStorage.removeItem('pp-marine');
+  renderSpots();
+  renderCatches();
+  renderStats();
+  alert('Semua data telah dipadam.');
+});
+$('openStats').addEventListener('click', () => setTab('stats'));
+$('photo').addEventListener('change', () => {
+  const file = $('photo').files[0];
+  if (!file) { photoData = null; return; }
+  if (file.size > 12 * 1024 * 1024) {
+    alert('Pilih gambar di bawah 12 MB.');
+    $('photo').value = '';
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = () => {
+    const img = new Image();
+    img.onload = () => {
+      const max = 1280;
+      const scale = Math.min(1, max / Math.max(img.width, img.height));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.round(img.width * scale);
+      canvas.height = Math.round(img.height * scale);
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      photoData = canvas.toDataURL('image/jpeg', .82);
+    };
+    img.src = reader.result;
+  };
+  reader.readAsDataURL(file);
+});
+$('catchList').addEventListener('click', async (e) => {
+  const btn = e.target.closest('[data-delete-catch]');
+  if (!btn) return;
+  if (!confirm('Padam rekod tangkapan ini?')) return;
+  await del('catches', btn.dataset.deleteCatch);
+  renderCatches();
+  renderStats();
+});
+$('spotList').addEventListener('click', async (e) => {
+  const btn = e.target.closest('[data-delete-spot]');
+  if (!btn) return;
+  if (!confirm('Padam spot ini?')) return;
+  await del('spots', btn.dataset.deleteSpot);
+  renderSpots();
+});
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(() => {});
+}
+</script>
+</body>
+</html>
+
