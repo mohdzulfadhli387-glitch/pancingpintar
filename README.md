@@ -1,1 +1,5 @@
-{"name":"Pancing Pintar 2.2.1","short_name":"Pancing","description":"App peribadi untuk spot, cuaca dan rekod tangkapan","start_url":"./index.html","scope":"./","display":"standalone","orientation":"portrait","background_color":"#edf5f2","theme_color":"#082c35","icons":[{"src":"./icon-192.png","sizes":"192x192","type":"image/png"},{"src":"./icon-512.png","sizes":"512x512","type":"image/png"}]}
+# Pancing Pintar
+
+Versi 2.3 ialah halaman utama (`index.html`). Ciri: cuaca dan bacaan laut melalui Open-Meteo, simpan spot GPS, log tangkapan, statistik spesies, serta eksport/import backup JSON. Data spot dan log disimpan dalam browser pada peranti ini; eksport backup sebelum clear data atau tukar browser/peranti.
+
+Fail lama `joran-premium.html` kini menghala ke halaman utama supaya pengguna yang buka pautan lama tidak tersangkut pada app lama.
