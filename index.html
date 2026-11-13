@@ -1,98 +1,203 @@
 <!doctype html>
-<html lang="ms">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#082c35">
-<title>Pancing Pintar 2.4</title>
-<link rel="manifest" href="./manifest.webmanifest">
-<link rel="icon" href="./icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="./icon.svg" type="image/svg+xml">
-<link href="https://api.mapbox.com/mapbox-gl-js/v3.1.0/mapbox-gl.css" rel="stylesheet">
-<script src="https://api.mapbox.com/mapbox-gl-js/v3.1.0/mapbox-gl.js"></script>
+<html lang="ms"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#000000"><title>Pancing</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <style>
-:root{--bg:#edf5f2;--card:#fff;--ink:#12313a;--muted:#60767b;--line:#d7e5df;--sea:#0d5967;--gold:#edbd57;--red:#a83d35;--green:#16784e;color-scheme:light}*{box-sizing:border-box}body{margin:0 auto;max-width:620px;min-height:100vh;padding:16px 12px 80px;background:linear-gradient(180deg,#edf5f2 0%,#f5faf8 100%);color:var(--ink);font:16px/1.45 system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}main{display:grid;gap:12px}.row{display:flex;align-items:center;justify-content:space-between;gap:12px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:0 4px 14px rgba(17,39,47,.04)}.hero{padding:18px}.header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 2px 12px}.header h1{font-size:clamp(1.8rem,4vw,2.3rem);margin:0;letter-spacing:-.04em}p{margin:0}.sub,.muted,.note{color:var(--muted)}.pill{background:#eaf4f0;border:1px solid var(--line);color:var(--sea);padding:7px 10px;border-radius:999px;font-weight:700;font-size:.75rem}.primary,.secondary,.ghost,.tabs button{border:0;border-radius:12px;padding:10px 12px;font-weight:700;cursor:pointer}.primary{background:var(--sea);color:#fff}.secondary{background:#eef7f1;color:var(--sea);border:1px solid var(--line)}.ghost{background:transparent;color:var(--sea);border:1px solid var(--line)}.metric{font-size:clamp(1.5rem,4vw,2.1rem);font-weight:800;letter-spacing:-.05em;margin-top:8px}h2,h3{margin:0 0 10px;letter-spacing:-.03em}.hidden{display:none !important}.input,select,textarea,input{width:100%;border:1px solid var(--line);background:#fff;border-radius:12px;padding:12px 13px;color:var(--ink);outline:none}label{display:block;font-weight:700;margin:10px 0 6px;font-size:.9rem}.inline{display:flex;align-items:center;gap:8px}.inline button{flex:1}button[data-page]{padding:10px 12px}.tabs{position:fixed;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-top:1px solid var(--line);padding:8px 12px calc(8px + env(safe-area-inset-bottom));z-index:10}.tabs button{background:transparent;color:var(--muted);padding:10px 6px;border-radius:10px;margin:0}.tabs button.active{background:var(--sea);color:#fff}.list{display:grid;gap:8px}.list-item{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#f9fbfa}.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;margin-top:8px}.day{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 6px;min-height:64px;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between}.day.today{border-color:var(--gold);background:#fffaf0}.day .num{font-weight:700}.day .hijri{font-size:.7rem;color:var(--muted)}.day.holiday{background:#fff5f3}.tide-preview{margin-top:10px;background:#f7fbfa;border:1px dashed var(--line);padding:10px;border-radius:12px}.mapboxgl-map{border-radius:16px;overflow:hidden}.#map{height:260px;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#dfeaf0}.mapboxgl-ctrl-group{border-radius:12px!important}.mapboxgl-ctrl button{border-radius:10px!important}@media(min-width:768px){body{max-width:740px;padding:20px 18px 90px}.main{gap:14px}}@media(max-width:380px){.grid{grid-template-columns:1fr}.tabs{grid-template-columns:repeat(3,1fr)}.tabs button:nth-child(n+4){margin-top:2px}}</style></head>
-<body>
-<header class="header">
-  <div>
-    <h1>🎣 Pancing Pintar</h1>
-    <p class="sub">Versi 2.4 · Pasang surut, kalendar Hijrah, port & rekod sendiri</p>
-  </div>
-  <span class="pill">Data peribadi</span>
-</header>
-<main>
-  <section id="page-home">
-    <div class="row"><div><b id="todayLabel"></b><div class="muted" id="homeLocation">Pilih spot untuk bermula</div></div><button id="gpsWeather" class="primary">📍 GPS & cuaca</button></div>
-    <div class="card hero"><div class="muted">Cuaca semasa</div><div class="metric" id="weatherText">Belum dimuatkan</div><div class="muted" id="weatherTime">Tekan GPS & cuaca untuk muatkan bacaan</div><div class="note" id="weatherMeta"></div></div>
-    <div class="grid"><div class="card"><div class="muted">Angin / tiupan</div><div class="metric" id="wind">—</div><div class="note" id="gust">—</div></div><div class="card"><div class="muted">Suhu air</div><div class="metric" id="waterTemp">—</div><div class="note" id="wave">—</div></div><div class="card"><div class="muted">Ketinggian ombak</div><div class="metric" id="waveHeight">—</div><div class="note" id="seaState">—</div></div></div>
-    <div class="card"><div class="row"><b>Keadaan laut</b><button id="refreshWeather" class="secondary">Muat semula</button></div><p id="marine" class="muted">Data laut belum dimuatkan.</p><p id="safety" class="note">—</p></div>
-    <div class="card"><b>Matahari & bulan</b><div id="solar" class="muted" style="margin-top:6px">—</div><p class="note" id="solarNote"></p></div>
-    <div class="card"><b>Waktu terbaik mengikut log anda</b><div id="bestTime" class="muted" style="margin-top:6px">—</div></div>
-    <div class="card"><div class="row"><div><b id="homeTideTitle">Pasang surut spot pilihan</b><div class="note">Gunakan data jadual rasmi yang anda masukkan.</div></div><button data-page="tides" class="secondary">Jadual air</button></div><div id="tidePreview" class="tide-preview">Belum ada jadual.</div></div>
-    <div class="grid"><div class="card"><div class="muted">Rekod tangkapan</div><div class="metric" id="quickCount">0</div></div><div class="card"><div class="muted">Jumlah berat direkod</div><div class="metric" id="quickWeight">0 kg</div></div></div>
-    <div class="card"><div class="row"><b>Peta spot</b><button id="locateMap" class="secondary">Lokasi saya</button></div><div id="map"></div></div>
-    <div class="card"><div class="row"><div><b>Spot peribadi</b><div class="note">Maklumat dan koordinat tersimpan di browser.</div></div><button data-page="spots" class="secondary">Urus spot</button></div><div id="homeSpots" class="muted">Belum ada spot.</div></div>
-    <p class="note">Pasang surut: aplikasi tidak mereka ramalan. Masukkan bacaan daripada jadual rasmi PHN/Jabatan Laut atau sumber yang anda percayai; paparan graf hanya interpolasi antara bacaan tersebut.</p>
-  </section>
-
-  <section id="page-tides" class="hidden"><h2>Pasang surut</h2><p class="sub">Jadual mengikut spot. Masukkan bacaan pasang/surut daripada sumber rasmi; app lukis anggaran di antara titik bacaan.</p>
-    <div class="card"><label>Spot</label><select id="tideSpot"></select><div class="row"><b id="tideDateLabel">Tarikh</b><div class="inline" style="max-width:150px"><button id="tidePrev" class="ghost">◀</button><button id="tideNext" class="ghost">▶</button></div></div></div>
-    <div class="card"><h3>Tambah bacaan pasang/surut</h3><label>Tarikh dan waktu tempatan</label><input id="tideWhen" type="datetime-local"><div class="grid"><div><label>Jenis</label><select id="tideType"><option value="Pasang">Pasang</option><option value="Surut">Surut</option></select></div><div><label>Tinggi air (m)</label><input id="tideHeight" type="number" step="0.01" placeholder="2.4"></div></div><button id="saveTide" class="primary">Simpan bacaan</button></div>
-  </section>
-
-  <section id="page-spots" class="hidden"><h2>Port, tuas & unjam</h2><p class="sub">Simpan titik GPS dan nota untuk spot sendiri—termasuk tuas, unjam, tukun, muara atau port lain.</p>
-    <div class="card"><h3>Tambah spot</h3><label>Nama spot</label><input id="spotName" maxlength="60" placeholder="Contoh: Unjam luar Kuala Selangor"><label>Kategori spot</label><select id="spotType"><option>Tuas</option><option>Unjam</option><option>Tukun</option><option>Jeti</option><option>Muara</option><option>Sungai</option><option>Tasik</option><option>Kolam</option></select><label>Nota / kedudukan</label><textarea id="spotNote" rows="3" placeholder="Contoh: dekat masuk sungai, bawah pokok"></textarea><div class="row"><button id="spotGps" class="secondary">Ambil GPS</button><button id="saveSpot" class="primary">Simpan spot</button></div></div>
-    <div class="card"><div class="row"><b>Spot tersimpan</b><select id="spotFilter" style="width:auto;min-width:120px;margin:0"><option value="Semua">Semua</option><option>Tuas</option><option>Unjam</option><option>Tukun</option><option>Jeti</option><option>Muara</option><option>Sungai</option><option>Tasik</option><option>Kolam</option></select></div><div id="spotList" class="list"></div></div>
-  </section>
-
-  <section id="page-log" class="hidden"><h2>Log tangkapan</h2><div class="card"><h3>Catat tangkapan</h3><label>Waktu tangkapan</label><input id="catchWhen" type="datetime-local"><label>Jenis ikan</label><input id="fishName" maxlength="60" placeholder="Contoh: Kerisi"><label>Berat (kg)</label><input id="fishWeight" type="number" step="0.1" min="0" placeholder="1.5"><label>Panjang (cm)</label><input id="fishLength" type="number" step="1" min="0" placeholder="42"><label>Spot</label><select id="catchSpot"></select><button id="saveCatch" class="primary">Simpan log</button></div>
-    <div class="card"><div class="row"><b>Rekod terbaru</b></div><div id="catchList" class="list"></div></div>
-  </section>
-
-  <section id="page-calendar" class="hidden"><h2>Kalendar Hijrah</h2><div class="card"><div class="row"><button id="monthPrev" class="ghost">◀</button><b id="calendarTitle"></b><button id="monthNext" class="ghost">▶</button></div><div id="calendarGrid" class="calendar-grid"></div></div></section>
-
-  <section id="page-stats" class="hidden"><h2>Statistik tangkapan</h2><div class="grid"><div class="card"><div class="muted">Jumlah rekod</div><div class="metric" id="statCount">0</div></div><div class="card"><div class="muted">Jumlah berat</div><div class="metric" id="statWeight">0 kg</div></div><div class="card"><div class="muted">Ikan paling kerap</div><div class="metric" id="statFish">—</div></div></div>
-    <div class="card"><div class="row"><b>Waktu terbaik</b></div><div id="bestTimePage" class="muted">—</div></div>
-  </section>
-
-  <section id="page-data" class="hidden"><h2>Backup & data</h2><div class="card"><b>Eksport semua data</b><p class="muted">Spot, jadual pasang surut, log tangkapan dan lokasi cuaca.</p><button id="exportData" class="primary">Eksport JSON</button></div>
-    <div class="card"><b>Import data</b><input id="backupFile" type="file" accept="application/json"><button id="importData" class="secondary">Import</button><p id="storageInfo" class="muted">—</p></div>
-  </section>
-</main>
-<nav class="tabs" aria-label="Navigasi"><button class="active" data-page="home">Hari ini</button><button data-page="tides">Air</button><button data-page="spots">Spot</button><button data-page="log">Log</button><button data-page="calendar">Kalendar</button><button data-page="stats">Statistik</button><button data-page="data">Data</button></nav>
+:root{--bg:#000;--card:#160808;--line:#7a1212;--gold:#ff3d3d;--tx:#fff;--mut:#f0cfcf;--bt:#000}
+[data-t=day]{--bg:#fff;--card:#fff;--line:#a00000;--gold:#b00000;--tx:#000;--mut:#3a1010;--bt:#fff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:18px/1.4 system-ui,-apple-system,sans-serif;padding:env(safe-area-inset-top) 0 calc(78px + env(safe-area-inset-bottom))}
+main{max-width:640px;margin:0 auto;padding:14px}
+h1{font:800 26px/1.1 Georgia,serif;color:var(--gold);margin:6px 0 14px}
+h2{font:700 15px/1.2 system-ui;color:var(--gold);margin:0 0 8px}
+.card{background:var(--card);border:2px solid var(--line);border-radius:10px;padding:14px;margin-bottom:12px}
+.big{font:800 40px/1 Georgia,serif;color:var(--gold)}
+.mut{color:var(--mut);font-size:15px}
+.row{display:flex;gap:10px;align-items:baseline;justify-content:space-between;flex-wrap:wrap}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+button,.btn{font:700 18px system-ui;background:var(--gold);color:var(--bt);border:0;border-radius:10px;padding:14px 16px;min-height:52px;width:100%;margin-top:8px}
+button.o{background:transparent;color:var(--gold);border:2px solid var(--gold)}
+button.s{width:auto;min-height:40px;padding:8px 12px;margin:0;font-size:15px}
+input,select,textarea{width:100%;font:18px system-ui;background:var(--bg);color:var(--tx);border:2px solid var(--line);border-radius:10px;padding:12px;margin:4px 0 10px;min-height:50px}
+label{font-size:15px;font-weight:700;color:var(--mut)}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--bg);border-top:2px solid var(--gold);padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;margin:0;border-radius:0;background:transparent;color:var(--mut);font-size:14px;min-height:64px;padding:6px 2px}
+nav button.on{color:var(--bt);background:var(--gold)}
+.bar{height:14px;background:var(--gold);border-radius:7px;margin:3px 0 8px}
+.win{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)}
+.win:last-child{border:0}
+#map{height:300px;border-radius:10px;border:2px solid var(--line);background:#222}
+.x{color:var(--gold);background:none;border:0;width:auto;min-height:40px;margin:0;padding:6px 10px;font-size:20px}
+[hidden]{display:none!important}
+</style></head><body>
+<main id="v"></main>
+<nav id="nav"></nav>
 <script>
-'use strict';
-const STORE='pancing-pintar-v24';
-const MAPBOX_PUBLIC_TOKEN = 'PASTE_YOUR_MAPBOX_PUBLIC_TOKEN_HERE';
-const $=id=>document.getElementById(id);
-let state={spots:[],tides:[],catches:[],point:null,selectedSpot:''},gpsPoint=null,tideDay=new Date(),calendarMonth=new Date();
-let map=null;
-const hijriFmt=new Intl.DateTimeFormat('en-u-ca-islamic-umalqura-nu-latn',{day:'numeric',month:'long',year:'numeric'});
-function readState(){try{const x=JSON.parse(localStorage.getItem(STORE)||'null');if(x&&typeof x==='object'){state={...state,...x};return}}catch{};try{const old=JSON.parse(localStorage.getItem('p-v2-data')||'null');if(old&&typeof old==='object'){state={...state,...old};}}catch{}}
-function saveState(){try{localStorage.setItem(STORE,JSON.stringify(state))}catch{alert('Storan penuh. Eksport backup dahulu atau padam data lama.')}}
-function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]))}
-function id(){return crypto.randomUUID?crypto.randomUUID():`${Date.now()}-${Math.random().toString(16).slice(2)}`}
-function when(t){return new Date(t).toLocaleString('ms-MY',{dateStyle:'medium',timeStyle:'short'})}
-function dateKey(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
-function page(name){document.querySelectorAll('main section').forEach(s=>s.classList.toggle('hidden',s.id!=='page-'+name));document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('active',b.dataset.page===name));}
-function activeSpot(){return state.spots.find(s=>s.id===($('tideSpot').value||state.selectedSpot))||null}
-function renderSpotOptions(){const opts=state.spots.map(s=>`<option value="${esc(s.id)}">${esc(s.name)} (${esc(s.type||'Spot')})</option>`).join('');const tide=$('tideSpot'),catchSel=$('catchSpot');if(tide){tide.innerHTML=opts||'<option value="">Tiada spot</option>';if(!tide.value&&state.spots[0]){tide.value=state.spots[0].id;state.selectedSpot=state.spots[0].id;}}if(catchSel){catchSel.innerHTML=opts||'<option value="">Tiada spot</option>';if(!catchSel.value&&state.spots[0]) catchSel.value=state.spots[0].id}}
-function renderSpots(){const filter=$('spotFilter')?.value||'Semua';const spots=state.spots.filter(s=>filter==='Semua'||s.type===filter).sort((a,b)=>(b.created||0)-(a.created||0));const list=$('spotList');if(list){list.innerHTML=spots.map(s=>`<div class="list-item"><div class="row"><b>${esc(s.name)}</b><button data-del-spot="${esc(s.id)}" class="ghost">Padam</button></div><div class="muted">${esc(s.type||'Spot')} · ${Number(s.lat||0).toFixed(4)}, ${Number(s.lon||0).toFixed(4)}</div>${s.note?`<div class="note">${esc(s.note)}</div>`:''}</div>`).join('')||'<p class="muted">Belum ada spot.</p>'}}
-function dayTideEvents(spotId,date){const key=dateKey(date);return state.tides.filter(e=>e.spotId===spotId&&dateKey(new Date(e.time))===key).sort((a,b)=>a.time-b.time)}
-function renderTides(){const s=activeSpot(),events=s?dayTideEvents(s.id,tideDay):[];const out=$('tidePreview');if(out){out.textContent=events.length?events.map(e=>`${when(e.time)} · ${e.type} ${Number(e.height).toFixed(2)} m`).join('\n'):'Belum ada jadual untuk hari ini.'}}
-function renderHomeTides(){const s=activeSpot();$('homeTideTitle').textContent=s?`Pasang surut · ${s.name}`:'Pasang surut spot pilihan';renderTides();const ev=s?dayTideEvents(s.id,new Date()):[];const items=ev.length?ev.slice(0,3):[];$('tidePreview').innerHTML=items.length?items.map(e=>`<div class="row"><span>${when(e.time)}</span><b>${e.type}</b><span>${Number(e.height).toFixed(2)} m</span></div>`).join(''):'<span class="muted">Belum ada jadual untuk hari ini.</span>'}
-function hijriParts(d){try{const parts=hijriFmt.formatToParts(d),o={};for(const p of parts)if(['day','month','year'].includes(p.type))o[p.type]=p.value;return o}catch{return{day:'—',month:'Hijrah',year:'—'}}}
-function renderCalendar(){const year=calendarMonth.getFullYear(),month=calendarMonth.getMonth(),first=new Date(year,month,1),last=new Date(year,month+1,0);const title=$('calendarTitle');if(title)title.textContent=new Date(year,month,1).toLocaleDateString('ms-MY',{month:'long',year:'numeric'});const grid=$('calendarGrid');if(!grid)return;const days=[];for(let i=0;i<first.getDay();i++)days.push('<div class="day empty"></div>');for(let d=1;d<=last.getDate();d++){const date=new Date(year,month,d);const h=hijriParts(date);days.push(`<div class="day ${dateKey(date)===dateKey(new Date())?'today':''}"><div class="num">${d}</div><div class="hijri">${h.day}</div></div>`)}while(days.length%7!==0)days.push('<div class="day empty"></div>');grid.innerHTML=days.join('')}
-function renderCatches(){const items=state.catches.slice().sort((a,b)=>b.time-a.time).slice(0,10);const byId=Object.fromEntries(state.spots.map(s=>[s.id,s.name]));const list=$('catchList');if(list){list.innerHTML=items.length?items.map(c=>`<div class="list-item"><div class="row"><b>${esc(c.fish||'—')}</b><button data-del-catch="${esc(c.id)}" class="ghost">Padam</button></div><div class="muted">${when(c.time)} · ${byId[c.spotId]||'Spot'} · ${Number(c.weight||0).toFixed(1)} kg</div></div>`).join(''):'<p class="muted">Belum ada log tangkapan.</p>'};$('quickCount').textContent=String(state.catches.length);$('quickWeight').textContent=`${state.catches.reduce((a,c)=>a+(Number(c.weight)||0),0).toFixed(1)} kg`;}
-function renderStats(){const cs=state.catches;const totalWeight=cs.reduce((a,c)=>a+(Number(c.weight)||0),0);$('statCount').textContent=String(cs.length);$('statWeight').textContent=`${totalWeight.toFixed(1)} kg`;const counts={};for(const c of cs){const f=(c.fish||'Lain-lain').trim();counts[f]=(counts[f]||0)+1}const most=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];$('statFish').textContent=most?most[0]:'—';}
-function getGPS(cb){if(!navigator.geolocation){alert('GPS tidak disokong oleh browser ini.');return}navigator.geolocation.getCurrentPosition(p=>cb({lat:p.coords.latitude,lon:p.coords.longitude,acc:p.coords.accuracy}),()=>alert('Lokasi tidak dapat diperoleh. Cuba sekali lagi.'),{enableHighAccuracy:true,timeout:10000})}
-function weatherView(data,at,p){const c=data.current||{},names={0:'Cerah',1:'Cebisan awan',2:'Separa berawan',3:'Mendung',45:'Kabus',48:'Kabus',51:'Renyai',53:'Hujan renyai',55:'Hujan lebat',61:'Hujan',63:'Hujan lebat',71:'Salji',80:'Hujan',81:'Hujan lebat',82:'Hujan lebat',95:'Ribut',96:'Ribut petir',99:'Ribut petir'};$('weatherText').textContent=`${Math.round(c.temperature_2m ?? 0)}°C · ${names[c.weather_code] || 'Cuaca'};`;$('weatherTime').textContent=`Dikemaskini ${new Date(at).toLocaleTimeString('ms-MY',{hour:'2-digit',minute:'2-digit'})}`;$('weatherMeta').textContent=`Angin ${Math.round(c.wind_speed_10m ?? 0)} km/j · Tekanan ${Math.round(c.pressure_msl ?? 0)} hPa`;$('wind').textContent=`${Math.round(c.wind_speed_10m ?? 0)} km/j`;$('gust').textContent=`Arah ${Math.round(c.wind_direction_10m ?? 0)}°`;$('waterTemp').textContent=c.water_temperature_2m!=null?`${Math.round(c.water_temperature_2m)}°C`:'—';$('wave').textContent=`${c.wind_speed_10m!=null?Math.round(c.wind_speed_10m):'—'} km/j`;}
-async function loadWeather(p){state.point=p;saveState();$('homeLocation').textContent=`${p.lat.toFixed(4)}, ${p.lon.toFixed(4)}`;$('weatherText').textContent='Memuatkan…';const q=`https://api.open-meteo.com/v1/forecast?latitude=${p.lat}&longitude=${p.lon}&current=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m,pressure_msl&hourly=sea_level_height_msl,wave_height&forecast_days=2&timezone=auto`;try{const r=await fetch(q);if(!r.ok)throw new Error('gagal');const data=await r.json();weatherView(data,Date.now(),p);if(map&&window.mapboxgl){map.flyTo({center:[p.lon,p.lat],zoom:10});}}catch{alert('Cuaca gagal dimuatkan. Semak sambungan internet.')}} 
-function renderStorage(){const total=state.spots.length+state.tides.length+state.catches.length;$('storageInfo').textContent=`${state.spots.length} spot · ${state.tides.length} bacaan pasang/surut · ${state.catches.length} log`}
-function exportData(){const data={app:'Pancing Pintar',version:'2.4',exportedAt:new Date().toISOString(),...state};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`pancing-backup-${new Date().toISOString().slice(0,10)}.json`;a.click();}
-async function importData(){const file=$('backupFile').files[0];if(!file)return alert('Pilih fail backup JSON.');try{const x=JSON.parse(await file.text());if(!Array.isArray(x.spots)||!Array.isArray(x.tides)||!Array.isArray(x.catches))throw 0;state={...state,...x};saveState();readState();renderAll();alert('Data berjaya diimport.')}catch{alert('Fail tidak sah. Gunakan fail backup JSON yang betul.')}}
-function initMap(){if(!window.mapboxgl){return;} if(MAPBOX_PUBLIC_TOKEN==='PASTE_YOUR_MAPBOX_PUBLIC_TOKEN_HERE'){const mapWrap=$('map');if(mapWrap)mapWrap.innerHTML='<p class="muted" style="padding:20px">Sila masukkan token Mapbox untuk aktifkan peta.</p>';return;} mapboxgl.accessToken=MAPBOX_PUBLIC_TOKEN;map=new mapboxgl.Map({container:'map',style:'mapbox://styles/mapbox/satellite-streets-v12',center:[101.7,3.1],zoom:8,attributionControl:false});map.on('click',e=>{const n=prompt('Nama spot?');if(!n)return;state.spots.push({id:id(),name:n.trim(),type:'Tuas',lat:e.lngLat.lat,lon:e.lngLat.lng,created:Date.now()});saveState();renderSpotOptions();renderSpots();});}
-function renderAll(){readState();renderSpotOptions();renderSpots();renderTides();renderHomeTides();renderCatches();renderCalendar();renderStats();renderStorage();if(state.point)loadWeather(state.point);}
-document.querySelector('.tabs').addEventListener('click',e=>{const b=e.target.closest('[data-page]');if(b)page(b.dataset.page)});
-document.querySelector('main').addEventListener('click',e=>{const target=e.target.closest('[data-del-spot]');if(target){const idVal=target.getAttribute('data-del-spot');state.spots=state.spots.filter(s=>s.id!==idVal);saveState();renderAll();}const delCatch=e.target.closest('[data-del-catch]');if(delCatch){const idVal=delCatch.getAttribute('data-del-catch');state.catches=state.catches.filter(c=>c.id!==idVal);saveState();renderAll();}});
-$('gpsWeather').addEventListener('click',()=>getGPS(loadWeather));$('refreshWeather').addEventListener('click',()=>{if(state.point)loadWeather(state.point);else getGPS(loadWeather)});$('saveSpot').addEventListener('click',()=>{const name=$('spotName').value.trim();if(!name)return alert('Nama spot perlu diisi.');const lat=Number(prompt('Latitude?', '3.1'));const lon=Number(prompt('Longitude?', '101.7'));if(Number.isNaN(lat)||Number.isNaN(lon))return alert('Koordinat tidak sah.');state.spots.push({id:id(),name,type:$('spotType').value,note:$('spotNote').value.trim(),lat,lon,created:Date.now()});saveState();renderAll();$('spotName').value='';$('spotNote').value='';});$('saveCatch').addEventListener('click',()=>{const fish=$('fishName').value.trim();if(!fish)return alert('Jenis ikan perlu diisi.');const spotId=$('catchSpot').value;const time=$('catchWhen').value||new Date().toISOString();state.catches.push({id:id(),fish,weight:Number($('fishWeight').value||0),length:Number($('fishLength').value||0),spotId,time});saveState();renderAll();});$('exportData').addEventListener('click',exportData);$('importData').addEventListener('click',importData);$('monthPrev').addEventListener('click',()=>{calendarMonth=new Date(calendarMonth.getFullYear(),calendarMonth.getMonth()-1,1);renderCalendar()});$('monthNext').addEventListener('click',()=>{calendarMonth=new Date(calendarMonth.getFullYear(),calendarMonth.getMonth()+1,1);renderCalendar()});$('tidePrev').addEventListener('click',()=>{tideDay=new Date(tideDay.getFullYear(),tideDay.getMonth(),tideDay.getDate()-1);renderTides()});$('tideNext').addEventListener('click',()=>{tideDay=new Date(tideDay.getFullYear(),tideDay.getMonth(),tideDay.getDate()+1);renderTides()});$('saveTide').addEventListener('click',()=>{const spotId=$('tideSpot').value;if(!spotId)return alert('Pilih spot dahulu.');const time=$('tideWhen').value;if(!time)return alert('Masukkan tarikh dan waktu.');state.tides.push({id:id(),spotId,time,height:Number($('tideHeight').value||0),type:$('tideType').value});saveState();renderAll();});renderAll();initMap();if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').catch(()=>{})}</script>
-</body>
-</html>
+const LS=localStorage,$=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let db=JSON.parse(LS.fishdb||'null')||{c:[],s:[],set:{token:'',theme:'night'}};
+db.set=db.set||{token:'',theme:'night'};
+const save=()=>LS.fishdb=JSON.stringify(db);
+let pos=JSON.parse(LS.lastpos||'{"lat":3.1,"lon":101.7}'),env=JSON.parse(LS.env||'null'),tab='home';
+const TABS=[['home','Utama'],['log','Tangkap'],['spot','Spot'],['stat','Statistik'],['set','Tetapan']];
+document.documentElement.dataset.t=db.set.theme==='day'?'day':'';
+
+/* ---------- helpers ---------- */
+function moon(d=new Date()){const p=((((d/864e5+2440587.5)-2451550.1)%29.530588)+29.530588)%29.530588/29.530588;
+ const n=['Bulan baru','Sabit awal','Suku pertama','Cembung awal','Purnama','Cembung akhir','Suku akhir','Sabit akhir'];
+ return{p,name:n[Math.round(p*8)%8],ill:Math.round((1-Math.cos(2*Math.PI*p))/2*100)}}
+const hijri=(d=new Date())=>{try{return new Intl.DateTimeFormat('ms-MY-u-ca-islamic-umalqura',{day:'numeric',month:'long',year:'numeric'}).format(d)}catch(e){return '-'}};
+const dirs=['U','TL','T','TG','S','BD','B','BL'],dirN=d=>d==null?'':dirs[Math.round(d/45)%8];
+const wx=c=>c==null?'-':c===0?'Cerah':c<=3?'Berawan':c<=48?'Kabus':c<=67?'Hujan':c<=77?'Hujan':c<=82?'Hujan lebat':'Ribut petir';
+const fmt=d=>d.toLocaleTimeString('ms-MY',{hour:'2-digit',minute:'2-digit',hour12:false});
+const getPos=()=>new Promise((ok,no)=>navigator.geolocation?navigator.geolocation.getCurrentPosition(p=>ok({lat:p.coords.latitude,lon:p.coords.longitude}),no,{enableHighAccuracy:true,timeout:10000}):no());
+
+/* ---------- data: cuaca + pasang surut ---------- */
+async function load(){
+ try{pos=await getPos();LS.lastpos=JSON.stringify(pos)}catch(e){}
+ try{
+  const q=`latitude=${pos.lat}&longitude=${pos.lon}&timezone=auto&forecast_days=2`;
+  const [w,m]=await Promise.all([
+   fetch(`https://api.open-meteo.com/v1/forecast?${q}&current=temperature_2m,wind_speed_10m,wind_direction_10m,weather_code,pressure_msl&daily=sunrise,sunset&wind_speed_unit=kmh`).then(r=>r.json()),
+   fetch(`https://marine-api.open-meteo.com/v1/marine?${q}&hourly=sea_level_height_msl,wave_height`).then(r=>r.json()).catch(()=>null)]);
+  env={t:Date.now(),w,m};LS.env=JSON.stringify(env);
+ }catch(e){}
+ render();
+}
+function tides(){ // {ev:[{t,type,h}], lvl(i)}
+ const h=env?.m?.hourly;if(!h||!h.sea_level_height_msl)return null;
+ const T=h.time,L=h.sea_level_height_msl;if(L.every(x=>x==null))return null;
+ const ev=[];for(let i=1;i<L.length-1;i++){if(L[i]==null||L[i-1]==null||L[i+1]==null)continue;
+  if(L[i]>L[i-1]&&L[i]>=L[i+1])ev.push({t:new Date(T[i]),type:'Pasang',h:L[i]});
+  if(L[i]<L[i-1]&&L[i]<=L[i+1])ev.push({t:new Date(T[i]),type:'Surut',h:L[i]})}
+ return{T,L,ev}}
+function nowIdx(T){const n=Date.now();let i=T.findIndex(x=>new Date(x)>=n);return i<0?T.length-1:Math.max(0,i)}
+function snapshot(){
+ const c=env?.w?.current||{},td=tides();let tide='';
+ if(td){const nx=td.ev.find(e=>e.t>new Date());const i=nowIdx(td.T);const tr=td.L[i+1]>td.L[i]?'naik':'turun';tide=`Air ${tr}`+(nx?`, ${nx.type.toLowerCase()} ${fmt(nx.t)}`:'')}
+ return{temp:c.temperature_2m,wind:c.wind_speed_10m,dir:c.wind_direction_10m,code:c.weather_code,press:c.pressure_msl,tide,moon:moon().name,hijri:hijri()}}
+
+/* ---------- waktu terbaik ---------- */
+function best(){
+ const td=tides(),w=env?.w;if(!w&&!td)return null;
+ const T=td?td.T:w.daily.time,hist=Array(24).fill(0);
+ db.c.forEach(c=>hist[new Date(c.ts).getHours()]++);
+ const hm=Math.max(1,...hist),mp=moon().p,spring=Math.abs(Math.cos(2*Math.PI*mp)); // baru/purnama ~1
+ const sun=[...(w?.daily?.sunrise||[]),...(w?.daily?.sunset||[])].map(x=>new Date(x));
+ const sc=[];const now=Date.now();
+ if(td){var ch=[];for(let i=1;i<td.L.length-1;i++)ch[i]=Math.abs((td.L[i+1]??0)-(td.L[i-1]??0));var mx=Math.max(0.01,...ch.filter(x=>x))}
+ for(let i=1;i<(td?td.T.length-1:0);i++){const t=new Date(td.T[i]);if(t<now||t-now>24*36e5)continue;
+  let s=(ch[i]/mx)*45; // air bergerak
+  if(sun.some(x=>Math.abs(x-t)<=1.5*36e5))s+=30; // subuh/senja
+  s+=spring*10+(hist[t.getHours()]/hm)*15;
+  sc.push({t,s:Math.round(s)})}
+ if(!sc.length){ // tanpa data pasang surut: guna subuh/senja + sejarah
+  for(let h=0;h<24;h++){const t=new Date();t.setHours(t.getHours()+h,0,0,0);let s=hist[t.getHours()]/hm*40+spring*10;if(sun.some(x=>Math.abs(x-t)<=1.5*36e5))s+=40;sc.push({t,s:Math.round(s)})}}
+ const out=[];sc.sort((a,b)=>b.s-a.s).forEach(x=>{if(out.length<3&&out.every(o=>Math.abs(o.t-x.t)>2*36e5))out.push(x)});
+ return out.sort((a,b)=>a.t-b.t)}
+
+/* ---------- paparan ---------- */
+function render(){
+ $('#nav').innerHTML=TABS.map(([k,n])=>`<button class="${tab===k?'on':''}" onclick="go('${k}')">${n}</button>`).join('');
+ ({home,log,spot,stat,set})[tab]();window.scrollTo(0,0)}
+const go=k=>{tab=k;render()};
+
+function home(){
+ const c=env?.w?.current,td=tides(),m=moon(),b=best(),age=env?Math.round((Date.now()-env.t)/6e4):null;
+ const evs=td?td.ev.filter(e=>e.t>new Date()).slice(0,4):[];
+ $('#v').innerHTML=`<h1>Pancing</h1>
+ <div class="card"><div class="row"><h2>Sekarang</h2><span class="mut">${env?(age<2?'baru dikemas kini':'data '+age+' min lepas'):'tiada data'}</span></div>
+ ${c?`<div class="big">${Math.round(c.temperature_2m)}°C</div><div>${wx(c.weather_code)}</div>
+ <div class="g2" style="margin-top:10px"><div><div class="mut">Angin</div><b>${Math.round(c.wind_speed_10m)} km/j ${dirN(c.wind_direction_10m)}</b></div>
+ <div><div class="mut">Tekanan</div><b>${Math.round(c.pressure_msl)} hPa</b></div></div>`:'<p class="mut">Sambung internet sekali untuk dapatkan cuaca.</p>'}
+ <button onclick="load()">Muat semula</button></div>
+ <div class="card"><h2>Air pasang surut</h2>${evs.length?evs.map(e=>`<div class="win"><b>${e.type}</b><span>${fmt(e.t)} · ${e.h.toFixed(2)} m</span></div>`).join(''):'<p class="mut">Tiada data laut untuk lokasi ini (model global kurang di muara/sungai). Rujuk jadual rasmi.</p>'}</div>
+ <div class="card"><h2>Waktu terbaik (24 jam)</h2>${b&&b.length?b.map(x=>`<div class="win"><b>${x.t.toLocaleDateString('ms-MY',{weekday:'short'})} ${fmt(x.t)}</b><span>skor ${x.s}</span></div>`).join('')+'<p class="mut">Berdasarkan pergerakan air, subuh/senja, bulan, dan rekod tangkapan kau.</p>':'<p class="mut">Perlukan data cuaca.</p>'}</div>
+ <div class="card"><h2>Bulan dan tarikh</h2><div class="big" style="font-size:28px">${m.name}</div><div>${m.ill}% bercahaya</div><div class="mut" style="margin-top:6px">${hijri()} H (boleh beza 1 hari)</div></div>`}
+
+function log(){
+ const sp=db.s.map((s,i)=>`<option value="${i}">${esc(s.name)}</option>`).join('');
+ $('#v').innerHTML=`<h1>Catat tangkapan</h1><div class="card">
+ <label>Spesies</label><input id="f_sp" placeholder="cth. Kerapu, Siakap" list="spl"><datalist id="spl">${[...new Set(db.c.map(c=>c.sp))].map(x=>`<option value="${esc(x)}">`).join('')}</datalist>
+ <div class="g2"><div><label>Berat (kg)</label><input id="f_kg" type="number" step="0.01" inputmode="decimal"></div><div><label>Panjang (cm)</label><input id="f_cm" type="number" inputmode="decimal"></div></div>
+ <label>Umpan</label><input id="f_bait" list="bl" placeholder="cth. udang hidup"><datalist id="bl">${[...new Set(db.c.map(c=>c.bait))].map(x=>`<option value="${esc(x)}">`).join('')}</datalist>
+ <label>Joran / tekel</label><input id="f_rod" placeholder="cth. joran 7ft, reel 4000, leader 20lb" value="${esc(LS.lastrod||'')}">
+ <label>Spot</label><select id="f_spot"><option value="">Lokasi GPS semasa</option>${sp}</select>
+ <label>Nota</label><textarea id="f_note" rows="2"></textarea>
+ <button onclick="addCatch()">Simpan tangkapan</button><p class="mut">Masa, cuaca, angin, air dan bulan direkod automatik.</p></div>
+ <h2>Terkini (${db.c.length})</h2>${db.c.slice().reverse().slice(0,30).map(c=>`<div class="card"><div class="row"><b>${esc(c.sp)||'?'} ${c.kg?c.kg+' kg':''}</b><button class="x" onclick="delC('${c.id}')">✕</button></div>
+ <div class="mut">${new Date(c.ts).toLocaleString('ms-MY')} · ${c.snap?.hijri||''}</div><div>${esc(c.bait)} · ${esc(c.spot)}</div>
+ <div class="mut">${c.snap?.temp!=null?Math.round(c.snap.temp)+'°C, angin '+Math.round(c.snap.wind)+' km/j '+dirN(c.snap.dir)+', ':''}${esc(c.snap?.tide||'')}, ${esc(c.snap?.moon||'')}</div></div>`).join('')||'<p class="mut">Belum ada rekod.</p>'}`}
+async function addCatch(){
+ const g=id=>$('#'+id).value.trim();let p=pos,name='GPS';
+ const si=g('f_spot');if(si!==''){const s=db.s[+si];p={lat:s.lat,lon:s.lon};name=s.name}
+ else{try{p=await getPos();pos=p}catch(e){}}
+ LS.lastrod=g('f_rod');
+ db.c.push({id:Date.now()+'',ts:Date.now(),lat:p.lat,lon:p.lon,spot:name,sp:g('f_sp'),kg:+g('f_kg')||0,cm:+g('f_cm')||0,bait:g('f_bait'),rod:g('f_rod'),note:g('f_note'),snap:snapshot()});
+ save();log()}
+function delC(id){if(confirm('Padam rekod ini?')){db.c=db.c.filter(c=>c.id!==id);save();log()}}
+
+/* ---------- peta (Mapbox) ---------- */
+let map,mk=[];
+function spot(){
+ $('#v').innerHTML=`<h1>Spot</h1>
+ ${db.set.token?'<div id="map"></div><p class="mut">Tekan lama atau ketik peta untuk simpan spot baru.</p>':'<div class="card"><p>Masukkan token Mapbox di Tetapan untuk papar peta.</p></div>'}
+ <button onclick="saveHere()">Simpan lokasi semasa sebagai spot</button>
+ <div style="height:12px"></div>
+ ${db.s.map((s,i)=>{const n=db.c.filter(c=>c.spot===s.name);return`<div class="card"><div class="row"><b>${esc(s.name)}</b><button class="x" onclick="delS(${i})">✕</button></div>
+ <div class="mut">${s.lat.toFixed(5)}, ${s.lon.toFixed(5)} · ${n.length} tangkapan</div>
+ <a style="color:var(--gold);font-weight:700" href="https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lon}">Navigasi</a></div>`}).join('')||'<p class="mut">Belum ada spot.</p>'}`;
+ if(db.set.token)loadMap()}
+async function saveHere(){try{pos=await getPos();LS.lastpos=JSON.stringify(pos)}catch(e){}addSpot(pos.lat,pos.lon)}
+function addSpot(lat,lon){const n=prompt('Nama spot?');if(!n)return;db.s.push({name:n.trim(),lat,lon});save();spot()}
+function delS(i){if(confirm('Padam spot ini? Rekod tangkapan kekal.')){db.s.splice(i,1);save();spot()}}
+function loadMap(){
+ if(window.mapboxgl)return initMap();
+ const l=document.createElement('link');l.rel='stylesheet';l.href='https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.css';document.head.append(l);
+ const s=document.createElement('script');s.src='https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.js';s.onload=initMap;
+ s.onerror=()=>msg('Skrip peta tak dapat dimuat. Sebab biasa: tiada internet, atau fail dibuka dalam pratonton app Claude (sekat sambungan luar). Buka dalam Chrome.');document.head.append(s)}
+const msg=t=>{const m=$('#map');if(m)m.innerHTML='<p style="padding:14px">'+esc(t)+'</p>'};
+function initMap(){
+ if(!mapboxgl.supported())return msg('Peta perlukan WebGL. Cuba Chrome terkini.');
+ mapboxgl.accessToken=db.set.token;map=new mapboxgl.Map({container:'map',style:'mapbox://styles/mapbox/satellite-streets-v12',center:[pos.lon,pos.lat],zoom:11});
+ map.on('click',e=>addSpot(e.lngLat.lat,e.lngLat.lng));
+ map.on('error',e=>{const c=e.error&&e.error.status;if(c===401||c===403)msg('Token Mapbox ditolak ('+c+'). Semak token di Tetapan: mesti bermula pk. dan tiada sekatan URL.');});
+ db.s.forEach(s=>new mapboxgl.Marker({color:'#ff3d3d'}).setLngLat([s.lon,s.lat]).setPopup(new mapboxgl.Popup().setText(s.name)).addTo(map));
+ new mapboxgl.Marker({color:'#ffffff'}).setLngLat([pos.lon,pos.lat]).addTo(map)}
+
+/* ---------- statistik ---------- */
+function group(key){const m={};db.c.forEach(c=>{const k=key(c);if(!k)return;m[k]=m[k]||{n:0,kg:0};m[k].n++;m[k].kg+=c.kg||0});return Object.entries(m).sort((a,b)=>b[1].n-a[1].n||b[1].kg-a[1].kg).slice(0,5)}
+function list(title,arr){const mx=Math.max(1,...arr.map(a=>a[1].n));
+ return`<div class="card"><h2>${title}</h2>${arr.map(([k,v])=>`<div class="row"><b>${esc(k)}</b><span>${v.n}× · ${v.kg.toFixed(1)} kg</span></div><div class="bar" style="width:${v.n/mx*100}%"></div>`).join('')||'<p class="mut">Belum cukup data.</p>'}</div>`}
+function stat(){
+ const tot=db.c.reduce((a,c)=>a+(c.kg||0),0);
+ $('#v').innerHTML=`<h1>Statistik</h1><div class="card g2"><div><div class="big">${db.c.length}</div><div class="mut">tangkapan</div></div><div><div class="big">${tot.toFixed(1)}</div><div class="mut">kg jumlah</div></div></div>
+ ${list('Umpan paling menjadi',group(c=>c.bait?.toLowerCase()))}
+ ${list('Spot paling menjadi',group(c=>c.spot))}
+ ${list('Waktu paling menjadi',group(c=>{const h=new Date(c.ts).getHours(),a=h-h%2;return`${String(a).padStart(2,'0')}:00–${String(a+2).padStart(2,'0')}:00`}))}
+ ${list('Spesies',group(c=>c.sp))}
+ ${list('Fasa bulan',group(c=>c.snap?.moon))}`}
+
+/* ---------- tetapan + backup ---------- */
+function set(){
+ $('#v').innerHTML=`<h1>Tetapan</h1><div class="card"><label>Token Mapbox (pk.…)</label><input id="tok" value="${esc(db.set.token)}" placeholder="pk.eyJ...">
+ <button onclick="db.set.token=$('#tok').value.trim();save();alert('Disimpan')">Simpan token</button>
+ <button class="o" onclick="db.set.theme=db.set.theme==='day'?'night':'day';save();document.documentElement.dataset.t=db.set.theme==='day'?'day':'';render()">Tukar mod: ${db.set.theme==='day'?'Siang (putih merah)':'Malam (merah hitam)'}</button></div>
+ <div class="card"><h2>Backup data</h2><p class="mut">${db.c.length} tangkapan, ${db.s.length} spot. Eksport selalu, simpan dalam Google Drive atau emel kepada diri sendiri.</p>
+ <button onclick="exp()">Eksport (JSON)</button><button class="o" onclick="$('#imp').click()">Import</button>
+ <input id="imp" type="file" accept=".json" hidden onchange="imp(this.files[0])">
+ <button class="o" onclick="expCsv()">Eksport CSV (untuk Excel)</button></div>`}
+function dl(name,txt,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type}));a.download=name;a.click()}
+const day=()=>new Date().toISOString().slice(0,10);
+function exp(){dl(`pancing-backup-${day()}.json`,JSON.stringify(db),'application/json')}
+function expCsv(){const q=v=>`"${String(v??'').replace(/"/g,'""')}"`;
+ dl(`pancing-${day()}.csv`,'tarikh,hijri,spesies,kg,cm,umpan,joran,spot,lat,lon,suhu,angin,air,bulan,nota\n'+db.c.map(c=>[new Date(c.ts).toLocaleString('ms-MY'),c.snap?.hijri,c.sp,c.kg,c.cm,c.bait,c.rod,c.spot,c.lat,c.lon,c.snap?.temp,c.snap?.wind,c.snap?.tide,c.snap?.moon,c.note].map(q).join(',')).join('\n'),'text/csv')}
+function imp(f){if(!f)return;f.text().then(t=>{try{const d=JSON.parse(t);if(!Array.isArray(d.c)||!Array.isArray(d.s))throw 0;
+ if(confirm('Ganti semua data sekarang dengan fail ini?')){db=d;db.set=db.set||{token:'',theme:'night'};save();document.documentElement.dataset.t=db.set.theme==='day'?'day':'';render()}}catch(e){alert('Fail tidak sah')}})}
+
+render();load();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script></body></html>
