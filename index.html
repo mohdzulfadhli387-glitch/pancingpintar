@@ -1,13 +1,13 @@
 <!doctype html>
 <html lang="ms"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#000000"><title>Pancing</title>
+<meta name="theme-color" content="#020b1a"><title>Pancing</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <style>
-:root{--bg:#000;--card:#160808;--line:#7a1212;--gold:#ff3d3d;--tx:#fff;--mut:#f0cfcf;--bt:#000}
-[data-t=day]{--bg:#fff;--card:#fff;--line:#a00000;--gold:#b00000;--tx:#000;--mut:#3a1010;--bt:#fff}
+:root{--bg:#020b1a;--bg2:#061a36;--card:#0a2147;--line:#1f5ba8;--gold:#4db3ff;--tx:#fff;--mut:#c3d9f2;--bt:#00111f}
+[data-t=day]{--bg:#f3f8ff;--bg2:#e6f0ff;--card:#fff;--line:#2a68b5;--gold:#0b4fa3;--tx:#000;--mut:#14304f;--bt:#fff}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--tx);font:18px/1.4 system-ui,-apple-system,sans-serif;padding:env(safe-area-inset-top) 0 calc(78px + env(safe-area-inset-bottom))}
 main{max-width:640px;margin:0 auto;padding:14px}
@@ -32,6 +32,25 @@ nav button.on{color:var(--bt);background:var(--gold)}
 #map{height:300px;border-radius:10px;border:2px solid var(--line);background:#222}
 .x{color:var(--gold);background:none;border:0;width:auto;min-height:40px;margin:0;padding:6px 10px;font-size:20px}
 [hidden]{display:none!important}
+
+.card{border:1px solid var(--line);border-radius:18px;background:linear-gradient(160deg,var(--card),var(--bg2));box-shadow:0 6px 18px rgba(0,0,0,.25)}
+h2{font:700 12px/1.2 system-ui;letter-spacing:.14em;text-transform:uppercase}
+.hero{background:linear-gradient(135deg,#1668c9,#0a3a7a 55%,#061a3a);border:0;color:#fff}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.tile{background:rgba(255,255,255,.12);border-radius:14px;padding:10px 12px;font-size:14px}
+.tile b{display:block;font-size:20px;margin:2px 0}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:4px 0 10px}
+.chip{flex:0 0 auto;width:auto;min-height:44px;padding:8px 16px;margin:0;border-radius:22px;background:transparent;color:var(--tx);border:1.5px solid var(--line);font-size:15px}
+.chip.on{background:var(--gold);color:var(--bt);border-color:var(--gold)}
+.graph{margin:0 -4px 10px}.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th{color:var(--gold);text-align:left;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:6px 6px}
+td{padding:10px 6px;border-top:1px solid var(--line);vertical-align:top;white-space:nowrap}
+tr.sel td{background:rgba(77,179,255,.16)}
+.best{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.bt{border:1px solid var(--line);border-radius:14px;padding:10px 4px;text-align:center}
+.bt b{font:800 22px Georgia,serif;display:block;margin:2px 0}
+.meter{height:6px;border-radius:3px;background:var(--line);margin:8px 6px}.meter i{display:block;height:100%;border-radius:3px;background:var(--gold)}
 </style></head><body>
 <main id="v"></main>
 <nav id="nav"></nav>
@@ -129,18 +148,54 @@ function render(){
  ({home,log,spot,stat,set})[tab]();window.scrollTo(0,0)}
 const go=k=>{tab=k;render()};
 
+let sel=0;
+const dkey=d=>d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate();
+const dnm=d=>d.toLocaleDateString('ms-MY',{weekday:'short'});
+function moonSvg(p){const r=24,c=28,k=Math.cos(2*Math.PI*p),a=Math.abs(k)*r,w=p<.5;
+ const lit=`M${c} ${c-r}A${r} ${r} 0 0 ${w?1:0} ${c} ${c+r}A${a.toFixed(1)} ${r} 0 0 ${w?(k>0?0:1):(k>0?1:0)} ${c} ${c-r}Z`;
+ return`<svg width="64" height="64" viewBox="0 0 56 56"><circle cx="28" cy="28" r="24" fill="#16263f" stroke="var(--line)"/><path d="${lit}" fill="#eaf4ff"/></svg>`}
+function tideCard(td){
+ if(!td)return`<div class="card"><h2>Air pasang surut</h2>${taErr?`<p class="mut">API Tides Atlas gagal: ${esc(taErr)}.</p>`:''}<p class="mut">Tiada data laut untuk lokasi ini (model global kurang di muara/sungai). Rujuk jadual rasmi atau masukkan kunci API di Tetapan.</p></div>`;
+ const days=[],mp={};
+ td.T.forEach((t,i)=>{const d=new Date(t),k=dkey(d);if(!mp[k]){mp[k]={d:new Date(d.getFullYear(),d.getMonth(),d.getDate()),i:[],ev:[]};days.push(mp[k])}mp[k].i.push(i)});
+ td.ev.forEach(e=>{const m=mp[dkey(e.t)];if(m)m.ev.push(e)});
+ if(sel>=days.length)sel=0;
+ const D=days[sel],W=360,H=200,pl=8,pr=8,pt=34,pb=26;
+ const ix=D.i.filter(i=>td.L[i]!=null);let svg='';
+ if(ix.length>1){
+  const Ls=ix.map(i=>td.L[i]),mn=Math.min(...Ls),mx=Math.max(...Ls),rg=Math.max(.3,mx-mn);
+  const X=t=>pl+(t-D.d)/864e5*(W-pl-pr),Y=v=>pt+(1-(v-mn)/rg)*(H-pt-pb);
+  const pts=ix.map(i=>[X(new Date(td.T[i])),Y(td.L[i])]);
+  const ln=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join('');
+  svg=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Graf pasang surut">`+
+   [0,6,12,18,24].map(h=>{const x=X(+D.d+h*36e5);return`<line x1="${x}" x2="${x}" y1="${pt-6}" y2="${H-pb}" stroke="var(--line)" stroke-width="1" opacity=".6"/><text x="${x}" y="${H-8}" font-size="11" text-anchor="${h==0?'start':h==24?'end':'middle'}" fill="var(--mut)">${String(h%24).padStart(2,'0')}:00</text>`}).join('')+
+   `<path d="${ln}L${pts[pts.length-1][0].toFixed(1)} ${H-pb}L${pts[0][0].toFixed(1)} ${H-pb}Z" fill="var(--gold)" opacity=".18"/><path d="${ln}" fill="none" stroke="var(--gold)" stroke-width="3" stroke-linejoin="round"/>`+
+   (dkey(new Date())===dkey(D.d)?(()=>{const x=X(Date.now());return`<line x1="${x}" x2="${x}" y1="${pt-6}" y2="${H-pb}" stroke="var(--tx)" stroke-width="2" stroke-dasharray="4 3"/><text x="${Math.min(W-14,Math.max(14,x))}" y="12" font-size="11" font-weight="700" text-anchor="middle" fill="var(--tx)">kini</text>`})():'')+
+   D.ev.map(e=>{const x=X(e.t),y=Y(e.h),hi=e.type==='Pasang',tx=Math.min(W-34,Math.max(34,x));
+    return`<circle cx="${x}" cy="${y}" r="5" fill="var(--bg)" stroke="var(--gold)" stroke-width="3"/><text x="${tx}" y="${hi?y-10:y+20}" font-size="12" font-weight="700" text-anchor="middle" fill="var(--tx)">${fmt(e.t)} · ${e.h.toFixed(1)}m</text>`}).join('')+`</svg>`}
+ const rows=days.map((d,i)=>{const hi=d.ev.filter(e=>e.type==='Pasang'),lo=d.ev.filter(e=>e.type==='Surut');
+  const f=a=>a.map(e=>`${fmt(e.t)} · ${e.h.toFixed(2)} m`).join('<br>')||'-';
+  return`<tr class="${i===sel?'sel':''}" onclick="sel=${i};render()"><td><b>${i?dnm(d.d):'Hari ini'}</b><br><span class="mut">${d.d.getDate()}/${d.d.getMonth()+1}</span></td><td>▲ ${f(hi)}</td><td>▼ ${f(lo)}</td></tr>`}).join('');
+ return`<div class="card"><div class="row"><h2>Air pasang surut</h2><span class="mut">${esc(td.src||'Model Open-Meteo')}</span></div>
+ ${taErr?`<p class="mut">API Tides Atlas gagal: ${esc(taErr)}. Guna data model.</p>`:''}
+ <div class="chips">${days.map((d,i)=>`<button class="chip ${i===sel?'on':''}" onclick="sel=${i};render()">${i?dnm(d.d)+' '+d.d.getDate():'Hari ini'}</button>`).join('')}</div>
+ <div class="graph">${svg||'<p class="mut">Tiada data untuk hari ini.</p>'}</div>
+ <div class="tw"><table><tr><th>Hari</th><th>Pasang</th><th>Surut</th></tr>${rows}</table></div></div>`}
 function home(){
  const c=env?.w?.current,td=tides(),m=moon(),b=best(),age=env?Math.round((Date.now()-env.t)/6e4):null;
- const evs=td?td.ev.filter(e=>e.t>new Date()).slice(0,4):[];
+ const wh=env?.m?.hourly?.wave_height,wv=wh?wh[nowIdx(env.m.hourly.time)]:null,sn=snapshot();
+ const ic=!c?'':c.weather_code===0?'☀️':c.weather_code<=3?'⛅':c.weather_code<=48?'🌫️':c.weather_code<=82?'🌧️':'⛈️';
  $('#v').innerHTML=`<h1>Pancing</h1>
- <div class="card"><div class="row"><h2>Sekarang</h2><span class="mut">${env?(age<2?'baru dikemas kini':'data '+age+' min lepas'):'tiada data'}</span></div>
- ${c?`<div class="big">${Math.round(c.temperature_2m)}°C</div><div>${wx(c.weather_code)}</div>
- <div class="g2" style="margin-top:10px"><div><div class="mut">Angin</div><b>${Math.round(c.wind_speed_10m)} km/j ${dirN(c.wind_direction_10m)}</b></div>
- <div><div class="mut">Tekanan</div><b>${Math.round(c.pressure_msl)} hPa</b></div></div>`:'<p class="mut">Sambung internet sekali untuk dapatkan cuaca.</p>'}
- <button onclick="load()">Muat semula</button></div>
- <div class="card"><h2>Air pasang surut</h2>${taErr?`<p class="mut">API Tides Atlas gagal: ${esc(taErr)}. Guna data model Open-Meteo.</p>`:''}${td?.src?`<p class="mut">Sumber: ${esc(td.src)}</p>`:''}${evs.length?evs.map(e=>`<div class="win"><b>${e.type}</b><span>${fmt(e.t)} · ${e.h.toFixed(2)} m</span></div>`).join(''):'<p class="mut">Tiada data laut untuk lokasi ini (model global kurang di muara/sungai). Rujuk jadual rasmi.</p>'}</div>
- <div class="card"><h2>Waktu terbaik (24 jam)</h2>${b&&b.length?b.map(x=>`<div class="win"><b>${x.t.toLocaleDateString('ms-MY',{weekday:'short'})} ${fmt(x.t)}</b><span>skor ${x.s}</span></div>`).join('')+'<p class="mut">Berdasarkan pergerakan air, subuh/senja, bulan, dan rekod tangkapan kau.</p>':'<p class="mut">Perlukan data cuaca.</p>'}</div>
- <div class="card"><h2>Bulan dan tarikh</h2><div class="big" style="font-size:28px">${m.name}</div><div>${m.ill}% bercahaya</div><div class="mut" style="margin-top:6px">${hijri()} H (boleh beza 1 hari)</div></div>`}
+ <div class="card hero"><div class="row"><h2 style="color:#9fd4ff;margin:0">Sekarang</h2><span style="opacity:.85;font-size:14px">${env?(age<2?'baru dikemas kini':'data '+age+' min lepas'):'tiada data'}</span></div>
+ ${c?`<div class="row" style="align-items:center;margin-top:8px"><div><div class="big" style="color:#fff">${Math.round(c.temperature_2m)}°</div><div style="font-size:20px">${wx(c.weather_code)}</div></div><div style="font-size:60px;line-height:1">${ic}</div></div>
+ <div class="tiles"><div class="tile"><span>💨 Angin</span><b>${Math.round(c.wind_speed_10m)} km/j <span style="display:inline-block;transform:rotate(${(c.wind_direction_10m||0)+180}deg)">↑</span></b><span>dari ${dirN(c.wind_direction_10m)}</span></div>
+ <div class="tile"><span>🌊 Ombak</span><b>${wv!=null?wv.toFixed(1)+' m':'-'}</b><span>&nbsp;</span></div>
+ <div class="tile"><span>🧭 Tekanan</span><b>${Math.round(c.pressure_msl)} hPa</b><span>&nbsp;</span></div>
+ <div class="tile"><span>⚓ Air</span><b>${esc(sn.tide.split(',')[0]||'-')}</b><span>${esc((sn.tide.split(',')[1]||'').trim())}&nbsp;</span></div></div>`:'<p>Sambung internet sekali untuk dapatkan cuaca.</p>'}
+ <button style="background:#fff;color:#0a2a5c" onclick="load()">Muat semula</button></div>
+ ${tideCard(td)}
+ <div class="card"><h2>Waktu terbaik (24 jam)</h2>${b&&b.length?`<div class="best">${b.map(x=>`<div class="bt"><span class="mut">${dnm(x.t)}</span><b>${fmt(x.t)}</b><div class="meter"><i style="width:${Math.min(100,x.s)}%"></i></div><span class="mut">skor ${x.s}</span></div>`).join('')}</div><p class="mut" style="margin:10px 0 0">Berdasarkan pergerakan air, subuh/senja, bulan dan rekod tangkapan kau.</p>`:'<p class="mut">Perlukan data cuaca.</p>'}</div>
+ <div class="card row" style="align-items:center;flex-wrap:nowrap"><div><h2>Bulan dan tarikh</h2><div style="font:800 24px Georgia,serif">${m.name}</div><div>${m.ill}% bercahaya</div><div class="mut" style="margin-top:6px">${hijri()} H<br>(boleh beza 1 hari)</div></div>${moonSvg(m.p)}</div>`}
 
 function log(){
  const sp=db.s.map((s,i)=>`<option value="${i}">${esc(s.name)}</option>`).join('');
@@ -189,7 +244,7 @@ function initMap(){
  mapboxgl.accessToken=db.set.token;map=new mapboxgl.Map({container:'map',style:'mapbox://styles/mapbox/satellite-streets-v12',center:[pos.lon,pos.lat],zoom:11});
  map.on('click',e=>addSpot(e.lngLat.lat,e.lngLat.lng));
  map.on('error',e=>{const c=e.error&&e.error.status;if(c===401||c===403)msg('Token Mapbox ditolak ('+c+'). Semak token di Tetapan: mesti bermula pk. dan tiada sekatan URL.');});
- db.s.forEach(s=>new mapboxgl.Marker({color:'#ff3d3d'}).setLngLat([s.lon,s.lat]).setPopup(new mapboxgl.Popup().setText(s.name)).addTo(map));
+ db.s.forEach(s=>new mapboxgl.Marker({color:'#4db3ff'}).setLngLat([s.lon,s.lat]).setPopup(new mapboxgl.Popup().setText(s.name)).addTo(map));
  new mapboxgl.Marker({color:'#ffffff'}).setLngLat([pos.lon,pos.lat]).addTo(map)}
 
 /* ---------- statistik ---------- */
@@ -212,7 +267,7 @@ function set(){
  <label>Kunci API pasang surut (Tides Atlas)</label><input id="tk" value="${esc(db.set.tideKey||'')}" placeholder="kunci API" autocomplete="off">
  <label>Kod stesen (pilihan, cth. port-klang)</label><input id="pt" value="${esc(db.set.port||'')}" placeholder="kosongkan = stesen terdekat dengan GPS" autocomplete="off">
  <button onclick="saveSet()">Simpan tetapan</button>
- <button class="o" onclick="db.set.theme=db.set.theme==='day'?'night':'day';save();document.documentElement.dataset.t=db.set.theme==='day'?'day':'';render()">Tukar mod: ${db.set.theme==='day'?'Siang (putih merah)':'Malam (merah hitam)'}</button></div>
+ <button class="o" onclick="db.set.theme=db.set.theme==='day'?'night':'day';save();document.documentElement.dataset.t=db.set.theme==='day'?'day':'';render()">Tukar mod: ${db.set.theme==='day'?'Siang (putih biru)':'Malam (biru)'}</button></div>
  <div class="card"><h2>Backup data</h2><p class="mut">${db.c.length} tangkapan, ${db.s.length} spot. Eksport selalu, simpan dalam Google Drive atau emel kepada diri sendiri.</p>
  <button onclick="exp()">Eksport (JSON)</button><button class="o" onclick="$('#imp').click()">Import</button>
  <input id="imp" type="file" accept=".json" hidden onchange="imp(this.files[0])">
