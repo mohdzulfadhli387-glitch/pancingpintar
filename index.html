@@ -1,308 +1,1021 @@
-<!doctype html>
-<html lang="ms"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#020b1a"><title>Pancing</title>
-<link rel="manifest" href="manifest.json">
-<link rel="icon" href="icon-192.png">
-<link rel="apple-touch-icon" href="icon-192.png">
-<style>
-:root{--bg:#020b1a;--bg2:#061a36;--card:#0a2147;--line:#1f5ba8;--gold:#4db3ff;--tx:#fff;--mut:#c3d9f2;--bt:#00111f}
-[data-t=day]{--bg:#f3f8ff;--bg2:#e6f0ff;--card:#fff;--line:#2a68b5;--gold:#0b4fa3;--tx:#000;--mut:#14304f;--bt:#fff}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--tx);font:18px/1.4 system-ui,-apple-system,sans-serif;padding:env(safe-area-inset-top) 0 calc(78px + env(safe-area-inset-bottom))}
-main{max-width:640px;margin:0 auto;padding:14px}
-h1{font:800 26px/1.1 Georgia,serif;color:var(--gold);margin:6px 0 14px}
-h2{font:700 15px/1.2 system-ui;color:var(--gold);margin:0 0 8px}
-.card{background:var(--card);border:2px solid var(--line);border-radius:10px;padding:14px;margin-bottom:12px}
-.big{font:800 40px/1 Georgia,serif;color:var(--gold)}
-.mut{color:var(--mut);font-size:15px}
-.row{display:flex;gap:10px;align-items:baseline;justify-content:space-between;flex-wrap:wrap}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-button,.btn{font:700 18px system-ui;background:var(--gold);color:var(--bt);border:0;border-radius:10px;padding:14px 16px;min-height:52px;width:100%;margin-top:8px}
-button.o{background:transparent;color:var(--gold);border:2px solid var(--gold)}
-button.s{width:auto;min-height:40px;padding:8px 12px;margin:0;font-size:15px}
-input,select,textarea{width:100%;font:18px system-ui;background:var(--bg);color:var(--tx);border:2px solid var(--line);border-radius:10px;padding:12px;margin:4px 0 10px;min-height:50px}
-label{font-size:15px;font-weight:700;color:var(--mut)}
-nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--bg);border-top:2px solid var(--gold);padding-bottom:env(safe-area-inset-bottom)}
-nav button{flex:1;margin:0;border-radius:0;background:transparent;color:var(--mut);font-size:14px;min-height:64px;padding:6px 2px}
-nav button.on{color:var(--bt);background:var(--gold)}
-.bar{height:14px;background:var(--gold);border-radius:7px;margin:3px 0 8px}
-.win{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)}
-.win:last-child{border:0}
-#map{height:300px;border-radius:10px;border:2px solid var(--line);background:#222}
-.x{color:var(--gold);background:none;border:0;width:auto;min-height:40px;margin:0;padding:6px 10px;font-size:20px}
-[hidden]{display:none!important}
+<!DOCTYPE html>
+<html lang="ms" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#090A0F">
+    <title>Ocean Legacy | Telemetri Marin</title>
 
-.card{border:1px solid var(--line);border-radius:18px;background:linear-gradient(160deg,var(--card),var(--bg2));box-shadow:0 6px 18px rgba(0,0,0,.25)}
-h2{font:700 12px/1.2 system-ui;letter-spacing:.14em;text-transform:uppercase}
-.hero{background:linear-gradient(135deg,#1668c9,#0a3a7a 55%,#061a3a);border:0;color:#fff}
-.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
-.tile{background:rgba(255,255,255,.12);border-radius:14px;padding:10px 12px;font-size:14px}
-.tile b{display:block;font-size:20px;margin:2px 0}
-.chips{display:flex;gap:8px;overflow-x:auto;padding:4px 0 10px}
-.chip{flex:0 0 auto;width:auto;min-height:44px;padding:8px 16px;margin:0;border-radius:22px;background:transparent;color:var(--tx);border:1.5px solid var(--line);font-size:15px}
-.chip.on{background:var(--gold);color:var(--bt);border-color:var(--gold)}
-.graph{margin:0 -4px 10px}.tw{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:15px}
-th{color:var(--gold);text-align:left;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:6px 6px}
-td{padding:10px 6px;border-top:1px solid var(--line);vertical-align:top;white-space:nowrap}
-tr.sel td{background:rgba(77,179,255,.16)}
-.best{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.bt{border:1px solid var(--line);border-radius:14px;padding:10px 4px;text-align:center}
-.bt b{font:800 22px Georgia,serif;display:block;margin:2px 0}
-.meter{height:6px;border-radius:3px;background:var(--line);margin:8px 6px}.meter i{display:block;height:100%;border-radius:3px;background:var(--gold)}
+    <!-- Tailwind (versi dipinkan) -->
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide (versi dipinkan) -->
+    <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
 
-.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
-.ch{font-size:12px;color:var(--gold);font-weight:700;padding:4px 0}
-.cd{display:flex;flex-direction:column;align-items:center;justify-content:space-between;width:auto;min-height:72px;margin:0;padding:5px 0;border:1px solid var(--line);border-radius:10px;background:transparent;color:var(--tx);font:600 16px system-ui}
-.cd small{font-size:12px;color:var(--mut);font-weight:600}
-.cd.t{background:var(--gold);color:var(--bt)}.cd.t small{color:var(--bt)}
-.cd.ev{border:2.5px solid var(--gold)}
-.cd.sl{outline:2.5px solid var(--tx);outline-offset:1px}
-</style></head><body>
-<main id="v"></main>
-<nav id="nav"></nav>
-<script>
-const LS=localStorage,$=s=>document.querySelector(s);
-const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-let db=JSON.parse(LS.fishdb||'null')||{c:[],s:[],set:{token:'',theme:'night'}};
-db.set=db.set||{token:'',theme:'night'};
-const save=()=>LS.fishdb=JSON.stringify(db);
-let ta=JSON.parse(LS.ta||'null'),taErr='';
-let pos=JSON.parse(LS.lastpos||'{"lat":3.1,"lon":101.7}'),env=JSON.parse(LS.env||'null'),tab='home';
-const TABS=[['home','Utama'],['log','Tangkap'],['spot','Spot'],['stat','Statistik'],['set','Tetapan']];
-document.documentElement.dataset.t=db.set.theme==='day'?'day':'';
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        hud: ['"Rajdhani"', 'sans-serif'],
+                    },
+                    colors: {
+                        obsidian: '#090A0F',
+                        titanium: '#14171F',
+                        cyanPulse: '#00E5FF',
+                        amberHud: '#FF9500',
+                    }
+                }
+            }
+        }
+    </script>
 
-/* ---------- helpers ---------- */
-function moon(d=new Date()){const p=((((d/864e5+2440587.5)-2451550.1)%29.530588)+29.530588)%29.530588/29.530588;
- const n=['Bulan baru','Sabit awal','Suku pertama','Cembung awal','Purnama','Cembung akhir','Suku akhir','Sabit akhir'];
- return{p,name:n[Math.round(p*8)%8],ill:Math.round((1-Math.cos(2*Math.PI*p))/2*100)}}
-const HM=['Muharram','Safar','Rabiulawal','Rabiulakhir','Jamadilawal','Jamadilakhir','Rejab','Syaaban','Ramadan','Syawal','Zulkaedah','Zulhijjah'];
-function hijri(d=new Date()){let x;
- try{const p=Object.fromEntries(new Intl.DateTimeFormat('en-u-ca-islamic-umalqura',{day:'numeric',month:'numeric',year:'numeric'}).formatToParts(d).map(o=>[o.type,o.value]));x={d:+p.day,m:+p.month,y:parseInt(p.year)}}catch(e){}
- if(!x||!x.d||!x.m||!x.y||x.m>12){ // kiraan manual jika pelayar tak sokong
-  let l=Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/864e5)+2440588-1948440+10632,n=Math.floor((l-1)/10631);
-  l=l-10631*n+354;const j=Math.floor((10985-l)/5316)*Math.floor(50*l/17719)+Math.floor(l/5670)*Math.floor(43*l/15238);
-  l=l-Math.floor((30-j)/15)*Math.floor(17719*j/50)-Math.floor(j/16)*Math.floor(15238*j/43)+29;
-  const m=Math.floor(24*l/709);x={d:l-Math.floor(709*m/24),m,y:30*n+j-30}}
- return `${x.d} ${HM[x.m-1]} ${x.y}`}
-const dirs=['U','TL','T','TG','S','BD','B','BL'],dirN=d=>d==null?'':dirs[Math.round(d/45)%8];
-const wx=c=>c==null?'-':c===0?'Cerah':c<=3?'Berawan':c<=48?'Kabus':c<=67?'Hujan':c<=77?'Hujan':c<=82?'Hujan lebat':'Ribut petir';
-const fmt=d=>d.toLocaleTimeString('ms-MY',{hour:'2-digit',minute:'2-digit',hour12:false});
-const getPos=()=>new Promise((ok,no)=>navigator.geolocation?navigator.geolocation.getCurrentPosition(p=>ok({lat:p.coords.latitude,lon:p.coords.longitude}),no,{enableHighAccuracy:true,timeout:10000}):no());
+    <style>
+        :root {
+            --bg-obsidian: #090A0F;
+            --chrome-gradient: linear-gradient(135deg, rgba(255,255,255,0.45) 0%, rgba(160,175,195,0.12) 45%, rgba(255,255,255,0.35) 100%);
+            --liquid-surface: linear-gradient(160deg, rgba(30, 35, 48, 0.92) 0%, rgba(15, 18, 25, 0.96) 100%);
+        }
+        * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+        html { scroll-padding-top: 80px; }
+        body {
+            background-color: var(--bg-obsidian);
+            color: #F1F5F9;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+        input, select, button { font-family: inherit; }
+        input, select { user-select: text; }
+        .tabular-hud { font-family: 'Rajdhani', sans-serif; font-variant-numeric: tabular-nums; }
 
-/* ---------- data: cuaca + pasang surut ---------- */
-async function load(){
- try{pos=await getPos();LS.lastpos=JSON.stringify(pos)}catch(e){}
- try{
-  const q=`latitude=${pos.lat}&longitude=${pos.lon}&timezone=auto&forecast_days=2`;
-  const [w,m]=await Promise.all([
-   fetch(`https://api.open-meteo.com/v1/forecast?${q}&current=temperature_2m,wind_speed_10m,wind_direction_10m,weather_code,pressure_msl&daily=sunrise,sunset&wind_speed_unit=kmh`).then(r=>r.json()),
-   fetch(`https://marine-api.open-meteo.com/v1/marine?${q}&hourly=sea_level_height_msl,wave_height`).then(r=>r.json()).catch(()=>null)]);
-  env={t:Date.now(),w,m};LS.env=JSON.stringify(env);
- }catch(e){}
- await loadTa();
- render();
-}
-async function loadTa(){
- const k=db.set.tideKey;taErr='';if(!k){ta=null;return}
- const key=db.set.port||pos.lat.toFixed(2)+','+pos.lon.toFixed(2);
- if(ta&&ta.key===key&&Date.now()-ta.t<6*36e5)return; // jimat kredit: 1 panggilan / 6 jam
- try{const u='https://tidesatlas.com/api/v1/tides?'+(db.set.port?'port='+encodeURIComponent(db.set.port):'lat='+pos.lat+'&lon='+pos.lon)+'&days=3';
-  const r=await fetch(u,{headers:{'X-API-Key':k}});const j=await r.json().catch(()=>({}));
-  if(!r.ok||!j.extremes)throw new Error(j.message||('HTTP '+r.status));
-  ta={key,t:Date.now(),ex:j.extremes,name:j.port?.name||''};LS.ta=JSON.stringify(ta)
- }catch(e){taErr=String(e.message||e)}}
-function tides(){ // {T,L,ev}
- const x=ta&&ta.ex&&ta.ex.length>2?ta.ex.map(e=>({t:new Date(e.datetime),h:e.height_m,hi:String(e.type).toLowerCase().startsWith('h')})).sort((a,b)=>a.t-b.t):null;
- if(x){const T=[],L=[];for(let t=Math.ceil(x[0].t/36e5)*36e5;t<=x[x.length-1].t;t+=36e5){
-   let k=x.findIndex(e=>e.t>t);if(k<1)continue;const a=x[k-1],b=x[k],f=(t-a.t)/(b.t-a.t);
-   T.push(new Date(t).toISOString());L.push(a.h+(b.h-a.h)*(1-Math.cos(Math.PI*f))/2)}
-  return{T,L,ev:x.map(e=>({t:e.t,type:e.hi?'Pasang':'Surut',h:e.h})),src:'Tides Atlas'+(ta.name?' · '+ta.name:'')}}
- const h=env?.m?.hourly;if(!h||!h.sea_level_height_msl)return null;
- const T=h.time,L=h.sea_level_height_msl;if(L.every(x=>x==null))return null;
- const ev=[];for(let i=1;i<L.length-1;i++){if(L[i]==null||L[i-1]==null||L[i+1]==null)continue;
-  if(L[i]>L[i-1]&&L[i]>=L[i+1])ev.push({t:new Date(T[i]),type:'Pasang',h:L[i]});
-  if(L[i]<L[i-1]&&L[i]<=L[i+1])ev.push({t:new Date(T[i]),type:'Surut',h:L[i]})}
- return{T,L,ev}}
-function nowIdx(T){const n=Date.now();let i=T.findIndex(x=>new Date(x)>=n);return i<0?T.length-1:Math.max(0,i)}
-function snapshot(){
- const c=env?.w?.current||{},td=tides();let tide='';
- if(td){const nx=td.ev.find(e=>e.t>new Date());const i=nowIdx(td.T);const tr=td.L[i+1]>td.L[i]?'naik':'turun';tide=`Air ${tr}`+(nx?`, ${nx.type.toLowerCase()} ${fmt(nx.t)}`:'')}
- return{temp:c.temperature_2m,wind:c.wind_speed_10m,dir:c.wind_direction_10m,code:c.weather_code,press:c.pressure_msl,tide,moon:moon().name,hijri:hijri()}}
+        .liquid-card {
+            position: relative;
+            background: var(--liquid-surface);
+            border-radius: 20px;
+            box-shadow: 0 14px 34px -10px rgba(0,0,0,0.85), inset 0 1px 0 0 rgba(255,255,255,0.14);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+        .liquid-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            padding: 1px;
+            background: var(--chrome-gradient);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        .btn-liquid-chrome {
+            background: linear-gradient(135deg, #E2E8F0 0%, #94A3B8 50%, #F8FAFC 100%);
+            color: #090A0F;
+            font-weight: 700;
+            box-shadow: 0 4px 20px rgba(226,232,240,0.25), inset 0 1px 1px #FFFFFF;
+            transition: transform .2s, filter .2s;
+        }
+        .btn-cyan-hud {
+            background: linear-gradient(135deg, #00E5FF 0%, #0099CC 100%);
+            color: #05080D;
+            font-weight: 700;
+            box-shadow: 0 0 22px rgba(0,229,255,0.38), inset 0 1px 1px rgba(255,255,255,0.65);
+            transition: transform .2s, filter .2s;
+        }
+        .btn-liquid-chrome:active, .btn-cyan-hud:active { transform: scale(0.96); filter: brightness(0.92); }
 
-/* ---------- waktu terbaik ---------- */
-function best(){
- const td=tides(),w=env?.w;if(!w&&!td)return null;
- const T=td?td.T:w.daily.time,hist=Array(24).fill(0);
- db.c.forEach(c=>hist[new Date(c.ts).getHours()]++);
- const hm=Math.max(1,...hist),mp=moon().p,spring=Math.abs(Math.cos(2*Math.PI*mp)); // baru/purnama ~1
- const sun=[...(w?.daily?.sunrise||[]),...(w?.daily?.sunset||[])].map(x=>new Date(x));
- const sc=[];const now=Date.now();
- if(td){var ch=[];for(let i=1;i<td.L.length-1;i++)ch[i]=Math.abs((td.L[i+1]??0)-(td.L[i-1]??0));var mx=Math.max(0.01,...ch.filter(x=>x))}
- for(let i=1;i<(td?td.T.length-1:0);i++){const t=new Date(td.T[i]);if(t<now||t-now>24*36e5)continue;
-  let s=(ch[i]/mx)*45; // air bergerak
-  if(sun.some(x=>Math.abs(x-t)<=1.5*36e5))s+=30; // subuh/senja
-  s+=spring*10+(hist[t.getHours()]/hm)*15;
-  sc.push({t,s:Math.round(s)})}
- if(!sc.length){ // tanpa data pasang surut: guna subuh/senja + sejarah
-  for(let h=0;h<24;h++){const t=new Date();t.setHours(t.getHours()+h,0,0,0);let s=hist[t.getHours()]/hm*40+spring*10;if(sun.some(x=>Math.abs(x-t)<=1.5*36e5))s+=40;sc.push({t,s:Math.round(s)})}}
- const out=[];sc.sort((a,b)=>b.s-a.s).forEach(x=>{if(out.length<3&&out.every(o=>Math.abs(o.t-x.t)>2*36e5))out.push(x)});
- return out.sort((a,b)=>a.t-b.t)}
+        .carbon-mesh {
+            background-image:
+                radial-gradient(circle at 50% 0%, rgba(0,229,255,0.08) 0%, transparent 55%),
+                radial-gradient(rgba(255,255,255,0.035) 1px, transparent 0);
+            background-size: 100% 100%, 22px 22px;
+        }
 
-/* ---------- paparan ---------- */
-function render(){
- $('#nav').innerHTML=TABS.map(([k,n])=>`<button class="${tab===k?'on':''}" onclick="go('${k}')">${n}</button>`).join('');
- ({home,log,spot,stat,set})[tab]();window.scrollTo(0,0)}
-const go=k=>{tab=k;render()};
+        @keyframes radarSweep { to { transform: rotate(360deg); } }
+        .radar-sweep-beam {
+            background: conic-gradient(from 0deg, rgba(0,229,255,0.28) 0deg, rgba(0,229,255,0) 75deg, transparent 360deg);
+            animation: radarSweep 6s linear infinite;
+        }
+        @keyframes pulseGlow { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .55; transform: scale(1.18); } }
+        .pin-pulse { animation: pulseGlow 2.4s ease-in-out infinite; }
 
-let sel=0;
-const dkey=d=>d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate();
-const dnm=d=>d.toLocaleDateString('ms-MY',{weekday:'short'});
-function moonSvg(p,z=64){const r=24,c=28,k=Math.cos(2*Math.PI*p),a=Math.abs(k)*r,w=p<.5;
- const lit=`M${c} ${c-r}A${r} ${r} 0 0 ${w?1:0} ${c} ${c+r}A${a.toFixed(1)} ${r} 0 0 ${w?(k>0?0:1):(k>0?1:0)} ${c} ${c-r}Z`;
- return`<svg width="${z}" height="${z}" viewBox="0 0 56 56" style="flex:none"><circle cx="28" cy="28" r="24" fill="#16263f" stroke="var(--line)"/><path d="${lit}" fill="#eaf4ff"/></svg>`}
-function tideCard(td){
- if(!td)return`<div class="card"><h2>Air pasang surut</h2>${taErr?`<p class="mut">API Tides Atlas gagal: ${esc(taErr)}.</p>`:''}<p class="mut">Tiada data laut untuk lokasi ini (model global kurang di muara/sungai). Rujuk jadual rasmi atau masukkan kunci API di Tetapan.</p></div>`;
- const days=[],mp={};
- td.T.forEach((t,i)=>{const d=new Date(t),k=dkey(d);if(!mp[k]){mp[k]={d:new Date(d.getFullYear(),d.getMonth(),d.getDate()),i:[],ev:[]};days.push(mp[k])}mp[k].i.push(i)});
- td.ev.forEach(e=>{const m=mp[dkey(e.t)];if(m)m.ev.push(e)});
- if(sel>=days.length)sel=0;
- const D=days[sel],W=360,H=200,pl=8,pr=8,pt=34,pb=26;
- const ix=D.i.filter(i=>td.L[i]!=null);let svg='';
- if(ix.length>1){
-  const Ls=ix.map(i=>td.L[i]),mn=Math.min(...Ls),mx=Math.max(...Ls),rg=Math.max(.3,mx-mn);
-  const X=t=>pl+(t-D.d)/864e5*(W-pl-pr),Y=v=>pt+(1-(v-mn)/rg)*(H-pt-pb);
-  const pts=ix.map(i=>[X(new Date(td.T[i])),Y(td.L[i])]);
-  const ln=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join('');
-  svg=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Graf pasang surut">`+
-   [0,6,12,18,24].map(h=>{const x=X(+D.d+h*36e5);return`<line x1="${x}" x2="${x}" y1="${pt-6}" y2="${H-pb}" stroke="var(--line)" stroke-width="1" opacity=".6"/><text x="${x}" y="${H-8}" font-size="11" text-anchor="${h==0?'start':h==24?'end':'middle'}" fill="var(--mut)">${String(h%24).padStart(2,'0')}:00</text>`}).join('')+
-   `<path d="${ln}L${pts[pts.length-1][0].toFixed(1)} ${H-pb}L${pts[0][0].toFixed(1)} ${H-pb}Z" fill="var(--gold)" opacity=".18"/><path d="${ln}" fill="none" stroke="var(--gold)" stroke-width="3" stroke-linejoin="round"/>`+
-   (dkey(new Date())===dkey(D.d)?(()=>{const x=X(Date.now());return`<line x1="${x}" x2="${x}" y1="${pt-6}" y2="${H-pb}" stroke="var(--tx)" stroke-width="2" stroke-dasharray="4 3"/><text x="${Math.min(W-14,Math.max(14,x))}" y="12" font-size="11" font-weight="700" text-anchor="middle" fill="var(--tx)">kini</text>`})():'')+
-   D.ev.map(e=>{const x=X(e.t),y=Y(e.h),hi=e.type==='Pasang',tx=Math.min(W-34,Math.max(34,x));
-    return`<circle cx="${x}" cy="${y}" r="5" fill="var(--bg)" stroke="var(--gold)" stroke-width="3"/><text x="${tx}" y="${hi?y-10:y+20}" font-size="12" font-weight="700" text-anchor="middle" fill="var(--tx)">${fmt(e.t)} · ${e.h.toFixed(1)}m</text>`}).join('')+`</svg>`}
- const rows=days.map((d,i)=>{const hi=d.ev.filter(e=>e.type==='Pasang'),lo=d.ev.filter(e=>e.type==='Surut');
-  const f=a=>a.map(e=>`${fmt(e.t)} · ${e.h.toFixed(2)} m`).join('<br>')||'-';
-  return`<tr class="${i===sel?'sel':''}" onclick="sel=${i};render()"><td><b>${i?dnm(d.d):'Hari ini'}</b><br><span class="mut">${d.d.getDate()}/${d.d.getMonth()+1}</span></td><td>▲ ${f(hi)}</td><td>▼ ${f(lo)}</td></tr>`}).join('');
- return`<div class="card"><div class="row"><h2>Air pasang surut</h2><span class="mut">${esc(td.src||'Model Open-Meteo')}</span></div>
- ${taErr?`<p class="mut">API Tides Atlas gagal: ${esc(taErr)}. Guna data model.</p>`:''}
- <div class="chips">${days.map((d,i)=>`<button class="chip ${i===sel?'on':''}" onclick="sel=${i};render()">${i?dnm(d.d)+' '+d.d.getDate():'Hari ini'}</button>`).join('')}</div>
- <div class="graph">${svg||'<p class="mut">Tiada data untuk hari ini.</p>'}</div>
- <div class="tw"><table><tr><th>Hari</th><th>Pasang</th><th>Surut</th></tr>${rows}</table></div></div>`}
-let calOff=0,calSel=null;
-function calCard(){
- const now=new Date(),b=new Date(now.getFullYear(),now.getMonth()+calOff,1),y=b.getFullYear(),mo=b.getMonth(),nd=new Date(y,mo+1,0).getDate(),lead=b.getDay();
- const ks=d=>dkey(new Date(y,mo,d)),tk=dkey(now);
- if(!calSel||!calSel.startsWith(y+'-'+mo+'-'))calSel=(now.getFullYear()===y&&now.getMonth()===mo)?tk:ks(1);
- let cells=['Ahd','Isn','Sel','Rab','Kha','Jum','Sab'].map(n=>`<div class="ch">${n}</div>`).join('')+'<div></div>'.repeat(lead);
- for(let d=1;d<=nd;d++){const dt=new Date(y,mo,d,12),mn=moon(dt),k=ks(d),ev=mn.p<.0169||mn.p>.9831||Math.abs(mn.p-.5)<.0169;
-  cells+=`<button class="cd${k===tk?' t':''}${k===calSel?' sl':''}${ev?' ev':''}" onclick="calSel='${k}';render()"><b>${d}</b>${moonSvg(mn.p,20)}<small>${hijri(dt).split(' ')[0]}</small></button>`}
- const sd=new Date(y,mo,+calSel.split('-')[2],12),sm=moon(sd),hj=hijri(new Date(y,mo,15,12)).split(' ').slice(1).join(' ');
- return`<div class="card"><h2>Kalendar bulan &amp; hijrah</h2>
- <div class="row" style="align-items:center;margin-bottom:8px"><button class="chip" onclick="calOff--;calSel=null;render()">‹</button><div style="text-align:center"><b style="font-size:20px">${b.toLocaleDateString('ms-MY',{month:'long',year:'numeric'})}</b><br><span class="mut">${hj} H</span></div><button class="chip" onclick="calOff++;calSel=null;render()">›</button></div>
- <div class="cal">${cells}</div>
- <p class="mut" style="margin:8px 0 0">Nombor besar = tarikh Masihi, nombor kecil = hijrah. Bingkai tebal = bulan baru atau purnama.</p>
- <div class="row" style="align-items:center;flex-wrap:nowrap;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)"><div><b style="font-size:18px">${dnm(sd)}, ${sd.getDate()}/${sd.getMonth()+1}</b><br>${hijri(sd)} H<br><span class="mut">${sm.name} · ${sm.ill}% bercahaya</span></div>${moonSvg(sm.p,48)}</div>
- <p class="mut" style="margin:8px 0 0">Tarikh hijrah boleh beza 1 hari daripada pengumuman rasmi.</p></div>`}
-function home(){
- const c=env?.w?.current,td=tides(),m=moon(),b=best(),age=env?Math.round((Date.now()-env.t)/6e4):null;
- const wh=env?.m?.hourly?.wave_height,wv=wh?wh[nowIdx(env.m.hourly.time)]:null,sn=snapshot();
- const ic=!c?'':c.weather_code===0?'☀️':c.weather_code<=3?'⛅':c.weather_code<=48?'🌫️':c.weather_code<=82?'🌧️':'⛈️';
- $('#v').innerHTML=`<h1>Pancing</h1>
- <div class="card hero"><div class="row"><h2 style="color:#9fd4ff;margin:0">Sekarang</h2><span style="opacity:.85;font-size:14px">${env?(age<2?'baru dikemas kini':'data '+age+' min lepas'):'tiada data'}</span></div>
- ${c?`<div class="row" style="align-items:center;margin-top:8px"><div><div class="big" style="color:#fff">${Math.round(c.temperature_2m)}°</div><div style="font-size:20px">${wx(c.weather_code)}</div></div><div style="font-size:60px;line-height:1">${ic}</div></div>
- <div class="tiles"><div class="tile"><span>💨 Angin</span><b>${Math.round(c.wind_speed_10m)} km/j <span style="display:inline-block;transform:rotate(${(c.wind_direction_10m||0)+180}deg)">↑</span></b><span>dari ${dirN(c.wind_direction_10m)}</span></div>
- <div class="tile"><span>🌊 Ombak</span><b>${wv!=null?wv.toFixed(1)+' m':'-'}</b><span>&nbsp;</span></div>
- <div class="tile"><span>🧭 Tekanan</span><b>${Math.round(c.pressure_msl)} hPa</b><span>&nbsp;</span></div>
- <div class="tile"><span>⚓ Air</span><b>${esc(sn.tide.split(',')[0]||'-')}</b><span>${esc((sn.tide.split(',')[1]||'').trim())}&nbsp;</span></div></div>`:'<p>Sambung internet sekali untuk dapatkan cuaca.</p>'}
- <button style="background:#fff;color:#0a2a5c" onclick="load()">Muat semula</button></div>
- ${tideCard(td)}
- <div class="card"><h2>Waktu terbaik (24 jam)</h2>${b&&b.length?`<div class="best">${b.map(x=>`<div class="bt"><span class="mut">${dnm(x.t)}</span><b>${fmt(x.t)}</b><div class="meter"><i style="width:${Math.min(100,x.s)}%"></i></div><span class="mut">skor ${x.s}</span></div>`).join('')}</div><p class="mut" style="margin:10px 0 0">Berdasarkan pergerakan air, subuh/senja, bulan dan rekod tangkapan kau.</p>`:'<p class="mut">Perlukan data cuaca.</p>'}</div>
- ${calCard()}`}
+        .tab-view { display: none; }
+        .tab-view.active { display: block; animation: fadeSlideUp .3s cubic-bezier(0.16,1,0.3,1); }
+        @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
-function log(){
- const sp=db.s.map((s,i)=>`<option value="${i}">${esc(s.name)}</option>`).join('');
- $('#v').innerHTML=`<h1>Catat tangkapan</h1><div class="card">
- <label>Spesies</label><input id="f_sp" placeholder="cth. Kerapu, Siakap" list="spl"><datalist id="spl">${[...new Set(db.c.map(c=>c.sp))].map(x=>`<option value="${esc(x)}">`).join('')}</datalist>
- <div class="g2"><div><label>Berat (kg)</label><input id="f_kg" type="number" step="0.01" inputmode="decimal"></div><div><label>Panjang (cm)</label><input id="f_cm" type="number" inputmode="decimal"></div></div>
- <label>Umpan</label><input id="f_bait" list="bl" placeholder="cth. udang hidup"><datalist id="bl">${[...new Set(db.c.map(c=>c.bait))].map(x=>`<option value="${esc(x)}">`).join('')}</datalist>
- <label>Joran / tekel</label><input id="f_rod" placeholder="cth. joran 7ft, reel 4000, leader 20lb" value="${esc(LS.lastrod||'')}">
- <label>Spot</label><select id="f_spot"><option value="">Lokasi GPS semasa</option>${sp}</select>
- <label>Nota</label><textarea id="f_note" rows="2"></textarea>
- <button onclick="addCatch()">Simpan tangkapan</button><p class="mut">Masa, cuaca, angin, air dan bulan direkod automatik.</p></div>
- <h2>Terkini (${db.c.length})</h2>${db.c.slice().reverse().slice(0,30).map(c=>`<div class="card"><div class="row"><b>${esc(c.sp)||'?'} ${c.kg?c.kg+' kg':''}</b><button class="x" onclick="delC('${c.id}')">✕</button></div>
- <div class="mut">${new Date(c.ts).toLocaleString('ms-MY')} · ${c.snap?.hijri||''}</div><div>${esc(c.bait)} · ${esc(c.spot)}</div>
- <div class="mut">${c.snap?.temp!=null?Math.round(c.snap.temp)+'°C, angin '+Math.round(c.snap.wind)+' km/j '+dirN(c.snap.dir)+', ':''}${esc(c.snap?.tide||'')}, ${esc(c.snap?.moon||'')}</div></div>`).join('')||'<p class="mut">Belum ada rekod.</p>'}`}
-async function addCatch(){
- const g=id=>$('#'+id).value.trim();let p=pos,name='GPS';
- const si=g('f_spot');if(si!==''){const s=db.s[+si];p={lat:s.lat,lon:s.lon};name=s.name}
- else{try{p=await getPos();pos=p}catch(e){}}
- LS.lastrod=g('f_rod');
- db.c.push({id:Date.now()+'',ts:Date.now(),lat:p.lat,lon:p.lon,spot:name,sp:g('f_sp'),kg:+g('f_kg')||0,cm:+g('f_cm')||0,bait:g('f_bait'),rod:g('f_rod'),note:g('f_note'),snap:snapshot()});
- save();log()}
-function delC(id){if(confirm('Padam rekod ini?')){db.c=db.c.filter(c=>c.id!==id);save();log()}}
+        .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #090A0F; }
+        ::-webkit-scrollbar-thumb { background: #2C3344; border-radius: 99px; }
 
-/* ---------- peta (Mapbox) ---------- */
-let map,mk=[];
-function spot(){
- $('#v').innerHTML=`<h1>Spot</h1>
- ${db.set.token?'<div id="map"></div><p class="mut">Tekan lama atau ketik peta untuk simpan spot baru.</p>':'<div class="card"><p>Masukkan token Mapbox di Tetapan untuk papar peta.</p></div>'}
- <button onclick="saveHere()">Simpan lokasi semasa sebagai spot</button>
- <div style="height:12px"></div>
- ${db.s.map((s,i)=>{const n=db.c.filter(c=>c.spot===s.name);return`<div class="card"><div class="row"><b>${esc(s.name)}</b><button class="x" onclick="delS(${i})">✕</button></div>
- <div class="mut">${s.lat.toFixed(5)}, ${s.lon.toFixed(5)} · ${n.length} tangkapan</div>
- <a style="color:var(--gold);font-weight:700" href="https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lon}">Navigasi</a></div>`}).join('')||'<p class="mut">Belum ada spot.</p>'}`;
- if(db.set.token)loadMap()}
-async function saveHere(){try{pos=await getPos();LS.lastpos=JSON.stringify(pos)}catch(e){}addSpot(pos.lat,pos.lon)}
-function addSpot(lat,lon){const n=prompt('Nama spot?');if(!n)return;db.s.push({name:n.trim(),lat,lon});save();spot()}
-function delS(i){if(confirm('Padam spot ini? Rekod tangkapan kekal.')){db.s.splice(i,1);save();spot()}}
-function loadMap(){
- if(window.mapboxgl)return initMap();
- const l=document.createElement('link');l.rel='stylesheet';l.href='https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.css';document.head.append(l);
- const s=document.createElement('script');s.src='https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.js';s.onload=initMap;
- s.onerror=()=>msg('Skrip peta tak dapat dimuat. Sebab biasa: tiada internet, atau fail dibuka dalam pratonton app Claude (sekat sambungan luar). Buka dalam Chrome.');document.head.append(s)}
-const msg=t=>{const m=$('#map');if(m)m.innerHTML='<p style="padding:14px">'+esc(t)+'</p>'};
-function initMap(){
- if(!mapboxgl.supported())return msg('Peta perlukan WebGL. Cuba Chrome terkini.');
- mapboxgl.accessToken=db.set.token;map=new mapboxgl.Map({container:'map',style:'mapbox://styles/mapbox/satellite-streets-v12',center:[pos.lon,pos.lat],zoom:11});
- map.on('click',e=>addSpot(e.lngLat.lat,e.lngLat.lng));
- map.on('error',e=>{const c=e.error&&e.error.status;if(c===401||c===403)msg('Token Mapbox ditolak ('+c+'). Semak token di Tetapan: mesti bermula pk. dan tiada sekatan URL.');});
- db.s.forEach(s=>new mapboxgl.Marker({color:'#4db3ff'}).setLngLat([s.lon,s.lat]).setPopup(new mapboxgl.Popup().setText(s.name)).addTo(map));
- new mapboxgl.Marker({color:'#ffffff'}).setLngLat([pos.lon,pos.lat]).addTo(map)}
+        :focus-visible { outline: 2px solid #00E5FF; outline-offset: 2px; }
 
-/* ---------- statistik ---------- */
-function group(key){const m={};db.c.forEach(c=>{const k=key(c);if(!k)return;m[k]=m[k]||{n:0,kg:0};m[k].n++;m[k].kg+=c.kg||0});return Object.entries(m).sort((a,b)=>b[1].n-a[1].n||b[1].kg-a[1].kg).slice(0,5)}
-function list(title,arr){const mx=Math.max(1,...arr.map(a=>a[1].n));
- return`<div class="card"><h2>${title}</h2>${arr.map(([k,v])=>`<div class="row"><b>${esc(k)}</b><span>${v.n}× · ${v.kg.toFixed(1)} kg</span></div><div class="bar" style="width:${v.n/mx*100}%"></div>`).join('')||'<p class="mut">Belum cukup data.</p>'}</div>`}
-function stat(){
- const tot=db.c.reduce((a,c)=>a+(c.kg||0),0);
- $('#v').innerHTML=`<h1>Statistik</h1><div class="card g2"><div><div class="big">${db.c.length}</div><div class="mut">tangkapan</div></div><div><div class="big">${tot.toFixed(1)}</div><div class="mut">kg jumlah</div></div></div>
- ${list('Umpan paling menjadi',group(c=>c.bait?.toLowerCase()))}
- ${list('Spot paling menjadi',group(c=>c.spot))}
- ${list('Waktu paling menjadi',group(c=>{const h=new Date(c.ts).getHours(),a=h-h%2;return`${String(a).padStart(2,'0')}:00–${String(a+2).padStart(2,'0')}:00`}))}
- ${list('Spesies',group(c=>c.sp))}
- ${list('Fasa bulan',group(c=>c.snap?.moon))}`}
+        @media (prefers-reduced-motion: reduce) {
+            .radar-sweep-beam, .pin-pulse, .tab-view.active { animation: none; }
+        }
 
-/* ---------- tetapan + backup ---------- */
-function saveSet(){db.set.token=$('#tok').value.trim();db.set.tideKey=$('#tk').value.trim();db.set.port=$('#pt').value.trim();ta=null;LS.removeItem('ta');save();alert('Disimpan');load()}
-function set(){
- $('#v').innerHTML=`<h1>Tetapan</h1><div class="card"><label>Token Mapbox (pk.…)</label><input id="tok" value="${esc(db.set.token)}" placeholder="pk.eyJ...">
- <label>Kunci API pasang surut (Tides Atlas)</label><input id="tk" value="${esc(db.set.tideKey||'')}" placeholder="kunci API" autocomplete="off">
- <label>Kod stesen (pilihan, cth. port-klang)</label><input id="pt" value="${esc(db.set.port||'')}" placeholder="kosongkan = stesen terdekat dengan GPS" autocomplete="off">
- <button onclick="saveSet()">Simpan tetapan</button>
- <button class="o" onclick="db.set.theme=db.set.theme==='day'?'night':'day';save();document.documentElement.dataset.t=db.set.theme==='day'?'day':'';render()">Tukar mod: ${db.set.theme==='day'?'Siang (putih biru)':'Malam (biru)'}</button></div>
- <div class="card"><h2>Backup data</h2><p class="mut">${db.c.length} tangkapan, ${db.s.length} spot. Eksport selalu, simpan dalam Google Drive atau emel kepada diri sendiri.</p>
- <button onclick="exp()">Eksport (JSON)</button><button class="o" onclick="$('#imp').click()">Import</button>
- <input id="imp" type="file" accept=".json" hidden onchange="imp(this.files[0])">
- <button class="o" onclick="expCsv()">Eksport CSV (untuk Excel)</button></div>`}
-function dl(name,txt,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type}));a.download=name;a.click()}
-const day=()=>new Date().toISOString().slice(0,10);
-function exp(){dl(`pancing-backup-${day()}.json`,JSON.stringify(db),'application/json')}
-function expCsv(){const q=v=>`"${String(v??'').replace(/"/g,'""')}"`;
- dl(`pancing-${day()}.csv`,'tarikh,hijri,spesies,kg,cm,umpan,joran,spot,lat,lon,suhu,angin,air,bulan,nota\n'+db.c.map(c=>[new Date(c.ts).toLocaleString('ms-MY'),c.snap?.hijri,c.sp,c.kg,c.cm,c.bait,c.rod,c.spot,c.lat,c.lon,c.snap?.temp,c.snap?.wind,c.snap?.tide,c.snap?.moon,c.note].map(q).join(',')).join('\n'),'text/csv')}
-function imp(f){if(!f)return;f.text().then(t=>{try{const d=JSON.parse(t);if(!Array.isArray(d.c)||!Array.isArray(d.s))throw 0;
- if(confirm('Ganti semua data sekarang dengan fail ini?')){db=d;db.set=db.set||{token:'',theme:'night'};save();document.documentElement.dataset.t=db.set.theme==='day'?'day':'';render()}}catch(e){alert('Fail tidak sah')}})}
+        /* Tab app lama */
+        #legacy-frame { width: 100%; height: calc(100dvh - 230px); min-height: 420px; border: 0; border-radius: 16px; background: #fff; }
+    </style>
+</head>
+<body class="carbon-mesh min-h-screen flex flex-col justify-between" style="padding-bottom: calc(7rem + env(safe-area-inset-bottom, 0px));">
 
-render();load();
-if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
-</script></body></html>
+    <!-- HEADER -->
+    <header class="sticky top-0 z-40 bg-[#090A0F]/85 backdrop-blur-xl border-b border-white/10 px-4 pb-3.5" style="padding-top: calc(0.875rem + env(safe-area-inset-top, 0px));">
+        <div class="max-w-lg mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-200 via-slate-400 to-slate-700 p-[1px] shadow-lg shadow-cyan-500/10">
+                    <div class="w-full h-full bg-[#0D1017] rounded-[11px] flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-cyan-500/20 to-transparent"></div>
+                        <i data-lucide="compass" class="w-5 h-5 text-cyanPulse"></i>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center gap-1.5">
+                        <h1 class="font-hud font-bold text-lg tracking-wider uppercase bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">OCEAN LEGACY</h1>
+                        <span class="text-[10px] font-hud font-bold px-1.5 py-0.5 rounded bg-cyanPulse/15 text-cyanPulse border border-cyanPulse/30">GT-26</span>
+                    </div>
+                    <p class="text-[11px] text-slate-400 tracking-wide flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block animate-pulse"></span>
+                        <span id="header-clock" class="tabular-hud">--</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="relative">
+                <label for="location-selector" class="sr-only">Pilih lokasi</label>
+                <select id="location-selector" onchange="handleLocationChange(this.value)"
+                    class="appearance-none bg-[#161B26] text-xs font-semibold text-slate-100 pl-3 pr-8 py-2 rounded-xl border border-white/15 focus:outline-none focus:border-cyanPulse cursor-pointer">
+                    <option value="kelong">Jeti Kelong Tengah</option>
+                    <option value="muara">Muara Sungai Klang</option>
+                    <option value="terbuka">Perairan Terbuka Tukun</option>
+                </select>
+                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-cyanPulse absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-lg mx-auto w-full px-4 pt-4 space-y-5">
+
+        <!-- TAB 1: KOKPIT -->
+        <section id="tab-kokpit" class="tab-view active space-y-4">
+            <div class="liquid-card p-5 overflow-hidden">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-[11px] font-hud uppercase tracking-widest text-slate-400 flex items-center gap-1.5">
+                        <i data-lucide="activity" class="w-3.5 h-3.5 text-cyanPulse"></i> Telemetri marin
+                    </span>
+                    <span id="tide-phase-badge" class="text-[11px] font-hud font-bold px-2.5 py-0.5 rounded-full bg-cyanPulse/15 text-cyanPulse border border-cyanPulse/30">--</span>
+                </div>
+
+                <div class="relative flex flex-col items-center justify-center my-2">
+                    <svg class="w-60 h-44 overflow-visible" viewBox="0 0 240 165" aria-hidden="true">
+                        <defs>
+                            <linearGradient id="chromeArc" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#475569" />
+                                <stop offset="50%" stop-color="#E2E8F0" />
+                                <stop offset="100%" stop-color="#475569" />
+                            </linearGradient>
+                            <linearGradient id="cyanGauge" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#0284C7" />
+                                <stop offset="60%" stop-color="#00E5FF" />
+                                <stop offset="100%" stop-color="#FF9500" />
+                            </linearGradient>
+                            <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
+                                <feGaussianBlur stdDeviation="4" result="blur" />
+                                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                            </filter>
+                        </defs>
+                        <path d="M 25 140 A 95 95 0 1 1 215 140" fill="none" stroke="#1E2433" stroke-width="14" stroke-linecap="round" />
+                        <path d="M 18 140 A 102 102 0 1 1 222 140" fill="none" stroke="url(#chromeArc)" stroke-width="1.5" stroke-dasharray="3 4" opacity="0.7" />
+                        <path id="gauge-progress-arc" d="M 25 140 A 95 95 0 1 1 215 140" fill="none" stroke="url(#cyanGauge)" stroke-width="14" stroke-linecap="round"
+                            stroke-dasharray="298" stroke-dashoffset="298" filter="url(#neonGlow)"
+                            style="transition: stroke-dashoffset .9s cubic-bezier(0.16,1,0.3,1);" />
+                    </svg>
+
+                    <div class="absolute top-12 flex flex-col items-center text-center">
+                        <span class="text-[10px] font-hud uppercase tracking-widest text-slate-400">Paras air semasa</span>
+                        <div class="flex items-baseline gap-1">
+                            <span id="gauge-tide-val" class="tabular-hud text-5xl font-bold text-white tracking-tight">--</span>
+                            <span class="tabular-hud text-lg font-semibold text-cyanPulse">m</span>
+                        </div>
+                        <div class="mt-1.5 flex items-center gap-1.5 bg-black/50 px-3 py-1 rounded-full border border-white/10">
+                            <i data-lucide="zap" class="w-3.5 h-3.5 text-amberHud"></i>
+                            <span class="text-[11px] font-hud font-semibold text-slate-200">Indeks solunar</span>
+                            <span id="gauge-solunar-val" class="tabular-hud text-xs font-bold text-amberHud">--</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2.5 pt-2 border-t border-white/10">
+                    <div class="bg-[#0D1017]/90 rounded-2xl p-2.5 border border-white/5 text-center">
+                        <div class="flex items-center justify-center gap-1 text-slate-400 text-[10px] font-hud uppercase"><i data-lucide="gauge" class="w-3 h-3 text-cyanPulse"></i> Barometer</div>
+                        <div id="stat-pressure" class="tabular-hud text-lg font-bold text-white mt-0.5">--</div>
+                        <div class="text-[10px] text-emerald-400 font-medium">Stabil</div>
+                    </div>
+                    <div class="bg-[#0D1017]/90 rounded-2xl p-2.5 border border-white/5 text-center">
+                        <div class="flex items-center justify-center gap-1 text-slate-400 text-[10px] font-hud uppercase"><i data-lucide="wind" class="w-3 h-3 text-cyanPulse"></i> Angin</div>
+                        <div id="stat-wind" class="tabular-hud text-lg font-bold text-white mt-0.5">--</div>
+                        <div id="stat-wind-dir" class="text-[10px] text-slate-400 font-medium">--</div>
+                    </div>
+                    <div class="bg-[#0D1017]/90 rounded-2xl p-2.5 border border-white/5 text-center">
+                        <div class="flex items-center justify-center gap-1 text-slate-400 text-[10px] font-hud uppercase"><i data-lucide="thermometer" class="w-3 h-3 text-amberHud"></i> Suhu air</div>
+                        <div id="stat-temp" class="tabular-hud text-lg font-bold text-white mt-0.5">--</div>
+                        <div class="text-[10px] text-cyanPulse font-medium">Jernih</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="liquid-card p-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <h2 class="font-hud font-bold text-base tracking-wide text-white flex items-center gap-1.5">
+                            <i data-lucide="waves" class="w-4 h-4 text-cyanPulse"></i> Graf pasang surut 24 jam
+                        </h2>
+                        <p class="text-[11px] text-slate-400">Sentuh graf untuk lihat paras air mengikut jam</p>
+                    </div>
+                    <div class="text-right bg-cyanPulse/10 border border-cyanPulse/30 px-2.5 py-1 rounded-xl">
+                        <div id="chart-selected-time" class="tabular-hud text-xs font-bold text-cyanPulse">--</div>
+                        <div id="chart-selected-height" class="tabular-hud text-sm font-bold text-white">--</div>
+                    </div>
+                </div>
+
+                <div class="relative w-full h-40 select-none" style="touch-action: pan-y;">
+                    <svg id="tide-chart-svg" class="w-full h-full overflow-visible" viewBox="0 0 340 130" preserveAspectRatio="none">
+                        <defs>
+                            <linearGradient id="tideAreaGrad" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#00E5FF" stop-opacity="0.35" />
+                                <stop offset="100%" stop-color="#00E5FF" stop-opacity="0" />
+                            </linearGradient>
+                        </defs>
+                        <line x1="0" y1="25" x2="340" y2="25" stroke="rgba(255,255,255,0.06)" stroke-dasharray="3 3" />
+                        <line x1="0" y1="65" x2="340" y2="65" stroke="rgba(255,255,255,0.06)" stroke-dasharray="3 3" />
+                        <line x1="0" y1="105" x2="340" y2="105" stroke="rgba(255,255,255,0.06)" stroke-dasharray="3 3" />
+                        <path id="tide-area-path" d="" fill="url(#tideAreaGrad)" />
+                        <path id="tide-line-path" d="" fill="none" stroke="#00E5FF" stroke-width="2.5" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+                        <line id="tide-cursor-line" x1="150" y1="10" x2="150" y2="115" stroke="#FF9500" stroke-width="1.5" stroke-dasharray="2 2" vector-effect="non-scaling-stroke" />
+                    </svg>
+                    <!-- Titik kursor dalam HTML supaya tidak ronyok bila SVG diregang -->
+                    <div id="tide-cursor-dot" class="absolute w-3 h-3 rounded-full bg-amberHud border-2 border-[#090A0F] -translate-x-1/2 -translate-y-1/2 pointer-events-none" style="left:50%; top:30%;"></div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2.5 mt-2 pt-2.5 border-t border-white/10 text-xs">
+                    <div class="flex items-center justify-between bg-white/[0.03] px-3 py-2 rounded-xl">
+                        <span class="text-slate-400">Pasang penuh</span>
+                        <span id="peak-high-time" class="tabular-hud font-bold text-cyanPulse">--</span>
+                    </div>
+                    <div class="flex items-center justify-between bg-white/[0.03] px-3 py-2 rounded-xl">
+                        <span class="text-slate-400">Zon ragutan</span>
+                        <span id="strike-window-time" class="tabular-hud font-bold text-amberHud">--</span>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="openCatchModal()" class="w-full btn-cyan-hud py-3.5 rounded-2xl flex items-center justify-center gap-2 text-sm tracking-wide">
+                <i data-lucide="plus-circle" class="w-5 h-5"></i> Rekod tangkapan baharu
+            </button>
+        </section>
+
+        <!-- TAB 2: PETA RADAR -->
+        <section id="tab-peta" class="tab-view space-y-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="font-hud font-bold text-xl tracking-wide text-white">Radar lokasi lubuk</h2>
+                    <p class="text-xs text-slate-400">Ketik pin untuk butiran, atau tekan "+ Lubuk" untuk tanda lubuk baharu</p>
+                </div>
+                <button id="toggle-add-pin-btn" onclick="toggleAddSpotMode()"
+                    class="px-3 py-2 rounded-xl text-xs font-hud font-bold tracking-wider border border-cyanPulse/40 bg-cyanPulse/10 text-cyanPulse flex items-center gap-1.5 shrink-0">
+                    <i data-lucide="map-pin-plus" class="w-4 h-4"></i>
+                    <span id="add-pin-btn-text">+ Lubuk</span>
+                </button>
+            </div>
+
+            <div class="liquid-card p-2 relative overflow-hidden">
+                <div id="radar-map-container" onclick="handleMapClick(event)"
+                    class="relative w-full h-80 rounded-2xl bg-[#070A10] overflow-hidden border border-white/10">
+                    <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 360 320" preserveAspectRatio="none" aria-hidden="true">
+                        <g stroke="rgba(0,229,255,0.08)" stroke-width="1">
+                            <line x1="0" y1="80" x2="360" y2="80" /><line x1="0" y1="160" x2="360" y2="160" /><line x1="0" y1="240" x2="360" y2="240" />
+                            <line x1="90" y1="0" x2="90" y2="320" /><line x1="180" y1="0" x2="180" y2="320" /><line x1="270" y1="0" x2="270" y2="320" />
+                        </g>
+                        <circle cx="180" cy="160" r="55" fill="none" stroke="rgba(0,229,255,0.14)" stroke-dasharray="4 4" />
+                        <circle cx="180" cy="160" r="110" fill="none" stroke="rgba(0,229,255,0.12)" stroke-dasharray="4 4" />
+                        <circle cx="180" cy="160" r="165" fill="none" stroke="rgba(0,229,255,0.08)" />
+                        <path d="M 0,45 Q 90,65 140,25 T 280,15 L 360,0 L 0,0 Z" fill="#131924" stroke="#283548" stroke-width="1.5" />
+                        <path d="M 240,210 Q 290,190 330,235 T 270,295 Q 220,275 240,210 Z" fill="rgba(0,229,255,0.05)" stroke="rgba(0,229,255,0.25)" stroke-dasharray="3 2" />
+                    </svg>
+
+                    <div class="absolute inset-[-40%] radar-sweep-beam pointer-events-none rounded-full"></div>
+                    <div id="map-pins-layer" class="absolute inset-0"></div>
+
+                    <div class="absolute bottom-3 left-3 bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-lg border border-white/10 text-[10px] tabular-hud text-slate-300 flex items-center gap-1.5 pointer-events-none">
+                        <span class="w-2 h-2 rounded-full bg-cyanPulse"></span>
+                        <span id="map-gps-hud">--</span>
+                    </div>
+
+                    <div id="add-spot-banner" class="hidden absolute top-3 inset-x-3 bg-amberHud/95 text-black font-hud font-bold text-xs py-1.5 px-3 rounded-xl text-center shadow-lg pointer-events-none">
+                        Ketik mana-mana di atas radar untuk tanda lubuk baharu
+                    </div>
+                </div>
+            </div>
+
+            <div class="liquid-card p-4 space-y-3">
+                <div class="flex items-start justify-between gap-2">
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-cyanPulse shadow-[0_0_10px_#00E5FF] shrink-0"></span>
+                            <h3 id="spot-name" class="font-hud font-bold text-lg text-white truncate">--</h3>
+                        </div>
+                        <p id="spot-coords" class="tabular-hud text-xs text-slate-400 mt-0.5">--</p>
+                    </div>
+                    <span id="spot-rating" class="text-xs font-hud font-bold px-2.5 py-1 rounded-lg bg-amberHud/15 text-amberHud border border-amberHud/30 shrink-0">--</span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2.5 text-xs">
+                    <div class="bg-[#0D1017] p-2.5 rounded-xl border border-white/5">
+                        <span class="text-slate-400 block text-[10px] font-hud uppercase">Kedalaman & dasar</span>
+                        <span id="spot-depth" class="font-semibold text-slate-100 mt-0.5 block">--</span>
+                    </div>
+                    <div class="bg-[#0D1017] p-2.5 rounded-xl border border-white/5">
+                        <span class="text-slate-400 block text-[10px] font-hud uppercase">Fasa air terbaik</span>
+                        <span id="spot-tide" class="font-semibold text-cyanPulse mt-0.5 block">--</span>
+                    </div>
+                </div>
+
+                <div class="bg-[#0D1017] p-2.5 rounded-xl border border-white/5 flex items-center justify-between gap-2">
+                    <div class="min-w-0">
+                        <span class="text-slate-400 block text-[10px] font-hud uppercase">Spesies sasaran</span>
+                        <span id="spot-species" class="text-xs font-semibold text-white">--</span>
+                    </div>
+                    <button onclick="selectSpotForLog()" class="btn-liquid-chrome text-xs px-3 py-1.5 rounded-lg font-hud shrink-0">Log di sini</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: LOG -->
+        <section id="tab-log" class="tab-view space-y-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="font-hud font-bold text-xl tracking-wide text-white">Log tangkapan</h2>
+                    <p class="text-xs text-slate-400">Hasil dan konfigurasi joran anda</p>
+                </div>
+                <button onclick="openCatchModal()" class="btn-cyan-hud px-3.5 py-2 rounded-xl text-xs font-hud tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="plus" class="w-4 h-4"></i> Rekod
+                </button>
+            </div>
+
+            <div id="species-filter-bar" class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar"></div>
+            <div id="catch-log-list" class="space-y-3"></div>
+        </section>
+
+        <!-- TAB 4: REKOD -->
+        <section id="tab-rekod" class="tab-view space-y-4">
+            <div>
+                <h2 class="font-hud font-bold text-xl tracking-wide text-white">Prestasi & rekod</h2>
+                <p class="text-xs text-slate-400">Ringkasan semua ekspedisi memancing anda</p>
+            </div>
+
+            <div class="liquid-card p-5 relative overflow-hidden">
+                <div class="absolute -right-6 -top-6 w-32 h-32 rounded-full bg-amberHud/10 blur-2xl pointer-events-none"></div>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-[11px] font-hud tracking-widest text-amberHud flex items-center gap-1.5">
+                            <i data-lucide="trophy" class="w-4 h-4"></i> Rekod terberat peribadi
+                        </span>
+                        <div class="flex items-baseline gap-2 mt-1">
+                            <span id="stats-heaviest-weight" class="tabular-hud text-4xl font-bold text-white">0.00</span>
+                            <span class="tabular-hud text-lg font-bold text-amberHud">kg</span>
+                        </div>
+                        <p id="stats-heaviest-detail" class="text-xs text-slate-300 mt-1">--</p>
+                    </div>
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amberHud/20 to-amberHud/5 border border-amberHud/30 flex items-center justify-center shrink-0">
+                        <i data-lucide="award" class="w-7 h-7 text-amberHud"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div class="liquid-card p-4">
+                    <span class="text-[11px] font-hud text-slate-400">Jumlah tangkapan</span>
+                    <div id="stats-total-count" class="tabular-hud text-3xl font-bold text-cyanPulse mt-1">0</div>
+                    <span class="text-[11px] text-slate-400">ekor direkodkan</span>
+                </div>
+                <div class="liquid-card p-4">
+                    <span class="text-[11px] font-hud text-slate-400">Jumlah berat</span>
+                    <div id="stats-total-weight" class="tabular-hud text-3xl font-bold text-white mt-1">0.0 <span class="text-sm text-slate-400">kg</span></div>
+                    <span class="text-[11px] text-slate-400">terkumpul</span>
+                </div>
+            </div>
+
+            <div class="liquid-card p-4 space-y-3">
+                <h3 class="font-hud font-bold text-sm tracking-wider text-slate-300 border-b border-white/10 pb-2">Apa yang paling menjadi</h3>
+                <div class="flex items-center justify-between text-xs gap-3">
+                    <span class="text-slate-400 flex items-center gap-2 shrink-0"><i data-lucide="map-pin" class="w-4 h-4 text-cyanPulse"></i> Lokasi paling produktif</span>
+                    <span id="stats-top-location" class="font-bold text-white text-right">--</span>
+                </div>
+                <div class="flex items-center justify-between text-xs gap-3">
+                    <span class="text-slate-400 flex items-center gap-2 shrink-0"><i data-lucide="crosshair" class="w-4 h-4 text-amberHud"></i> Spesies dominan</span>
+                    <span id="stats-top-species" class="font-bold text-white text-right">--</span>
+                </div>
+                <div class="flex items-center justify-between text-xs gap-3">
+                    <span class="text-slate-400 flex items-center gap-2 shrink-0"><i data-lucide="waves" class="w-4 h-4 text-emerald-400"></i> Fasa pasang terbaik</span>
+                    <span id="stats-top-tide" class="font-bold text-emerald-400 text-right">--</span>
+                </div>
+            </div>
+
+            <div class="liquid-card p-4 flex items-center justify-between gap-3">
+                <div>
+                    <h4 class="text-xs font-bold text-white">Simpanan dalam peranti</h4>
+                    <p class="text-[11px] text-slate-400">Log dan lubuk disimpan automatik pada peranti ini</p>
+                </div>
+                <button onclick="resetDemoData()" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 shrink-0">
+                    Set semula demo
+                </button>
+            </div>
+        </section>
+
+        <!-- TAB 5: APP LAMA -->
+        <section id="tab-lagi" class="tab-view space-y-3">
+            <div>
+                <h2 class="font-hud font-bold text-xl tracking-wide text-white">App memancing sedia ada</h2>
+                <p class="text-xs text-slate-400">Fungsi lama anda dimuatkan di sini</p>
+            </div>
+
+            <!-- Papar bila LEGACY_APP_URL belum ditetapkan -->
+            <div id="legacy-placeholder" class="liquid-card p-5 space-y-3 text-xs text-slate-300">
+                <p class="font-hud font-bold text-base text-white">App lama belum disambung</p>
+                <p>Untuk memuatkan app lama di tab ini:</p>
+                <ol class="list-decimal pl-4 space-y-1.5 text-slate-400">
+                    <li>Tukar nama fail app lama kepada <span class="tabular-hud text-cyanPulse">app-lama.html</span>.</li>
+                    <li>Letak dalam folder yang sama dengan fail ini di GitHub.</li>
+                    <li>Dalam skrip bawah, tukar <span class="tabular-hud text-cyanPulse">LEGACY_APP_URL</span> kepada <span class="tabular-hud text-cyanPulse">'app-lama.html'</span>.</li>
+                </ol>
+            </div>
+
+            <div id="legacy-wrap" class="hidden liquid-card p-2">
+                <iframe id="legacy-frame" title="App memancing sedia ada" loading="lazy"></iframe>
+            </div>
+        </section>
+    </main>
+
+    <!-- NAV BAWAH -->
+    <nav class="fixed inset-x-0 z-40 px-4" style="bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));" aria-label="Navigasi utama">
+        <div class="max-w-lg mx-auto bg-[#11151E]/90 backdrop-blur-2xl border border-white/15 rounded-2xl p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.9)] grid grid-cols-5 gap-1">
+            <button onclick="switchTab('kokpit')" id="nav-kokpit" class="nav-btn flex flex-col items-center justify-center py-2 rounded-xl text-slate-400 transition">
+                <i data-lucide="gauge" class="w-5 h-5"></i>
+                <span class="text-[10px] font-hud font-bold tracking-wider mt-1">Kokpit</span>
+            </button>
+            <button onclick="switchTab('peta')" id="nav-peta" class="nav-btn flex flex-col items-center justify-center py-2 rounded-xl text-slate-400 transition">
+                <i data-lucide="radar" class="w-5 h-5"></i>
+                <span class="text-[10px] font-hud font-bold tracking-wider mt-1">Radar</span>
+            </button>
+            <button onclick="switchTab('log')" id="nav-log" class="nav-btn flex flex-col items-center justify-center py-2 rounded-xl text-slate-400 transition">
+                <i data-lucide="fish" class="w-5 h-5"></i>
+                <span class="text-[10px] font-hud font-bold tracking-wider mt-1">Log</span>
+            </button>
+            <button onclick="switchTab('rekod')" id="nav-rekod" class="nav-btn flex flex-col items-center justify-center py-2 rounded-xl text-slate-400 transition">
+                <i data-lucide="trophy" class="w-5 h-5"></i>
+                <span class="text-[10px] font-hud font-bold tracking-wider mt-1">Rekod</span>
+            </button>
+            <button onclick="switchTab('lagi')" id="nav-lagi" class="nav-btn flex flex-col items-center justify-center py-2 rounded-xl text-slate-400 transition">
+                <i data-lucide="layout-grid" class="w-5 h-5"></i>
+                <span class="text-[10px] font-hud font-bold tracking-wider mt-1">App lama</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- MODAL TANGKAPAN -->
+    <div id="catch-modal" class="fixed inset-0 z-50 hidden items-end sm:items-center justify-center bg-black/80 backdrop-blur-md p-4" onclick="if(event.target===this)closeCatchModal()">
+        <div class="liquid-card w-full max-w-md p-5 space-y-4 max-h-[92dvh] overflow-y-auto" role="dialog" aria-modal="true" aria-label="Rekod tangkapan baharu">
+            <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-cyanPulse"></span>
+                    <h3 class="font-hud font-bold text-lg tracking-wider text-white">Rekod tangkapan baharu</h3>
+                </div>
+                <button onclick="closeCatchModal()" aria-label="Tutup" class="p-1.5 rounded-lg bg-white/5 text-slate-400 hover:text-white">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <form id="catch-form" onsubmit="saveNewCatch(event)" class="space-y-3 text-xs">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label for="input-species" class="block text-slate-400 font-hud mb-1">Spesies ikan</label>
+                        <select id="input-species" required class="w-full bg-[#0D1017] border border-white/15 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-cyanPulse">
+                            <option value="Siakap">Siakap</option>
+                            <option value="Jenahak">Jenahak</option>
+                            <option value="Kerapu">Kerapu</option>
+                            <option value="Tenggiri">Tenggiri</option>
+                            <option value="Merah">Ikan Merah</option>
+                            <option value="Pari">Pari</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="input-location" class="block text-slate-400 font-hud mb-1">Lokasi lubuk</label>
+                        <input id="input-location" type="text" required placeholder="cth: Kelong Tengah" class="w-full bg-[#0D1017] border border-white/15 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-cyanPulse">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label for="input-weight" class="block text-slate-400 font-hud mb-1">Berat (kg)</label>
+                        <input id="input-weight" type="number" inputmode="decimal" step="0.01" min="0.1" required placeholder="2.45" class="w-full bg-[#0D1017] border border-white/15 rounded-xl px-3 py-2.5 text-white tabular-hud focus:outline-none focus:border-cyanPulse">
+                    </div>
+                    <div>
+                        <label for="input-length" class="block text-slate-400 font-hud mb-1">Panjang (cm)</label>
+                        <input id="input-length" type="number" inputmode="numeric" step="1" min="5" required placeholder="54" class="w-full bg-[#0D1017] border border-white/15 rounded-xl px-3 py-2.5 text-white tabular-hud focus:outline-none focus:border-cyanPulse">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label for="input-bait" class="block text-slate-400 font-hud mb-1">Umpan / gewang</label>
+                        <input id="input-bait" type="text" required placeholder="cth: Udang hidup" class="w-full bg-[#0D1017] border border-white/15 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-cyanPulse">
+                    </div>
+                    <div>
+                        <label for="input-tide" class="block text-slate-400 font-hud mb-1">Fasa pasang surut</label>
+                        <select id="input-tide" class="w-full bg-[#0D1017] border border-white/15 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-cyanPulse">
+                            <option value="Pasang Naik">Pasang Naik</option>
+                            <option value="Pasang Penuh">Pasang Penuh</option>
+                            <option value="Surut Bergerak">Surut Bergerak</option>
+                            <option value="Air Mati">Air Mati</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="input-tackle" class="block text-slate-400 font-hud mb-1">Joran & kekili</label>
+                    <input id="input-tackle" type="text" placeholder="cth: PE 1.5 • Stella 3000" class="w-full bg-[#0D1017] border border-white/15 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-cyanPulse">
+                </div>
+
+                <div class="pt-2 flex gap-2.5">
+                    <button type="button" onclick="closeCatchModal()" class="w-1/3 py-3 rounded-xl bg-white/5 text-slate-300 font-semibold">Batal</button>
+                    <button type="submit" class="w-2/3 btn-cyan-hud py-3 rounded-xl font-hud tracking-wider text-sm">Simpan ke log</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL LUBUK -->
+    <div id="spot-modal" class="fixed inset-0 z-50 hidden items-end sm:items-center justify-center bg-black/80 backdrop-blur-md p-4" onclick="if(event.target===this)closeSpotModal()">
+        <div class="liquid-card w-full max-w-md p-5 space-y-4 max-h-[92dvh] overflow-y-auto" role="dialog" aria-modal="true" aria-label="Tanda lubuk baharu">
+            <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                <h3 class="font-hud font-bold text-lg text-white">Tanda lubuk baharu</h3>
+                <button onclick="closeSpotModal()" aria-label="Tutup" class="p-1.5 rounded-lg bg-white/5 text-slate-400"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form id="spot-form" onsubmit="saveNewSpot(event)" class="space-y-3 text-xs">
+                <div>
+                    <label for="spot-input-name" class="block text-slate-400 font-hud mb-1">Nama lubuk</label>
+                    <input id="spot-input-name" type="text" required placeholder="cth: Beting Karang Utara" class="w-full bg-[#0D1017] border border-white/15 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-cyanPulse">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label for="spot-input-depth" class="block text-slate-400 font-hud mb-1">Kedalaman & dasar</label>
+                        <input id="spot-input-depth" type="text" required placeholder="cth: 12m • Karang" class="w-full bg-[#0D1017] border border-white/15 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-cyanPulse">
+                    </div>
+                    <div>
+                        <label for="spot-input-tide" class="block text-slate-400 font-hud mb-1">Fasa air terbaik</label>
+                        <input id="spot-input-tide" type="text" required placeholder="cth: Pasang Penuh" class="w-full bg-[#0D1017] border border-white/15 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-cyanPulse">
+                    </div>
+                </div>
+                <div>
+                    <label for="spot-input-species" class="block text-slate-400 font-hud mb-1">Spesies sasaran</label>
+                    <input id="spot-input-species" type="text" required placeholder="cth: Kerapu, Jenahak" class="w-full bg-[#0D1017] border border-white/15 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-cyanPulse">
+                </div>
+                <button type="submit" class="w-full btn-cyan-hud py-3 rounded-xl font-hud tracking-wider text-sm mt-2">Simpan lubuk</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="hud-toast" class="fixed left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-opacity duration-300" style="top: calc(5rem + env(safe-area-inset-top, 0px));" role="status" aria-live="polite">
+        <div class="bg-[#141923]/95 border border-cyanPulse/50 text-white px-4 py-2.5 rounded-2xl shadow-[0_0_25px_rgba(0,229,255,0.3)] flex items-center gap-2 text-xs font-semibold">
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-cyanPulse"></i>
+            <span id="hud-toast-text"></span>
+        </div>
+    </div>
+
+    <script>
+        // ======================================================================
+        // TETAPAN: sambung app lama di sini. Contoh: const LEGACY_APP_URL = 'app-lama.html';
+        // ======================================================================
+        const LEGACY_APP_URL = '';
+
+        // Pelindung HTML untuk teks yang ditaip pengguna
+        const esc = (s) => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+        // Storage selamat (private mode / disekat)
+        const store = {
+            get(key, fallback) {
+                try { const v = JSON.parse(localStorage.getItem(key)); return Array.isArray(v) ? v : fallback; } catch (e) { return fallback; }
+            },
+            set(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) { /* abaikan */ } },
+            remove(key) { try { localStorage.removeItem(key); } catch (e) { /* abaikan */ } }
+        };
+
+        // ---------- DATA SIMULASI (ganti dengan API sebenar bila ada) ----------
+        const LOCATION_DATA = {
+            kelong: { tideLevel: 2.84, phase: "AIR PASANG MENAIK ▲", solunar: "92% OPTIMUM", pressure: 1011, wind: 8.5, windDir: "Barat Daya", temp: 28.6, peakHigh: "12:15 TGH (3.4m)", strikeWindow: "10:30 - 13:00", curve: [1.2, 1.5, 2.1, 2.8, 3.4, 3.1, 2.3, 1.4, 0.9, 1.3, 2.2, 2.9, 3.2] },
+            muara:  { tideLevel: 2.15, phase: "SURUT BERGERAK ▼", solunar: "84% TINGGI", pressure: 1009, wind: 6.2, windDir: "Selatan", temp: 29.2, peakHigh: "01:40 PTG (3.1m)", strikeWindow: "09:45 - 11:30", curve: [2.6, 2.1, 1.4, 0.8, 1.1, 1.9, 2.8, 3.1, 2.5, 1.7, 1.0, 1.4, 2.2] },
+            terbuka:{ tideLevel: 3.18, phase: "HAMPIR PASANG PENUH ▲", solunar: "96% PUNCAK", pressure: 1013, wind: 11.4, windDir: "Timur Laut", temp: 27.9, peakHigh: "11:50 PG (3.5m)", strikeWindow: "10:00 - 12:45", curve: [1.0, 1.8, 2.7, 3.5, 3.3, 2.4, 1.5, 0.7, 1.1, 2.0, 2.9, 3.4, 2.8] }
+        };
+        const MAX_TIDE = 3.8;
+        const GAUGE_LEN = 298;
+        const CHART_W = 340, CHART_H = 115, CHART_SCALE = 95;
+
+        const DEFAULT_SPOTS = [
+            { id: 1, name: "Lubuk Siakap Muara", coords: "03.0042° N, 101.3911° E", depth: "6.5m • Lumpur & Bakau", tide: "Pasang Bergerak Naik", species: "Siakap Putih, Merah, Senangin", rating: "★ 4.9 HOTSPOT", x: 28, y: 34 },
+            { id: 2, name: "Kelong Tengah GT", coords: "02.9815° N, 101.3620° E", depth: "11.0m • Tiang & Karang", tide: "Air Mati / Pasang Penuh", species: "Jenahak, Talang, Pari", rating: "★ 4.8 AKTIF", x: 54, y: 52 },
+            { id: 3, name: "Tukun Karang Selatan", coords: "02.9520° N, 101.4105° E", depth: "18.5m • Terumbu Batu", tide: "Pasang Perlahan", species: "Kerapu Bara, Merah, Tenggiri", rating: "★ 5.0 TROFI", x: 75, y: 72 }
+        ];
+        const DEFAULT_CATCHES = [
+            { id: 101, species: "Jenahak", weight: 6.85, length: 74, location: "Tukun Karang Selatan", bait: "Sotong Kurita Hidup", tackle: "PE 2.5 • Saltiga 4000", tide: "Pasang Naik", date: "12 Nov 2026 • 11:20 PG" },
+            { id: 102, species: "Siakap", weight: 4.20, length: 66, location: "Lubuk Siakap Muara", bait: "Gewang Minnow 90mm", tackle: "PE 1.2 • Vanquish 2500", tide: "Pasang Naik", date: "08 Nov 2026 • 08:45 PG" },
+            { id: 103, species: "Kerapu", weight: 3.15, length: 52, location: "Kelong Tengah GT", bait: "Udang Lipan", tackle: "PE 2.0 • Twin Power 3000", tide: "Surut Bergerak", date: "02 Nov 2026 • 04:15 PTG" }
+        ];
+        const FILTERS = ['Semua', 'Siakap', 'Jenahak', 'Kerapu', 'Tenggiri', 'Merah', 'Pari'];
+
+        // ---------- STATE ----------
+        let spots = store.get('ocean_legacy_spots', DEFAULT_SPOTS.map(s => ({ ...s })));
+        let catches = store.get('ocean_legacy_catches', DEFAULT_CATCHES.map(c => ({ ...c })));
+        if (!spots.length) spots = DEFAULT_SPOTS.map(s => ({ ...s }));
+        let selectedSpot = spots[0];
+        let isAddSpotMode = false;
+        let pendingPinCoords = { x: 50, y: 50 };
+        let currentFilter = 'Semua';
+        let currentCurveData = LOCATION_DATA.kelong.curve;
+        let legacyLoaded = false;
+
+        const icons = () => { if (window.lucide) lucide.createIcons(); };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            updateClock();
+            setInterval(updateClock, 30000);
+            renderFilterChips();
+            handleLocationChange('kelong');
+            renderMapPins();
+            selectSpot(spots[0].id);
+            renderCatchList();
+            updateStatsSummary();
+            initChartInteraction();
+            switchTab('kokpit');
+            icons();
+        });
+
+        function updateClock() {
+            const now = new Date();
+            const days = ['AHD', 'ISN', 'SEL', 'RAB', 'KHA', 'JUM', 'SAB'];
+            let h = now.getHours();
+            const m = String(now.getMinutes()).padStart(2, '0');
+            const ap = h >= 12 ? 'PM' : 'AM';
+            h = h % 12 || 12;
+            document.getElementById('header-clock').textContent = `${days[now.getDay()]} ${h}:${m} ${ap} • Sonar aktif`;
+        }
+
+        function switchTab(name) {
+            document.querySelectorAll('.tab-view').forEach(el => el.classList.remove('active'));
+            document.getElementById(`tab-${name}`).classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                const on = btn.id === `nav-${name}`;
+                btn.classList.toggle('bg-cyanPulse/15', on);
+                btn.classList.toggle('text-cyanPulse', on);
+                btn.classList.toggle('text-slate-400', !on);
+                if (on) btn.setAttribute('aria-current', 'page'); else btn.removeAttribute('aria-current');
+            });
+            if (name === 'lagi') loadLegacyApp();
+            window.scrollTo({ top: 0 });
+        }
+
+        function loadLegacyApp() {
+            if (!LEGACY_APP_URL || legacyLoaded) return;
+            legacyLoaded = true;
+            document.getElementById('legacy-frame').src = LEGACY_APP_URL;
+            document.getElementById('legacy-wrap').classList.remove('hidden');
+            document.getElementById('legacy-placeholder').classList.add('hidden');
+        }
+
+        // ---------- KOKPIT ----------
+        function handleLocationChange(key) {
+            const d = LOCATION_DATA[key];
+            if (!d) return;
+            document.getElementById('tide-phase-badge').textContent = d.phase;
+            document.getElementById('gauge-tide-val').textContent = d.tideLevel.toFixed(2);
+            document.getElementById('gauge-solunar-val').textContent = d.solunar;
+            document.getElementById('stat-pressure').innerHTML = `${d.pressure} <span class="text-xs font-normal text-slate-400">hPa</span>`;
+            document.getElementById('stat-wind').innerHTML = `${d.wind} <span class="text-xs font-normal text-slate-400">kt</span>`;
+            document.getElementById('stat-wind-dir').textContent = d.windDir;
+            document.getElementById('stat-temp').innerHTML = `${d.temp} <span class="text-xs font-normal text-slate-400">°C</span>`;
+            document.getElementById('peak-high-time').textContent = d.peakHigh;
+            document.getElementById('strike-window-time').textContent = d.strikeWindow;
+
+            // Tolok dikira daripada paras air
+            const ratio = Math.max(0, Math.min(1, d.tideLevel / MAX_TIDE));
+            document.getElementById('gauge-progress-arc').style.strokeDashoffset = GAUGE_LEN * (1 - ratio);
+
+            currentCurveData = d.curve;
+            drawTideChart(d.curve);
+        }
+
+        function pointsFor(vals) {
+            const step = CHART_W / (vals.length - 1);
+            return vals.map((v, i) => ({ x: i * step, y: CHART_H - (v / MAX_TIDE) * CHART_SCALE }));
+        }
+
+        // Lengkung licin (Catmull-Rom -> Bezier) yang melalui setiap titik
+        function smoothPath(p) {
+            let d = `M ${p[0].x} ${p[0].y}`;
+            for (let i = 0; i < p.length - 1; i++) {
+                const p0 = p[i - 1] || p[i], p1 = p[i], p2 = p[i + 1], p3 = p[i + 2] || p2;
+                const c1x = p1.x + (p2.x - p0.x) / 6, c1y = p1.y + (p2.y - p0.y) / 6;
+                const c2x = p2.x - (p3.x - p1.x) / 6, c2y = p2.y - (p3.y - p1.y) / 6;
+                d += ` C ${c1x.toFixed(1)} ${c1y.toFixed(1)}, ${c2x.toFixed(1)} ${c2y.toFixed(1)}, ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;
+            }
+            return d;
+        }
+
+        function drawTideChart(vals) {
+            const d = smoothPath(pointsFor(vals));
+            document.getElementById('tide-line-path').setAttribute('d', d);
+            document.getElementById('tide-area-path').setAttribute('d', `${d} L ${CHART_W} ${CHART_H} L 0 ${CHART_H} Z`);
+            // Kursor bermula pada jam semasa
+            updateChartCursor(Math.round(new Date().getHours() / 2));
+        }
+
+        function updateChartCursor(index) {
+            const n = currentCurveData.length;
+            const i = Math.max(0, Math.min(n - 1, index));
+            const p = pointsFor(currentCurveData)[i];
+
+            const line = document.getElementById('tide-cursor-line');
+            line.setAttribute('x1', p.x); line.setAttribute('x2', p.x);
+
+            const dot = document.getElementById('tide-cursor-dot');
+            dot.style.left = `${(p.x / CHART_W) * 100}%`;
+            dot.style.top = `${(p.y / 130) * 100}%`;
+
+            const hour = (i * 2) % 24 || (i === n - 1 ? 24 : 0);
+            const h24 = hour % 24;
+            const ap = h24 >= 12 ? 'PTG' : 'PG';
+            const dh = h24 % 12 || 12;
+            document.getElementById('chart-selected-time').textContent = `${String(dh).padStart(2, '0')}:00 ${ap}`;
+            document.getElementById('chart-selected-height').textContent = `${currentCurveData[i].toFixed(2)} m`;
+        }
+
+        function initChartInteraction() {
+            const svg = document.getElementById('tide-chart-svg');
+            const move = (x) => {
+                const r = svg.getBoundingClientRect();
+                const ratio = Math.max(0, Math.min(1, (x - r.left) / r.width));
+                updateChartCursor(Math.round(ratio * (currentCurveData.length - 1)));
+            };
+            svg.addEventListener('pointermove', e => move(e.clientX));
+            svg.addEventListener('pointerdown', e => move(e.clientX));
+        }
+
+        // ---------- RADAR ----------
+        function renderMapPins() {
+            const layer = document.getElementById('map-pins-layer');
+            layer.innerHTML = '';
+            spots.forEach(spot => {
+                const sel = selectedSpot && selectedSpot.id === spot.id;
+                const b = document.createElement('button');
+                b.style.left = `${spot.x}%`;
+                b.style.top = `${spot.y}%`;
+                b.className = 'absolute -translate-x-1/2 -translate-y-1/2 z-20';
+                b.setAttribute('aria-label', `Lubuk ${spot.name}`);
+                b.onclick = (e) => { e.stopPropagation(); if (!isAddSpotMode) selectSpot(spot.id); };
+                b.innerHTML = `
+                    <div class="relative flex flex-col items-center">
+                        <span class="absolute w-7 h-7 rounded-full ${sel ? 'bg-amberHud/35' : 'bg-cyanPulse/25'} pin-pulse"></span>
+                        <div class="w-4 h-4 rounded-full border-2 border-[#090A0F] ${sel ? 'bg-amberHud shadow-[0_0_12px_#FF9500]' : 'bg-cyanPulse shadow-[0_0_10px_#00E5FF]'}"></div>
+                        <span class="mt-1 px-2 py-0.5 rounded bg-black/85 border ${sel ? 'border-amberHud text-amberHud' : 'border-white/15 text-slate-200'} text-[10px] font-hud font-bold whitespace-nowrap shadow-md">${esc(spot.name)}</span>
+                    </div>`;
+                layer.appendChild(b);
+            });
+        }
+
+        function selectSpot(id) {
+            const s = spots.find(x => x.id === id);
+            if (!s) return;
+            selectedSpot = s;
+            document.getElementById('spot-name').textContent = s.name;
+            document.getElementById('spot-coords').textContent = `GPS: ${s.coords}`;
+            document.getElementById('spot-depth').textContent = s.depth;
+            document.getElementById('spot-tide').textContent = s.tide;
+            document.getElementById('spot-species').textContent = s.species;
+            document.getElementById('spot-rating').textContent = s.rating;
+            document.getElementById('map-gps-hud').textContent = s.coords;
+            renderMapPins();
+        }
+
+        function toggleAddSpotMode() {
+            isAddSpotMode = !isAddSpotMode;
+            document.getElementById('add-spot-banner').classList.toggle('hidden', !isAddSpotMode);
+            document.getElementById('add-pin-btn-text').textContent = isAddSpotMode ? 'Batal' : '+ Lubuk';
+            document.getElementById('radar-map-container').style.cursor = isAddSpotMode ? 'crosshair' : 'default';
+        }
+
+        function handleMapClick(e) {
+            if (!isAddSpotMode) return;
+            const r = e.currentTarget.getBoundingClientRect();
+            const x = Math.round(((e.clientX - r.left) / r.width) * 100);
+            const y = Math.round(((e.clientY - r.top) / r.height) * 100);
+            pendingPinCoords = { x: Math.max(10, Math.min(90, x)), y: Math.max(15, Math.min(85, y)) };
+            showModal('spot-modal');
+        }
+
+        function closeSpotModal() {
+            hideModal('spot-modal');
+            if (isAddSpotMode) toggleAddSpotMode();
+        }
+
+        function saveNewSpot(e) {
+            e.preventDefault();
+            const name = document.getElementById('spot-input-name').value.trim();
+            const lat = (2.94 + (100 - pendingPinCoords.y) * 0.001).toFixed(4);
+            const lon = (101.35 + pendingPinCoords.x * 0.001).toFixed(4);
+            const s = {
+                id: Date.now(), name,
+                coords: `${lat}° N, ${lon}° E`,
+                depth: document.getElementById('spot-input-depth').value.trim(),
+                tide: document.getElementById('spot-input-tide').value.trim(),
+                species: document.getElementById('spot-input-species').value.trim(),
+                rating: '★ BARU',
+                x: pendingPinCoords.x, y: pendingPinCoords.y
+            };
+            spots.push(s);
+            store.set('ocean_legacy_spots', spots);
+            e.target.reset();
+            closeSpotModal();
+            selectSpot(s.id);
+            showToast(`Lubuk "${name}" ditanda pada radar`);
+        }
+
+        function selectSpotForLog() {
+            openCatchModal();
+            if (selectedSpot) document.getElementById('input-location').value = selectedSpot.name;
+        }
+
+        // ---------- MODAL ----------
+        function showModal(id) { const m = document.getElementById(id); m.classList.remove('hidden'); m.classList.add('flex'); }
+        function hideModal(id) { const m = document.getElementById(id); m.classList.add('hidden'); m.classList.remove('flex'); }
+        function openCatchModal() { showModal('catch-modal'); }
+        function closeCatchModal() { hideModal('catch-modal'); }
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') { closeCatchModal(); closeSpotModal(); }
+        });
+
+        // ---------- LOG ----------
+        function renderFilterChips() {
+            const bar = document.getElementById('species-filter-bar');
+            bar.innerHTML = FILTERS.map(f => {
+                const on = f === currentFilter;
+                return `<button onclick="filterCatches('${f}')" class="filter-chip px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition ${on ? 'bg-cyanPulse text-black' : 'bg-[#161B26] text-slate-300 border border-white/10'}">${f}</button>`;
+            }).join('');
+        }
+
+        function filterCatches(sp) {
+            currentFilter = sp;
+            renderFilterChips();
+            renderCatchList();
+        }
+
+        function saveNewCatch(e) {
+            e.preventDefault();
+            const now = new Date();
+            const months = ['Jan', 'Feb', 'Mac', 'Apr', 'Mei', 'Jun', 'Jul', 'Ogo', 'Sep', 'Okt', 'Nov', 'Dis'];
+            let h = now.getHours();
+            const ap = h >= 12 ? 'PTG' : 'PG';
+            h = h % 12 || 12;
+            const date = `${String(now.getDate()).padStart(2, '0')} ${months[now.getMonth()]} ${now.getFullYear()} • ${String(h).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')} ${ap}`;
+
+            const entry = {
+                id: Date.now(),
+                species: document.getElementById('input-species').value,
+                location: document.getElementById('input-location').value.trim(),
+                weight: parseFloat(document.getElementById('input-weight').value),
+                length: parseInt(document.getElementById('input-length').value, 10),
+                bait: document.getElementById('input-bait').value.trim(),
+                tide: document.getElementById('input-tide').value,
+                tackle: document.getElementById('input-tackle').value.trim() || 'Set standard',
+                date
+            };
+            catches.unshift(entry);
+            store.set('ocean_legacy_catches', catches);
+            e.target.reset();
+            closeCatchModal();
+            renderCatchList();
+            updateStatsSummary();
+            showToast(`${entry.species} ${entry.weight.toFixed(2)} kg direkodkan`);
+        }
+
+        function renderCatchList() {
+            const box = document.getElementById('catch-log-list');
+            const list = currentFilter === 'Semua' ? catches : catches.filter(c => c.species.toLowerCase() === currentFilter.toLowerCase());
+
+            if (!list.length) {
+                box.innerHTML = `
+                    <div class="liquid-card p-8 text-center space-y-2">
+                        <p class="font-hud text-base text-slate-300">Belum ada ${currentFilter === 'Semua' ? 'tangkapan' : esc(currentFilter)}</p>
+                        <p class="text-xs text-slate-500">Tekan "Rekod" untuk tambah tangkapan pertama.</p>
+                    </div>`;
+                return;
+            }
+
+            box.innerHTML = list.map(item => `
+                <div class="liquid-card p-4 space-y-3">
+                    <div class="flex items-start justify-between gap-2">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-cyanPulse/20 to-slate-800 border border-cyanPulse/30 flex items-center justify-center text-cyanPulse font-hud font-bold text-base shrink-0">${esc(item.species.substring(0, 2).toUpperCase())}</div>
+                            <div class="min-w-0">
+                                <h4 class="font-hud font-bold text-lg text-white leading-tight">${esc(item.species)}</h4>
+                                <p class="text-[11px] text-slate-400 flex items-center gap-1 mt-0.5 truncate"><i data-lucide="map-pin" class="w-3 h-3 text-cyanPulse shrink-0"></i> ${esc(item.location)}</p>
+                            </div>
+                        </div>
+                        <div class="text-right shrink-0">
+                            <div class="tabular-hud text-xl font-bold text-cyanPulse">${item.weight.toFixed(2)} <span class="text-xs">kg</span></div>
+                            <div class="tabular-hud text-[11px] text-slate-400">${item.length} cm</div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 pt-2 border-t border-white/10 text-[11px]">
+                        <div class="bg-[#0D1017] px-2.5 py-1.5 rounded-lg min-w-0">
+                            <span class="text-slate-500 block text-[9px] font-hud uppercase">Umpan / gewang</span>
+                            <span class="text-slate-200 font-medium truncate block">${esc(item.bait)}</span>
+                        </div>
+                        <div class="bg-[#0D1017] px-2.5 py-1.5 rounded-lg min-w-0">
+                            <span class="text-slate-500 block text-[9px] font-hud uppercase">Set joran</span>
+                            <span class="text-slate-200 font-medium truncate block">${esc(item.tackle)}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between text-[10px] text-slate-400 pt-0.5">
+                        <span class="px-2 py-0.5 rounded bg-white/5 text-slate-300 font-hud">${esc(item.tide)}</span>
+                        <span class="tabular-hud">${esc(item.date)}</span>
+                    </div>
+                </div>`).join('');
+            icons();
+        }
+
+        // ---------- STATISTIK ----------
+        function topKey(counts) {
+            const keys = Object.keys(counts);
+            return keys.length ? keys.reduce((a, b) => counts[a] >= counts[b] ? a : b) : '--';
+        }
+
+        function updateStatsSummary() {
+            document.getElementById('stats-total-count').textContent = catches.length;
+
+            if (!catches.length) {
+                document.getElementById('stats-heaviest-weight').textContent = '0.00';
+                document.getElementById('stats-heaviest-detail').textContent = 'Belum ada rekod';
+                document.getElementById('stats-total-weight').innerHTML = '0.0 <span class="text-sm text-slate-400">kg</span>';
+                ['stats-top-location', 'stats-top-species', 'stats-top-tide'].forEach(id => document.getElementById(id).textContent = '--');
+                return;
+            }
+
+            const heaviest = catches.reduce((p, c) => c.weight > p.weight ? c : p, catches[0]);
+            const total = catches.reduce((s, c) => s + c.weight, 0);
+            document.getElementById('stats-heaviest-weight').textContent = heaviest.weight.toFixed(2);
+            document.getElementById('stats-heaviest-detail').textContent = `${heaviest.species} • ${heaviest.location}`;
+            document.getElementById('stats-total-weight').innerHTML = `${total.toFixed(1)} <span class="text-sm text-slate-400">kg</span>`;
+
+            const loc = {}, sp = {}, td = {};
+            catches.forEach(c => {
+                loc[c.location] = (loc[c.location] || 0) + 1;
+                sp[c.species] = (sp[c.species] || 0) + 1;
+                td[c.tide] = (td[c.tide] || 0) + 1;
+            });
+            document.getElementById('stats-top-location').textContent = topKey(loc);
+            document.getElementById('stats-top-species').textContent = topKey(sp);
+            document.getElementById('stats-top-tide').textContent = topKey(td);
+        }
+
+        function resetDemoData() {
+            if (!confirm('Set semula semua log dan lubuk kepada data demo? Data anda akan hilang.')) return;
+            store.remove('ocean_legacy_spots');
+            store.remove('ocean_legacy_catches');
+            spots = DEFAULT_SPOTS.map(s => ({ ...s }));
+            catches = DEFAULT_CATCHES.map(c => ({ ...c }));
+            selectedSpot = spots[0];
+            renderMapPins();
+            selectSpot(spots[0].id);
+            renderCatchList();
+            updateStatsSummary();
+            showToast('Data demo disetkan semula');
+        }
+
+        let toastTimer;
+        function showToast(msg) {
+            const t = document.getElementById('hud-toast');
+            document.getElementById('hud-toast-text').textContent = msg;
+            t.classList.remove('opacity-0');
+            t.classList.add('opacity-100');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => { t.classList.add('opacity-0'); t.classList.remove('opacity-100'); }, 2600);
+        }
+    </script>
+</body>
+</html>
