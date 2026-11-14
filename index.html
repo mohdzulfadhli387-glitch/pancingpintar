@@ -41,6 +41,7 @@ const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&g
 let db=JSON.parse(LS.fishdb||'null')||{c:[],s:[],set:{token:'',theme:'night'}};
 db.set=db.set||{token:'',theme:'night'};
 const save=()=>LS.fishdb=JSON.stringify(db);
+let ta=JSON.parse(LS.ta||'null'),taErr='';
 let pos=JSON.parse(LS.lastpos||'{"lat":3.1,"lon":101.7}'),env=JSON.parse(LS.env||'null'),tab='home';
 const TABS=[['home','Utama'],['log','Tangkap'],['spot','Spot'],['stat','Statistik'],['set','Tetapan']];
 document.documentElement.dataset.t=db.set.theme==='day'?'day':'';
@@ -73,9 +74,24 @@ async function load(){
    fetch(`https://marine-api.open-meteo.com/v1/marine?${q}&hourly=sea_level_height_msl,wave_height`).then(r=>r.json()).catch(()=>null)]);
   env={t:Date.now(),w,m};LS.env=JSON.stringify(env);
  }catch(e){}
+ await loadTa();
  render();
 }
-function tides(){ // {ev:[{t,type,h}], lvl(i)}
+async function loadTa(){
+ const k=db.set.tideKey;taErr='';if(!k){ta=null;return}
+ const key=db.set.port||pos.lat.toFixed(2)+','+pos.lon.toFixed(2);
+ if(ta&&ta.key===key&&Date.now()-ta.t<6*36e5)return; // jimat kredit: 1 panggilan / 6 jam
+ try{const u='https://tidesatlas.com/api/v1/tides?'+(db.set.port?'port='+encodeURIComponent(db.set.port):'lat='+pos.lat+'&lon='+pos.lon)+'&days=3';
+  const r=await fetch(u,{headers:{'X-API-Key':k}});const j=await r.json().catch(()=>({}));
+  if(!r.ok||!j.extremes)throw new Error(j.message||('HTTP '+r.status));
+  ta={key,t:Date.now(),ex:j.extremes,name:j.port?.name||''};LS.ta=JSON.stringify(ta)
+ }catch(e){taErr=String(e.message||e)}}
+function tides(){ // {T,L,ev}
+ const x=ta&&ta.ex&&ta.ex.length>2?ta.ex.map(e=>({t:new Date(e.datetime),h:e.height_m,hi:String(e.type).toLowerCase().startsWith('h')})).sort((a,b)=>a.t-b.t):null;
+ if(x){const T=[],L=[];for(let t=Math.ceil(x[0].t/36e5)*36e5;t<=x[x.length-1].t;t+=36e5){
+   let k=x.findIndex(e=>e.t>t);if(k<1)continue;const a=x[k-1],b=x[k],f=(t-a.t)/(b.t-a.t);
+   T.push(new Date(t).toISOString());L.push(a.h+(b.h-a.h)*(1-Math.cos(Math.PI*f))/2)}
+  return{T,L,ev:x.map(e=>({t:e.t,type:e.hi?'Pasang':'Surut',h:e.h})),src:'Tides Atlas'+(ta.name?' · '+ta.name:'')}}
  const h=env?.m?.hourly;if(!h||!h.sea_level_height_msl)return null;
  const T=h.time,L=h.sea_level_height_msl;if(L.every(x=>x==null))return null;
  const ev=[];for(let i=1;i<L.length-1;i++){if(L[i]==null||L[i-1]==null||L[i+1]==null)continue;
@@ -122,7 +138,7 @@ function home(){
  <div class="g2" style="margin-top:10px"><div><div class="mut">Angin</div><b>${Math.round(c.wind_speed_10m)} km/j ${dirN(c.wind_direction_10m)}</b></div>
  <div><div class="mut">Tekanan</div><b>${Math.round(c.pressure_msl)} hPa</b></div></div>`:'<p class="mut">Sambung internet sekali untuk dapatkan cuaca.</p>'}
  <button onclick="load()">Muat semula</button></div>
- <div class="card"><h2>Air pasang surut</h2>${evs.length?evs.map(e=>`<div class="win"><b>${e.type}</b><span>${fmt(e.t)} · ${e.h.toFixed(2)} m</span></div>`).join(''):'<p class="mut">Tiada data laut untuk lokasi ini (model global kurang di muara/sungai). Rujuk jadual rasmi.</p>'}</div>
+ <div class="card"><h2>Air pasang surut</h2>${taErr?`<p class="mut">API Tides Atlas gagal: ${esc(taErr)}. Guna data model Open-Meteo.</p>`:''}${td?.src?`<p class="mut">Sumber: ${esc(td.src)}</p>`:''}${evs.length?evs.map(e=>`<div class="win"><b>${e.type}</b><span>${fmt(e.t)} · ${e.h.toFixed(2)} m</span></div>`).join(''):'<p class="mut">Tiada data laut untuk lokasi ini (model global kurang di muara/sungai). Rujuk jadual rasmi.</p>'}</div>
  <div class="card"><h2>Waktu terbaik (24 jam)</h2>${b&&b.length?b.map(x=>`<div class="win"><b>${x.t.toLocaleDateString('ms-MY',{weekday:'short'})} ${fmt(x.t)}</b><span>skor ${x.s}</span></div>`).join('')+'<p class="mut">Berdasarkan pergerakan air, subuh/senja, bulan, dan rekod tangkapan kau.</p>':'<p class="mut">Perlukan data cuaca.</p>'}</div>
  <div class="card"><h2>Bulan dan tarikh</h2><div class="big" style="font-size:28px">${m.name}</div><div>${m.ill}% bercahaya</div><div class="mut" style="margin-top:6px">${hijri()} H (boleh beza 1 hari)</div></div>`}
 
@@ -190,9 +206,12 @@ function stat(){
  ${list('Fasa bulan',group(c=>c.snap?.moon))}`}
 
 /* ---------- tetapan + backup ---------- */
+function saveSet(){db.set.token=$('#tok').value.trim();db.set.tideKey=$('#tk').value.trim();db.set.port=$('#pt').value.trim();ta=null;LS.removeItem('ta');save();alert('Disimpan');load()}
 function set(){
  $('#v').innerHTML=`<h1>Tetapan</h1><div class="card"><label>Token Mapbox (pk.…)</label><input id="tok" value="${esc(db.set.token)}" placeholder="pk.eyJ...">
- <button onclick="db.set.token=$('#tok').value.trim();save();alert('Disimpan')">Simpan token</button>
+ <label>Kunci API pasang surut (Tides Atlas)</label><input id="tk" value="${esc(db.set.tideKey||'')}" placeholder="kunci API" autocomplete="off">
+ <label>Kod stesen (pilihan, cth. port-klang)</label><input id="pt" value="${esc(db.set.port||'')}" placeholder="kosongkan = stesen terdekat dengan GPS" autocomplete="off">
+ <button onclick="saveSet()">Simpan tetapan</button>
  <button class="o" onclick="db.set.theme=db.set.theme==='day'?'night':'day';save();document.documentElement.dataset.t=db.set.theme==='day'?'day':'';render()">Tukar mod: ${db.set.theme==='day'?'Siang (putih merah)':'Malam (merah hitam)'}</button></div>
  <div class="card"><h2>Backup data</h2><p class="mut">${db.c.length} tangkapan, ${db.s.length} spot. Eksport selalu, simpan dalam Google Drive atau emel kepada diri sendiri.</p>
  <button onclick="exp()">Eksport (JSON)</button><button class="o" onclick="$('#imp').click()">Import</button>
